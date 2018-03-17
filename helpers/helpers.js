@@ -4,7 +4,6 @@ const rw = require('random-words');
 
 let createPassword = () => {
   let string = rn() + rw();
-  console.log(string);
   let pw = SHA256(string).toString();
   return pw;
 };
