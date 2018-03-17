@@ -29,4 +29,4 @@ class App extends React.Component {
 }
 
 const AppWithRouter = withRouter(App);
-export default AppWithRouter;
+module.exports = AppWithRouter;
