@@ -13,7 +13,7 @@ module.exports = {
     path: DIST_DIR
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.(js|jsx)$/,
         include : SRC_DIR,
