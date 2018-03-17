@@ -8,3 +8,5 @@ let createPassword = () => {
   let pw = SHA256(string).toString();
   return pw;
 };
+
+exports.createPassword = createPassword;
