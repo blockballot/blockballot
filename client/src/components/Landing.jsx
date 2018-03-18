@@ -15,5 +15,4 @@ class Landing extends React.Component {
     )
   }
 }
-
 module.exports = Landing;

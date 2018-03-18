@@ -6,7 +6,7 @@ class Voter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
+      uniqueId: '',
       isLogin: false,
       isVoteSubmitted: false,
       isBallotCompleted: false
@@ -17,22 +17,21 @@ class Voter extends React.Component {
   
   handleChange(event) {
     this.setState({
-        value: event.target.value
+        uniqueId: event.target.value
     });
   }
 
-  handleSubmit() {
-    alert(this.state.value)
+  handleSubmit(event) {
     event.preventDefault();
     axios({
       method: 'POST',
-      url: '/api/voter',
+      url: '/api/Voter',
       data: {
-        voter_id: this.state.value
+        uniqueId: this.state.uniqueId
       }
     }) 
-    .then(function (response) {
-      console.log(response);
+    .then(function (res) {
+      console.log('found unique ID', res);
     })
     .catch(function (error) {
       console.log(error);
@@ -58,12 +57,12 @@ class Voter extends React.Component {
       }
     } else {
       return (
-        <form onSubmit={this.handleSubmit} >
+        <form>
             <label>
             <div>ENTER YOUR UNIQUE CODE</div>
-            <input type="password" name="voterPassword" value={this.state.value} onChange={this.handleChange} />
+            <input type="password" name="uniqueId" value={this.state.uniqueId} onChange={this.handleChange} />
             </label>
-            <input type="submit" value="Submit" />
+            <input type="submit" value="Submit" onClick={this.handleSubmit} />
         </form>
       )
     }
