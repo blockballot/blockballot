@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import PasswordInput from 'grommet/components/PasswordInput';
 
-class VoterResults extends React.Component {
+class VoterVote extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,5 +50,4 @@ class VoterResults extends React.Component {
   }
   
 }
-module.exports = VoterResults;
-
+module.exports = VoterVote;
