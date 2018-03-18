@@ -4,11 +4,11 @@ import { Route } from 'react-router-dom';
 import Landing from './Landing.jsx';
 import Signup from './Signup.jsx';
 import Login from './Login.jsx';
-import Dashboard from './Dashboard';
-import CreatePoll from './CreatePoll';
-import VoterLogin from './VoterLogin';
-import Vote from './Vote';
-import VoteResults from './VoterResults';
+import Dashboard from './Dashboard.jsx';
+import CreatePoll from './CreatePoll.jsx';
+import VoterLogin from './VoterLogin.jsx';
+import Vote from './Vote.jsx';
+import VoteResults from './VoterResults.jsx';
 
 
 class App extends React.Component {
