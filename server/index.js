@@ -36,6 +36,7 @@ app.use(session({
 
 
 
+
 /*for Test*/
 app.post('/api/Voter', (req, res) => {
   console.log('server', db.checkVoter(req.body.uniqueId))
