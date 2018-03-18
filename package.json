@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"No tests currently defined, exiting for now\" && exit 0",
-    "server-dev": "nodemon server/index.js",
+    "server-dev": "nodemon --inspect server/index.js",
     "react-dev": "webpack -d --watch"
   },
   "repository": {

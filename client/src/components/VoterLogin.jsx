@@ -20,6 +20,7 @@ class VoterLogin extends React.Component {
   handleSubmit(event) {
     alert(this.state.value)
     event.preventDefault();
+    console.log(event)
 
   }
 
