@@ -10,7 +10,7 @@ class Landing extends React.Component {
     return (
       <div>
         <Link to="/Login">get start</Link><br/>
-        <Link to="/VoterLogin">voter login page</Link>
+        <Link to="/Voter">voter login page</Link>
       </div>
     )
   }

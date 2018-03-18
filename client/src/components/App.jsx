@@ -6,10 +6,7 @@ import Signup from './Signup.jsx';
 import Login from './Login.jsx';
 import Dashboard from './Dashboard.jsx';
 import CreatePoll from './CreatePoll.jsx';
-import VoterLogin from './VoterLogin.jsx';
-import Vote from './Vote.jsx';
-import VoteResults from './VoterResults.jsx';
-
+import Voter from './Voter.jsx';
 
 class App extends React.Component {
   render () {
@@ -20,9 +17,7 @@ class App extends React.Component {
         <Route path='/Login' component={ Login } />
         <Route path='/Dashboard' component={ Dashboard } />
         <Route path='/CreatePoll' component={ CreatePoll } />
-        <Route path='/VoterLogin' component={ VoterLogin } />
-        <Route path='/Vote' component={ Vote } />
-        <Route path='/VoteResults' component={ VoteResults } />
+        <Route path='/Voter' component={ Voter } />
       </div>
     )
   }
