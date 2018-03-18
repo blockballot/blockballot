@@ -36,13 +36,11 @@ app.use(session({
 
 
 
-
+/*for Test*/
 app.post('/api/Voter', (req, res) => {
-  console.log('xxxxx')
-  console.log(req)
+  console.log('server', db.checkVoter(req.body.uniqueId))
   res.send('Hello World')
 })
-
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));

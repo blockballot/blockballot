@@ -54,6 +54,7 @@ const Option = sequelize.define('option', {
   }
 });
 
+//test
 const Voter = sequelize.define('voter', {        
   voterId: {
     type: Sequelize.INTEGER,
@@ -64,6 +65,31 @@ const Voter = sequelize.define('voter', {
     type: Sequelize.STRING
   }
 });
+Poll.hasMany(Option);
+Org.hasMany(Poll);
 
-Org.hasMany(Poll, {as: 'Polls'});
-Poll.hasMany(Option, {as: 'Options'});
+
+Org.sync().then(() => {
+  console.log('Org table created')
+});
+Poll.sync().then(() => {
+  console.log('Poll table created')
+});
+Option.sync().then(() => {
+  console.log('Option table created')
+});
+Voter.sync().then(() => {
+  console.log('Voter table created')
+});
+
+
+module.exports = {
+  checkVoter: (data) => {
+    Voter.findOrCreate({where: {voterUniqueId: data}})
+    .spread ((voter, created) => {
+      console.log(voter.get({
+        plain: true
+      }))
+    })
+  }
+}
