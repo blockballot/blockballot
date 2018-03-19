@@ -59,14 +59,16 @@ class Voter extends React.Component {
       }
     } else {
       return (
+        <div>
         <form>
             <label>
             <div>ENTER YOUR UNIQUE CODE</div>
             <input type="password" name="uniqueId" value={this.state.uniqueId} onChange={this.handleChange} />
             </label>
             <input type="submit" value="Submit" onClick={this.handleSubmit} />
-            <Vote />
         </form>
+          <Vote />
+        </div>
       )
     }
   }

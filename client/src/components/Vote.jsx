@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Checkbox from 'material-ui/Checkbox';
 
 class Vote extends React.Component {
   constructor(props) {
@@ -11,18 +12,18 @@ class Vote extends React.Component {
       isBallotCompleted: false,
       ballotName: 'ballot name from database', // database input will replace 
       ballotQuestion: [  // database input will replace 
-        { questionName:'question1',
-          questionAnswer: null
+        { optionName:'question1',
+          optionAnswer: false
         },
-        { questionName:'question1',
-          questionAnswer: null
+        { questionName:'question2',
+          questionAnswer: true
         },
-        { questionName:'question1',
-          questionAnswer: null
+        { questionName:'question3',
+          questionAnswer: false
         }
       ]
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.updateCheck = this.updateCheck.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -30,39 +31,43 @@ class Vote extends React.Component {
     // get the ballotName and ballot question to update the state
   } 
 
-  handleChange(event) {
-    this.setState({
-        uniqueId: event.target.value
+  updateCheck(event) {
+    this.setState((oldState) => {
+      return {
+        checked: !oldState.checked,
+      };
     });
   }
 
   handleSubmit(event) {
-    event.preventDefault();
-    axios({
-      method: 'POST',
-      url: '/api/Voter',
-      data: {
-        uniqueId: this.state.uniqueId
-      }
-    })
-    .then(function (res) {
-      console.log('found unique ID', res);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    // event.preventDefault();
+    // axios({
+    //   method: 'POST',
+    //   url: '/api/Voter',
+    //   data: {
+    //     uniqueId: this.state.uniqueId
+    //   }
+    // })
+    // .then(function (res) {
+    //   console.log('found unique ID', res);
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
   }
 
   render() {
     let ballotInfo = this.state;
-  
+    let ballotQuestionList = ballotInfo.ballotQuestion.map((question, index) => {
+      return  <Checkbox className="checkbox" labelPosition="left" key={index} label={question.questionName} checked={question.questionAnswer} onCheck={this.updateCheck}/>
+    })
 
     return (
-     
       <form>
         <label>
           <div>VOTE PAGE</div>
           <div>{ballotInfo.ballotName}</div>
+          <div className="block" >{ballotQuestionList}</div>
         </label>
         <input type="submit" value="Submit" onClick={this.handleSubmit} />
       </form>
