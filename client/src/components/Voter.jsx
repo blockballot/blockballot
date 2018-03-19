@@ -49,7 +49,7 @@ class Voter extends React.Component {
       } else {
         if(this.state.isVoteSubmitted) {
           return (
-            <VoterResult />
+            <VoterResults />
           )
         } else {
           return (

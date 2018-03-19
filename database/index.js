@@ -85,6 +85,7 @@ Voter.sync().then(() => {
 
 
 module.exports = {
+
   checkVoter: (data) => {
     Voter.findOrCreate({where: {voterUniqueId: data}})
     .spread ((voter, created) => {
@@ -92,5 +93,9 @@ module.exports = {
         plain: true
       }))
     })
-  }
+  },
+  Org: Org,
+  Poll: Poll,
+  Option: Option,
+  Voter: Voter
 }

@@ -9,10 +9,23 @@ class Landing extends React.Component {
   render() {
     return (
       <div>
-        <Link to="/Login">Get Started</Link><br/>
-        <Link to="/Voter">Voter Login Page</Link>
+        <Link to="/voter">voter login page</Link>
+        <div>
+          Org Signup/Login
+        </div>
+        <Link to="/signup">
+          <button>
+          Signup
+          </button>
+        </Link>
+        <Link to="/login">
+          <button>
+          Log in
+          </button>
+        </Link>
       </div>
-    )
+    );
   }
 }
+
 export default Landing;
