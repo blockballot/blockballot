@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../style/app.css';
 
 class Landing extends React.Component {
   constructor(props) {

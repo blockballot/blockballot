@@ -1,6 +1,6 @@
-var TestVote = artifacts.require("./TestVote.sol");
+var Meow = artifacts.require("./TestVote.sol");
 module.exports = function(deployer) {
-  deployer.deploy(TestVote, ['Norbie', 'Evaline'], {gas: 6700000});
+  deployer.deploy(Meow, ['Norbie', 'Evaline'], {gas: 6700000});
 };
 
 /* As you can see above, the deployer expects the first argument to   be the name of the contract followed by constructor arguments. In our case, there is only one argument which is an array of
