@@ -17,7 +17,6 @@ import cookie from 'react-cookie';
 import Voter from './Voter';
 import VoterVote from './VoterVote';
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -40,9 +39,8 @@ class App extends React.Component {
   // }
 
   signupSubmit(signup) {
-    console.log('SIGNUP', signup);
     let user = {
-      username: `${signup.username}`,
+      email: `${signup.username}`,
       password: `${signup.password}`
     };
     $.ajax({
@@ -55,14 +53,14 @@ class App extends React.Component {
         }
       },
       error: (err) => {
-        console.log(err);
+        console.log(err.responseText);
       }
     });
   }
 
   loginSubmit(login) {
     let user = {
-      username: `${login.username}`,
+      email: `${login.username}`,
       password: `${login.password}`
     };
     $.ajax({
@@ -71,15 +69,16 @@ class App extends React.Component {
       data: user,
       success: (res, textStatus, jqXHR) => {
         if (jqXHR.status === 200) {
+          console.log('Success!');
           this.setState({
             loggedIn: true,
-            currentUser: user.username
+            currentUser: user.email
           });
           this.props.history.push(`/`);
         }
       },
       error: (err) => {
-        console.log(err);
+        console.log(err.responseText);
       }
     });
   }
@@ -91,27 +90,44 @@ class App extends React.Component {
   render () {
     return (
       <div>
-        <Route exact path='/' component={ Landing } />
+        <Route exact path='/' 
+          render={ () =>
+            <Landing />
+          }
+        />
+
         <Route exact path='/voter' 
           render={ () =>
             <Voter/>
           }
         />
-        <Route exact path="/signup"
+
+        <Route exact path='/signup'
           render={ () =>
             <Signup signupSubmit={this.signupSubmit} />
           }
         />
 
         <Route
-          exact path="/login"
+          exact path='/login'
           render={ () =>
             <Login loginSubmit={this.loginSubmit} />
           }
         />
 
-        <Route path='/Dashboard' component={ Dashboard } />
-        <Route path='/CreatePoll' component={ CreatePoll } />
+        <Route 
+          exact path='/dashboard' 
+          render={ () =>
+            <Dashboard />
+          }
+        />
+
+        <Route 
+          exact path='/createpoll'
+          render={ () =>
+            <CreatePoll />
+          }
+        />
       </div>
     )
   }

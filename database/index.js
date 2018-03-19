@@ -84,6 +84,7 @@ Voter.sync().then(() => {
 
 
 module.exports = {
+
   checkVoter: (data) => {
     Voter.findOrCreate({where: {voterUniqueId: data}})
     .spread ((voter, created) => {
@@ -92,26 +93,8 @@ module.exports = {
       }))
     })
   },
-
-  checkLogin: (user) => {
-
-  },
-  //check if user is already in the db during signup
-  alreadyExists: (user) => {
-    console.log('inside db func')
-    return Org.count({ where: { orgEmail: user.username } })
-      .then(count => {
-        if (count === 0) {
-          console.log('FALSE');
-          return false;
-        } else {
-          return true;
-        };
-    });
-  },
-  //save org to db during signup
-  saveOrg: (user) => {
-    console.log('inside save');
-    Org.create({orgName: user.name, orgEmail: user.username, orgPassword: user.password});
-  },
+  Org: Org,
+  Poll: Poll,
+  Option: Option,
+  Voter: Voter
 }
