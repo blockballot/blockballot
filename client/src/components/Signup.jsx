@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-
+import LoginForm from 'grommet/components/LoginForm';
 
 class Signup extends React.Component {
   constructor(props) {
@@ -14,9 +13,7 @@ class Signup extends React.Component {
 
   render() {
     return (
-      <div>
-        
-      </div>
+      <LoginForm onSubmit = {this.props.signupSubmit}/>
     );
   }
 }

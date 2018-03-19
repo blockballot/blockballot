@@ -30,7 +30,16 @@ app.use(session({
 
 
 
-
+app.post('/signup', (req, res) => {
+  let user = req.body;
+  if (db.alreadyExists(user)) {
+    console.log('doesnt exist');
+    db.saveOrg(user);
+  } else {
+    console.log('already exists');
+    res.send('User already exists');
+  }
+})
 
 
 

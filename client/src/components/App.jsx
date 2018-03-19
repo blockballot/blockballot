@@ -12,10 +12,10 @@ import Signup from './Signup.jsx';
 import Login from './Login.jsx';
 import Dashboard from './Dashboard';
 import CreatePoll from './CreatePoll';
-import VoterLogin from './VoterLogin';
-import Vote from './Vote';
-import VoteResults from './VoterResults';
+import VoterResults from './VoterResults';
 import cookie from 'react-cookie';
+import Voter from './Voter';
+import VoterVote from './VoterVote';
 
 
 class App extends React.Component {
@@ -26,6 +26,7 @@ class App extends React.Component {
       loggedIn: false
     }
     this.loginSubmit = this.loginSubmit.bind(this);
+    this.signupSubmit = this.signupSubmit.bind(this);
   }
   
   // componentDidMount() {
@@ -39,6 +40,7 @@ class App extends React.Component {
   // }
 
   signupSubmit(signup) {
+    console.log('SIGNUP', signup);
     let user = {
       username: `${signup.username}`,
       password: `${signup.password}`
@@ -90,26 +92,26 @@ class App extends React.Component {
     return (
       <div>
         <Route exact path='/' component={ Landing } />
-        <Route exact path="/login"
+        <Route exact path='/voter' 
           render={ () =>
-            <div className="ui container">
-              <Login signupSubmit={this.signupSubmit} />
-            </div>
+            <Voter/>
+          }
+        />
+        <Route exact path="/signup"
+          render={ () =>
+            <Signup signupSubmit={this.signupSubmit} />
           }
         />
 
         <Route
           exact path="/login"
           render={ () =>
-            <div className="ui container">
-              <Login loginSubmit={this.loginSubmit} />
-            </div>
+            <Login loginSubmit={this.loginSubmit} />
           }
         />
 
         <Route path='/Dashboard' component={ Dashboard } />
         <Route path='/CreatePoll' component={ CreatePoll } />
-        <Route path='/Voter' component={ Voter } />
       </div>
     )
   }

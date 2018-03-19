@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import PasswordInput from 'grommet/components/PasswordInput';
 import VoterVote from './VoterVote.jsx'
-import VoterResult from './VoterResult.jsx'
+import VoterResults from './VoterResults.jsx'
 
 class Voter extends React.Component {
   constructor(props) {
@@ -49,7 +49,7 @@ class Voter extends React.Component {
       } else {
         if(this.state.isVoteSubmitted) {
           return (
-            <VoterResult />
+            <VoterResults />
           )
         } else {
           return (
