@@ -1,4 +1,4 @@
-/* for reference */
+/* This file is just for reference */
 
 CREATE DATABASE blockballot;
 
@@ -9,7 +9,7 @@ CREATE TABLE  organization (
   org_name varchar(50)  NOT NULL,
   org_password varchar(200) NOT NULL,
   org_email varchar(50) NOT NULL,
-  PRIMARY KEY (ID)
+  PRIMARY KEY (org_id)
 );
 
 CREATE TABLE poll (
@@ -17,19 +17,19 @@ CREATE TABLE poll (
   poll_name varchar(200)  NOT NULL,
   poll_time_start varchar(200) NOT NULL,
   poll_time_end varchar(200) NOT NULL,
-  PRIMARY KEY (ID)
+  PRIMARY KEY (poll_id)
 );
 
 CREATE TABLE opt (
   opt_id int NOT NULL AUTO_INCREMENT,
   opt_name varchar(50)  NOT NULL,
-  PRIMARY KEY (ID)
+  PRIMARY KEY (opt_id)
 );
 
 CREATE TABLE voter (
   voter_id int NOT NULL AUTO_INCREMENT,
   voter_uniqueId varchar(200)  NOT NULL,
-  PRIMARY KEY (ID)
+  PRIMARY KEY (voter_id)
 );
 
 /*  Execute this file from the command line by typing:
