@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('blockballot', 'root', '' , { // in mysql create databases blockballot
+const sequelize = new Sequelize('blockballot', 'root', '' , {
+// in mysql create databases blockballot
   dialect: 'mysql'
 });
 
@@ -9,7 +10,7 @@ sequelize.authenticate().then(() => {
   console.error('MySQL Unable to connect to the database:', err);
 });
 
-const Org = sequelize.define('org', {        
+const Org = sequelize.define('org', {
   orgId: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -26,7 +27,7 @@ const Org = sequelize.define('org', {
   }
 });
 
-const Poll = sequelize.define('poll', {        
+const Poll = sequelize.define('poll', {
   pollId: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -43,7 +44,7 @@ const Poll = sequelize.define('poll', {
   }
 });
 
-const Option = sequelize.define('option', {        
+const Option = sequelize.define('option', {
   optionId: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -55,7 +56,7 @@ const Option = sequelize.define('option', {
 });
 
 //test
-const Voter = sequelize.define('voter', {        
+const Voter = sequelize.define('voter', {
   voterId: {
     type: Sequelize.INTEGER,
     autoIncrement: true,

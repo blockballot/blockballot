@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import PasswordInput from 'grommet/components/PasswordInput';
-import VoterVote from './VoterVote.jsx'
-import VoterResult from './VoterResult.jsx'
+import Vote from './Vote.jsx'
+import VoterResults from './VoterResults.jsx'
 
 class Voter extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class Voter extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  
+
   handleChange(event) {
     this.setState({
         uniqueId: event.target.value
@@ -31,7 +31,7 @@ class Voter extends React.Component {
       data: {
         uniqueId: this.state.uniqueId
       }
-    }) 
+    })
     .then(function (res) {
       console.log('found unique ID', res);
     })
@@ -70,4 +70,5 @@ class Voter extends React.Component {
     }
   }
 }
-module.exports = Voter;
+
+export default Voter;
