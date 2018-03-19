@@ -27,7 +27,7 @@ class App extends React.Component {
     this.loginSubmit = this.loginSubmit.bind(this);
     this.signupSubmit = this.signupSubmit.bind(this);
   }
-  
+
   // componentDidMount() {
   //   if (cookie.load('loggedIn') === 'true' && this.state.loggedIn === false) {
   //     let currentUser = cookie.load('username');
@@ -90,13 +90,13 @@ class App extends React.Component {
   render () {
     return (
       <div>
-        <Route exact path='/' 
+        <Route exact path='/'
           render={ () =>
             <Landing />
           }
         />
 
-        <Route exact path='/voter' 
+        <Route exact path='/voter'
           render={ () =>
             <Voter/>
           }
@@ -115,14 +115,14 @@ class App extends React.Component {
           }
         />
 
-        <Route 
-          exact path='/dashboard' 
+        <Route
+          exact path='/dashboard'
           render={ () =>
             <Dashboard />
           }
         />
 
-        <Route 
+        <Route
           exact path='/createpoll'
           render={ () =>
             <CreatePoll />
