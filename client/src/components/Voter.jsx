@@ -53,7 +53,7 @@ class Voter extends React.Component {
           )
         } else {
           return (
-            <VoterVote />
+            <Vote />
           )
         }
       }
@@ -65,6 +65,7 @@ class Voter extends React.Component {
             <input type="password" name="uniqueId" value={this.state.uniqueId} onChange={this.handleChange} />
             </label>
             <input type="submit" value="Submit" onClick={this.handleSubmit} />
+            <Vote />
         </form>
       )
     }
