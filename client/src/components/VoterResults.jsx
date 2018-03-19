@@ -14,7 +14,7 @@ class VoterResults extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  
+
   handleChange(event) {
     this.setState({
         uniqueId: event.target.value
@@ -29,7 +29,7 @@ class VoterResults extends React.Component {
       data: {
         uniqueId: this.state.uniqueId
       }
-    }) 
+    })
     .then(function (res) {
       console.log('found unique ID', res);
     })
@@ -48,7 +48,7 @@ class VoterResults extends React.Component {
       </form>
     )
   }
-  
 }
-module.exports = VoterResults;
+
+export default VoterResults;
 

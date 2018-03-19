@@ -53,8 +53,11 @@
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.11",
     "file-loader": "^1.1.11",
+    "json-loader": "^0.5.7",
     "style-loader": "^0.20.3",
+    "truffle-contract": "^3.0.4",
     "url-loader": "^1.0.1",
+    "web3": "^0.20.6",
     "webpack": "^4.1.1",
     "webpack-cli": "^2.0.12"
   }

@@ -9,7 +9,7 @@ class Landing extends React.Component {
   render() {
     return (
       <div>
-        <Link to="/Voter">voter login page</Link>
+        <Link to="/voter">voter login page</Link>
         <div>
           Org Signup/Login
         </div>
