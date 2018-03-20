@@ -45,6 +45,11 @@ class Landing extends React.Component {
           >
             <Menu.Item as='a' active>Home</Menu.Item>
             <Menu.Item as='a'>About Us</Menu.Item>
+            <Menu.Item as='a'>
+              <Link to="/voter">
+                Voter Login (Temp)
+              </Link>
+            </Menu.Item>
             <Menu.Item position='right'>
               <Link to="/login">
                 <Button as='a' >Log in</Button>
@@ -72,7 +77,7 @@ class Landing extends React.Component {
             />
             <Header
               as='h2'
-              content='A Decentralized Voting Platform'
+              content='Decentralized Voting for a Transparent World'
               style={{
                 fontSize: '1.7em',
                 fontWeight: 'normal',
