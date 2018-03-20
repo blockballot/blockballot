@@ -127,6 +127,7 @@ class Signup extends React.Component {
               onChange={this.onChange}
             />
             <Dialog
+              contentStyle={{width: 600}}
               title="Unique Password"
               actions={dialogActions}
               modal={false}
