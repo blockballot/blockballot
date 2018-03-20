@@ -30,7 +30,6 @@ class Landing extends React.Component {
     return (
       <Responsive>
         <Segment
-          textAlign='center'
           style={{
             minHeight: 700,
             padding: '1em 0em',
@@ -55,7 +54,12 @@ class Landing extends React.Component {
               </Link>
             </Menu.Item>
           </Menu>
-          <Container text>
+          <Container
+            text
+            style={{
+              textAlign: 'center'
+            }}
+          >
             <Header
               as='h1'
               content='BlockBallot'
@@ -72,7 +76,7 @@ class Landing extends React.Component {
               style={{
                 fontSize: '1.7em',
                 fontWeight: 'normal',
-                marginTop: '1.5em',
+                marginTop: '1.5em'
               }}
             />
             <Button primary size='huge'>
@@ -81,13 +85,12 @@ class Landing extends React.Component {
           </Container>
         </Segment>
         <Segment
-          textAlign='center'
+          vertical
           style={{
             minHeight: 700,
             padding: '1em 0em',
             backgroundColor: '#F0F8FF'
           }}
-          vertical
         >
           <Grid container stackable className="getStartedGrid" verticalAlign='middle'>
             <Grid.Row>
