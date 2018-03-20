@@ -86,7 +86,7 @@ class App extends React.Component {
             loggedIn: true,
             currentUser: user.email
           });
-          this.props.history.push(`/`);
+          this.props.history.push(`/dashboard`);
         }
       },
       error: (err) => {
