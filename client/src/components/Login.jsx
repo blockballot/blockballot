@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import LoginForm from 'grommet/components/LoginForm';
-import {TextField, RaisedButton, FlatButton, Grid, Dialog} from 'material-ui';
+import {TextField, RaisedButton, FlatButton, Dialog} from 'material-ui';
+import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import { Row, Col } from 'react-bootstrap';
 
 
 class Login extends React.Component {
@@ -56,7 +57,7 @@ class Login extends React.Component {
       />
     ]
     return (
-      <div>
+      <div className="loginForm">
         <TextField
           hintText="Email"
           errorText={this.props.loginEmailError}

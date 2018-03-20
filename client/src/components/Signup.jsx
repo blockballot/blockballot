@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {TextField, RaisedButton, Grid, Dialog, FlatButton, GridList} from 'material-ui';
+import {TextField, RaisedButton, Dialog, FlatButton, GridList} from 'material-ui';
 import $ from 'jquery';
+import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+
 
 class Signup extends React.Component {
   constructor(props) {
@@ -70,7 +72,7 @@ class Signup extends React.Component {
     <div>
       <TextField
           hintText="Password"
-          errorText={"Required field"}
+          errorText=''
           name='password'
           value={this.state.password}
           onChange={this.onChange}
@@ -114,6 +116,7 @@ class Signup extends React.Component {
           open={this.state.dialogOpen}
           onRequestClose={this.handleClose}
         >
+          <i class="copy outline icon"></i>
           <div>
             Copy the unique password below to create your account:
           </div>

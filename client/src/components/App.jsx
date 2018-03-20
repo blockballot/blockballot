@@ -17,6 +17,7 @@ import cookie from 'react-cookie';
 import Voter from './Voter';
 import Vote from './Vote';
 import $ from 'jquery';
+import '../style/app.css'
 
 
 class App extends React.Component {
