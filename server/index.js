@@ -9,6 +9,7 @@ const Sequelize = require('sequelize');
 
 const auth = require('../helpers/authHelpers.js');
 const db = require('../database/index.js');
+const helpers = require('../helpers/helpers.js')
 
 const app = express();
 
@@ -64,6 +65,10 @@ app.post('/signup', (req, res) => {
       }
     });
   });
+});
+
+app.get('/signup', (req, res) => {
+  res.status(200).send(helpers.createPassword);
 });
 
 app.get('/logout', (req, res) => {

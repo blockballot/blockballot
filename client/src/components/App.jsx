@@ -16,6 +16,8 @@ import VoterResults from './VoterResults';
 import cookie from 'react-cookie';
 import Voter from './Voter';
 import Vote from './Vote';
+import $ from 'jquery';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -60,9 +62,10 @@ class App extends React.Component {
 
   loginSubmit(login) {
     let user = {
-      email: `${login.username}`,
+      email: `${login.email}`,
       password: `${login.password}`
     };
+    console.log(user);
     $.ajax({
       type: 'POST',
       url: '/login',
