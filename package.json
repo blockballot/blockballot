@@ -32,6 +32,7 @@
     "material-ui": "^0.20.0",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.2",
+    "prop-types": "^15.6.1",
     "random-number": "0.0.9",
     "random-words": "^1.0.0",
     "react": "^16.2.0",
@@ -39,6 +40,7 @@
     "react-dom": "^16.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "semantic-ui-css": "^2.3.1",
     "semantic-ui-react": "^0.78.3",
     "sequelize": "^4.37.1",
     "shimmer": "^1.2.0"
