@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Checkbox from 'material-ui/Checkbox';
+import '../style/voter.css';
 
 class VoteResults extends React.Component {
   constructor(props) {

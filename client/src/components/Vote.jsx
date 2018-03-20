@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import Checkbox from 'material-ui/Checkbox';
-import VoteResults from './VoterResults.jsx'
+import VoteResults from './VoterResults.jsx';
+import { RaisedButton, Checkbox} from 'material-ui';
+import '../style/voter.css';
+
 
 class Vote extends React.Component {
   constructor(props) {
@@ -11,15 +13,15 @@ class Vote extends React.Component {
       isLogin: false,
       isVoteSubmitted: false,
       isBallotCompleted: false,
-      ballotName: 'ballot name from database', // database input will replace 
+      ballotName: 'what is your favorite color', // database input will replace 
       ballotOption: [  // database input will replace 
-        { optionName:'question1',
+        { optionName:'red',
           optionAnswer: false
         },
-        { optionName:'question2',
+        { optionName:'blue',
           optionAnswer: false
         },
-        { optionName:'question3',
+        { optionName:'green',
           optionAnswer: false
         }
       ]
@@ -83,7 +85,7 @@ class Vote extends React.Component {
             <div>{ballotInfo.ballotName}</div>
             <div className="block" >{ballotQuestionList}</div>
           </label>
-          <input type="submit" value="Submit" onClick={this.handleSubmit} />
+          <RaisedButton label="Submit" type="submit" value="Submit" onClick={this.handleSubmit} />
         </form>
       )
     }
