@@ -125,8 +125,8 @@ class App extends React.Component {
 
         <Route exact path='/signup'
           render={ () =>
-            <Signup 
-            signupSubmit={this.signupSubmit} 
+            <Signup
+            signupSubmit={this.signupSubmit}
             signupError={this.state.signupError}
             />
           }
@@ -136,8 +136,8 @@ class App extends React.Component {
           style={{backgroundColor: '#F0F8FF'}}
           exact path='/login'
           render={ () =>
-            <Login 
-            loginSubmit={this.loginSubmit} 
+            <Login
+            loginSubmit={this.loginSubmit}
             loginEmailError={this.state.loginEmailError}
             loginPasswordError={this.state.loginPasswordError}
             />
@@ -151,12 +151,13 @@ class App extends React.Component {
           }
         />
 
-        <Route
+        {/*<Route
           exact path='/createpoll'
           render={ () =>
             <CreatePoll />
           }
-        />
+        />*/}
+        <CreatePoll />
       </div>
     )
   }

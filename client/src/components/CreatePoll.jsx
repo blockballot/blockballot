@@ -2,6 +2,7 @@ import React from 'react';
 import { default as Web3} from 'web3';
 import { default as contract } from 'truffle-contract';
 import Voting from '../../../build/contracts/Voting.json';
+import TestVote from '../../../build/contracts/TestVote.json';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
@@ -9,7 +10,8 @@ const style = {
   marginRight: 20,
 };
 
-const VotingContract = contract(Voting);
+const RamaContract = contract(Voting);
+const EvContract = contract(TestVote);
 
 let candidates = ['Norbie', 'Evaline', 'Paula', 'Michael'];
 
@@ -17,6 +19,7 @@ class CreatePoll extends React.Component {
   constructor() {
     super();
     this.submitVote = this.submitVote.bind(this);
+    this.submitVote2 = this.submitVote2.bind(this);
   }
 
   componentWillMount() {
@@ -29,7 +32,8 @@ class CreatePoll extends React.Component {
     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
       window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
   }
-  VotingContract.setProvider(web3.currentProvider);
+  RamaContract.setProvider(web3.currentProvider);
+  EvContract.setProvider(web3.currentProvider);
   }
 
   submitVote(candidate) {
@@ -41,7 +45,32 @@ class CreatePoll extends React.Component {
        * in Truffle returns a promise which is why we have used then()
        * everywhere we have a transaction call
        */
-      VotingContract.deployed().then((contractInstance) => {
+      EvContract.deployed().then((contractInstance) => {
+        contractInstance.voteForCandidate(candidateName, {gas: 2800000, from: web3.eth.accounts[0]})
+        .then(() => {
+          console.log(candidateName)
+          return contractInstance.totalVotesFor.call(candidateName)
+          .then((voteCount) => {
+            console.log(voteCount);
+          });
+        });
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
+  submitVote2(candidate) {
+    let candidateName = "Rama";
+    try {
+      console.log('Vote has been submitted');
+
+      /* Voting.deployed() returns an instance of the contract. Every call
+       * in Truffle returns a promise which is why we have used then()
+       * everywhere we have a transaction call
+       */
+      RamaContract.deployed().then((contractInstance) => {
         contractInstance.voteForCandidate(candidateName, {gas: 2800000, from: web3.eth.accounts[0]})
         .then(() => {
           console.log(candidateName)
@@ -58,12 +87,20 @@ class CreatePoll extends React.Component {
 
   render() {
     return (
+      <div>
       <FloatingActionButton
         style={style}
         onClick={this.submitVote}
       >
         <ContentAdd />
       </FloatingActionButton>
+      <FloatingActionButton
+        style={style}
+        onClick={this.submitVote2}
+      >
+        <ContentAdd />
+      </FloatingActionButton>
+      </div>
     )
   }
 
