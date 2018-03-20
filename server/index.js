@@ -68,7 +68,7 @@ app.post('/signup', (req, res) => {
 });
 
 app.get('/signup', (req, res) => {
-  res.status(200).send(helpers.createPassword);
+  res.status(200).send(helpers.createPassword());
 });
 
 app.get('/logout', (req, res) => {
