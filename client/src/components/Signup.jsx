@@ -108,7 +108,7 @@ class Signup extends React.Component {
         <Card>
           <CardHeader
             titleStyle={{marginLeft: 20, marginTop: 10, fontSize: 25}}
-            title="Log in"
+            title="Create your Account"
           />
 
           <CardText style={{marginLeft: 20}}>
