@@ -36,6 +36,7 @@
     "random-number": "0.0.9",
     "random-words": "^1.0.0",
     "react": "^16.2.0",
+    "react-bootstrap": "^0.32.1",
     "react-cookie": "^2.1.4",
     "react-dom": "^16.2.0",
     "react-router": "^4.2.0",

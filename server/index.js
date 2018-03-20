@@ -9,6 +9,7 @@ const Sequelize = require('sequelize');
 
 const auth = require('../helpers/authHelpers.js');
 const db = require('../database/index.js');
+const helpers = require('../helpers/helpers.js')
 
 const app = express();
 
@@ -29,7 +30,7 @@ app.post('/login', (req, res) => {
   db.Org.findOne({ where: { orgEmail: email } })
     .then(org => {
       if (!org) {
-        res.status(401).send('That org doesn\'t exist');
+        res.status(401).send('Account not recognized.');
       } else {
         auth.comparePassword(password, org, (match) => {
           if (match) {
@@ -37,7 +38,7 @@ app.post('/login', (req, res) => {
             console.log(`Session has been created for ${org.dataValues.orgEmail}`);
             res.status(200).send();
           } else {
-            res.status(401).send('Incorrect password. Please try again.');
+            res.status(402).send('Incorrect password. Please try again.');
           }
         });
       }
@@ -45,25 +46,31 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/signup', (req, res) => {
+  let name = req.body.name;
   let email = req.body.email;
   let password = req.body.password;
+  console.log('INFO', name, email, password);
 
   bcrypt.hash(password, 10).then(hash => {
-    db.Org.findOne({where: {orgEmail: email}}).then(org => {
+    db.Org.findOne({where: {orgName: name}}).then(org => {
       if (!org) {
-        db.Org.create({orgEmail: email, orgPassword: hash})
+        db.Org.create({orgName: name, orgEmail: email, orgPassword: hash})
           .then(newUser => {
             if (newUser) {
               res.status(200).send();
             } else {
-              res.status(500).send('There was an error.')
+              res.status(500).send('There was an error. Please try again later.')
             }
           })
       } else {
-        res.status(401).send('This account already exists');
+        res.status(401).send('Account already exists');
       }
     });
   });
+});
+
+app.get('/signup', (req, res) => {
+  res.status(200).send(helpers.createPassword());
 });
 
 app.get('/logout', (req, res) => {

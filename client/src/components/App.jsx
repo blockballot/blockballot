@@ -16,31 +16,40 @@ import VoterResults from './VoterResults';
 import cookie from 'react-cookie';
 import Voter from './Voter';
 import Vote from './Vote';
+import $ from 'jquery';
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentUser: '',
-      loggedIn: false
+      loggedIn: false,
+      signupError: '',
+      loginEmailError: '',
+      loginPasswordError: ''
     }
     this.loginSubmit = this.loginSubmit.bind(this);
     this.signupSubmit = this.signupSubmit.bind(this);
   }
 
-  // componentDidMount() {
-  //   if (cookie.load('loggedIn') === 'true' && this.state.loggedIn === false) {
-  //     let currentUser = cookie.load('username');
-  //     this.setState({
-  //       loggedIn: true,
-  //       currentUser: currentUser
-  //     });
-  //   }
-  // }
+  componentDidMount() {
+    if (cookie !== undefined) {
+      if (cookie.load('loggedIn') === 'true' && this.state.loggedIn === false) {
+        let currentUser = cookie.load('username');
+        this.setState({
+          loggedIn: true,
+          currentUser: currentUser
+        });
+      }
+    }
+  }
 
   signupSubmit(signup) {
+    console.log('SIGNUP', signup);
     let user = {
-      email: `${signup.username}`,
+      name: `${signup.name}`,
+      email: `${signup.email}`,
       password: `${signup.password}`
     };
     $.ajax({
@@ -53,16 +62,19 @@ class App extends React.Component {
         }
       },
       error: (err) => {
-        console.log(err.responseText);
+        this.setState({
+          signupError: err.responseText
+        })
       }
     });
   }
 
   loginSubmit(login) {
     let user = {
-      email: `${login.username}`,
+      email: `${login.email}`,
       password: `${login.password}`
     };
+    console.log(user);
     $.ajax({
       type: 'POST',
       url: '/login',
@@ -78,7 +90,16 @@ class App extends React.Component {
         }
       },
       error: (err) => {
-        console.log(err.responseText);
+        if (err.status === 401) {
+          this.setState({
+            loginEmailError: err.responseText
+          })
+        }
+        if (err.status === 402) {
+          this.setState({
+            loginPasswordError: err.responseText
+          })
+        }
       }
     });
   }
@@ -104,14 +125,22 @@ class App extends React.Component {
 
         <Route exact path='/signup'
           render={ () =>
-            <Signup signupSubmit={this.signupSubmit} />
+            <Signup 
+            signupSubmit={this.signupSubmit} 
+            signupError={this.state.signupError}
+            />
           }
         />
 
         <Route
+          style={{backgroundColor: '#F0F8FF'}}
           exact path='/login'
           render={ () =>
-            <Login loginSubmit={this.loginSubmit} />
+            <Login 
+            loginSubmit={this.loginSubmit} 
+            loginEmailError={this.state.loginEmailError}
+            loginPasswordError={this.state.loginPasswordError}
+            />
           }
         />
 
