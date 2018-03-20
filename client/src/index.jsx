@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import AppWithRouter from './components/App.jsx';
 import {BrowserRouter as Router} from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import 'semantic-ui-css/semantic.min.css';
 
 ReactDOM.render(
   <Router>

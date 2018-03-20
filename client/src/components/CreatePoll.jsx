@@ -1,7 +1,7 @@
 import React from 'react';
 import { default as Web3} from 'web3';
 import { default as contract } from 'truffle-contract';
-import TestVote from '../../../build/contracts/TestVote.json';
+import Voting from '../../../build/contracts/Voting.json';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
@@ -9,7 +9,7 @@ const style = {
   marginRight: 20,
 };
 
-const Vote = contract(TestVote);
+const VotingContract = contract(Voting);
 
 let candidates = ['Norbie', 'Evaline', 'Paula', 'Michael'];
 
@@ -29,12 +29,11 @@ class CreatePoll extends React.Component {
     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
       window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
   }
-  Vote.setProvider(web3.currentProvider);
+  VotingContract.setProvider(web3.currentProvider);
   }
 
   submitVote(candidate) {
     let candidateName = "Evaline";
-    console.log(Vote);
     try {
       console.log('Vote has been submitted');
 
@@ -42,7 +41,7 @@ class CreatePoll extends React.Component {
        * in Truffle returns a promise which is why we have used then()
        * everywhere we have a transaction call
        */
-      Vote.deployed().then((contractInstance) => {
+      VotingContract.deployed().then((contractInstance) => {
         contractInstance.voteForCandidate(candidateName, {gas: 2800000, from: web3.eth.accounts[0]})
         .then(() => {
           console.log(candidateName)

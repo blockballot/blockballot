@@ -15,7 +15,6 @@ import CreatePoll from './CreatePoll';
 import VoterResults from './VoterResults';
 import cookie from 'react-cookie';
 import Voter from './Voter';
-import VoterVote from './VoterVote';
 
 class App extends React.Component {
   constructor(props) {
