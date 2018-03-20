@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import VoteResults from './VoterResults.jsx';
-import { RaisedButton, Checkbox} from 'material-ui';
+import { Divider, Card, RaisedButton, Checkbox} from 'material-ui';
 import '../style/voter.css';
 
 
@@ -70,23 +70,42 @@ class Vote extends React.Component {
   render() {
     let ballotInfo = this.state;
     let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
-      return  <Checkbox className="checkbox" labelPosition="left" key={index} label={option.optionName} checked={option.optionAnswer} onCheck={this.updateCheck} name={option.optionName}/>
-    })
+                              return ( <div>
+                                          <Checkbox 
+                                            style={{ marginTop: 16, marginBottom: 16 }} 
+                                            labelPosition="left" 
+                                            key={index} 
+                                            label={option.optionName} 
+                                            checked={option.optionAnswer} 
+                                            onCheck={this.updateCheck} 
+                                            name={option.optionName}
+                                            />
+                                          <Divider />
+                                        </div>
+                                      )
+                                    })
     
     if(this.state.isVoteSubmitted === true) {
       return (
-        <VoteResults ballotOption={this.state.ballotOption} ballotName= {this.state.ballotName} />
+        <VoteResults 
+          ballotOption={this.state.ballotOption} 
+          ballotName= {this.state.ballotName} />
       )
     } else {
+   
       return (
-        <form id="voteForm">
-          <label>
-            <div>VOTE PAGE</div>
-            <div>{ballotInfo.ballotName}</div>
-            <div className="block" >{ballotQuestionList}</div>
-          </label>
-          <RaisedButton label="Submit" type="submit" value="Submit" onClick={this.handleSubmit} />
-        </form>
+        <div>
+          <div className="header">VOTE PAGE</div>
+          <form  >
+            <Card className="center">
+              <div style={{fontSize: 16, minWidth: 400}}>
+                <b>{ballotInfo.ballotName}</b><br/>
+                <div>{ballotQuestionList}</div>
+              </div><br/>  
+              <RaisedButton label="Submit" type="submit" value="Submit" onClick={this.handleSubmit} />
+            </Card>
+          </form>
+        </div>
       )
     }
   }
