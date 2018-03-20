@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LoginForm from 'grommet/components/LoginForm';
-import {TextField, RaisedButton, Grid} from 'material-ui';
+import {TextField, RaisedButton, FlatButton, Grid, Dialog} from 'material-ui';
 
 
 class Login extends React.Component {
@@ -10,9 +10,13 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
+      forgotPasswordEmail: '',
+      dialogOpen: false
     }
     this.onChange = this.onChange.bind(this);
     this.loginClick = this.loginClick.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
   
   onChange(e) {
@@ -29,20 +33,40 @@ class Login extends React.Component {
     }
     this.props.loginSubmit(login);
   }
+
+  handleOpen () {
+    this.setState({
+      dialogOpen: true,
+    });
+  };
+
+  handleClose () {
+    this.setState({
+      dialogOpen: false,
+    });
+  };
   
+  //need error handling still for empty fields
   render() {
+    const dialogActions = [
+      <FlatButton
+        label="Close"
+        primary={true}
+        onClick={this.handleClose}
+      />
+    ]
     return (
       <div>
         <TextField
           hintText="Email"
-          errorText=''
+          errorText={this.props.loginEmailError}
           name='email'
           value={this.state.email}
           onChange={this.onChange}
         /><br />
         <TextField
           hintText="Password"
-          errorText=''
+          errorText={this.props.loginPasswordError}
           name='password'
           value={this.state.password}
           onChange={this.onChange}
@@ -51,9 +75,63 @@ class Login extends React.Component {
           label="Log in"
           onClick={this.loginClick}
         />
+
+        <FlatButton
+          label="Forgot Password"
+          onClick={this.handleOpen}
+        />
+
+        <Dialog
+          title="Forgot Password?"
+          actions={dialogActions}
+          modal={false}
+          open={this.state.dialogOpen}
+          onRequestClose={this.handleClose}
+        >
+          <div>
+            Enter your account email and we'll send you a new password.
+          </div>
+          <TextField
+          hintText="Email"
+          name='forgotPasswordEmail'
+          value={this.state.forgotPasswordEmail}
+          onChange={this.onChange}
+          />
+          <RaisedButton> Send </RaisedButton>
+          <br />
+          
+        </Dialog>
+
       </div>
     );
   }
 }
+
+
+
+
+    {/*<GridList
+      cols={2}
+      cellHeight={200}
+      padding={1}
+      style={styles.gridList}
+    >
+      {tilesData.map((tile) => (
+        <GridTile
+          key={tile.img}
+          title={tile.title}
+          actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
+          actionPosition="left"
+          titlePosition="top"
+          titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
+          cols={tile.featured ? 2 : 1}
+          rows={tile.featured ? 2 : 1}
+        >
+          <img src={tile.img} />
+        </GridTile>
+      ))}
+    </GridList>*/}
+
+
 
 export default Login;

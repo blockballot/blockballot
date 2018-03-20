@@ -24,7 +24,10 @@ class App extends React.Component {
     super(props);
     this.state = {
       currentUser: '',
-      loggedIn: false
+      loggedIn: false,
+      signupError: '',
+      loginEmailError: '',
+      loginPasswordError: ''
     }
     this.loginSubmit = this.loginSubmit.bind(this);
     this.signupSubmit = this.signupSubmit.bind(this);
@@ -57,7 +60,9 @@ class App extends React.Component {
         }
       },
       error: (err) => {
-        console.log(err.responseText);
+        this.setState({
+          signupError: err.responseText
+        })
       }
     });
   }
@@ -83,7 +88,16 @@ class App extends React.Component {
         }
       },
       error: (err) => {
-        console.log(err.responseText);
+        if (err.status === 401) {
+          this.setState({
+            loginEmailError: err.responseText
+          })
+        }
+        if (err.status === 402) {
+          this.setState({
+            loginPasswordError: err.responseText
+          })
+        }
       }
     });
   }
@@ -109,14 +123,21 @@ class App extends React.Component {
 
         <Route exact path='/signup'
           render={ () =>
-            <Signup signupSubmit={this.signupSubmit} />
+            <Signup 
+            signupSubmit={this.signupSubmit} 
+            signupError={this.state.signupError}
+            />
           }
         />
 
         <Route
           exact path='/login'
           render={ () =>
-            <Login loginSubmit={this.loginSubmit} />
+            <Login 
+            loginSubmit={this.loginSubmit} 
+            loginEmailError={this.state.loginEmailError}
+            loginPasswordError={this.state.loginPasswordError}
+            />
           }
         />
 

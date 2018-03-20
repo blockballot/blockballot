@@ -30,7 +30,7 @@ app.post('/login', (req, res) => {
   db.Org.findOne({ where: { orgEmail: email } })
     .then(org => {
       if (!org) {
-        res.status(401).send('That org doesn\'t exist');
+        res.status(401).send('Account not recognized.');
       } else {
         auth.comparePassword(password, org, (match) => {
           if (match) {
@@ -38,7 +38,7 @@ app.post('/login', (req, res) => {
             console.log(`Session has been created for ${org.dataValues.orgEmail}`);
             res.status(200).send();
           } else {
-            res.status(401).send('Incorrect password. Please try again.');
+            res.status(402).send('Incorrect password. Please try again.');
           }
         });
       }
@@ -59,11 +59,11 @@ app.post('/signup', (req, res) => {
             if (newUser) {
               res.status(200).send();
             } else {
-              res.status(500).send('There was an error.')
+              res.status(500).send('There was an error. Please try again later.')
             }
           })
       } else {
-        res.status(401).send('This account already exists');
+        res.status(401).send('Account already exists');
       }
     });
   });

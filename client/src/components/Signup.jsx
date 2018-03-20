@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {TextField, RaisedButton, Grid, Dialog, FlatButton} from 'material-ui';
+import {TextField, RaisedButton, Grid, Dialog, FlatButton, GridList} from 'material-ui';
 import $ from 'jquery';
 
 class Signup extends React.Component {
@@ -59,7 +59,7 @@ class Signup extends React.Component {
   };
 
   render() {
-    const actions = [
+    const dialogActions = [
       <FlatButton
         label="Close"
         primary={true}
@@ -70,7 +70,7 @@ class Signup extends React.Component {
     <div>
       <TextField
           hintText="Password"
-          errorText=''
+          errorText={"Required field"}
           name='password'
           value={this.state.password}
           onChange={this.onChange}
@@ -83,33 +83,33 @@ class Signup extends React.Component {
     </div>
     ) : (
       <div>
+        <br />
         <RaisedButton 
           label="Generate Password"
           onClick={this.handleOpen}
-
         />
       </div>
     );
 
     return (
-      <div className="form-container">
+      <div>
         <TextField
-          hintText="Name"
-          errorText=''
+          hintText="Organization Name"
           name='name'
+          errorText=''
           value={this.state.name}
           onChange={this.onChange}
         /><br />
         <TextField
           hintText="Email"
-          errorText=''
+          errorText={this.props.signupError}
           name='email'
           value={this.state.email}
           onChange={this.onChange}
         /><br />
         <Dialog
           title="Unique Password"
-          actions={actions}
+          actions={dialogActions}
           modal={false}
           open={this.state.dialogOpen}
           onRequestClose={this.handleClose}
