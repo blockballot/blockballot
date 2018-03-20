@@ -1,9 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {TextField, RaisedButton, Dialog, FlatButton, GridList} from 'material-ui';
+import {Card, CardText, CardHeader, TextField, RaisedButton, Dialog, FlatButton, GridList} from 'material-ui';
 import $ from 'jquery';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 
+const style = {
+  width: 400,
+  height: 500,
+  position: 'absolute',
+  top:200,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  margin: 'auto'
+}
 
 class Signup extends React.Component {
   constructor(props) {
@@ -77,16 +87,16 @@ class Signup extends React.Component {
           value={this.state.password}
           onChange={this.onChange}
         /> 
-        <br />
         <RaisedButton 
+        style={{marginTop: 20}}
         label="Create Account"
         onClick={this.signupClick}
       />
     </div>
     ) : (
       <div>
-        <br />
         <RaisedButton 
+          style={{marginTop: 20}}
           label="Generate Password"
           onClick={this.handleOpen}
         />
@@ -94,38 +104,49 @@ class Signup extends React.Component {
     );
 
     return (
-      <div>
-        <TextField
-          hintText="Organization Name"
-          name='name'
-          errorText=''
-          value={this.state.name}
-          onChange={this.onChange}
-        /><br />
-        <TextField
-          hintText="Email"
-          errorText={this.props.signupError}
-          name='email'
-          value={this.state.email}
-          onChange={this.onChange}
-        /><br />
-        <Dialog
-          title="Unique Password"
-          actions={dialogActions}
-          modal={false}
-          open={this.state.dialogOpen}
-          onRequestClose={this.handleClose}
-        >
-          <i class="copy outline icon"></i>
-          <div>
-            Copy the unique password below to create your account:
-          </div>
-          <br />
-          <div style={{style: 'bold'}}>
-            {this.state.password}
-          </div>
-        </Dialog>
-        {formChange}
+      <div style = {style}>
+        <Card>
+          <CardHeader
+            titleStyle={{marginLeft: 20, marginTop: 10, fontSize: 25}}
+            title="Log in"
+          />
+
+          <CardText style={{marginLeft: 20}}>
+            <TextField
+              hintText="Organization Name"
+              name='name'
+              errorText=''
+              value={this.state.name}
+              onChange={this.onChange}
+            /><br />
+            <TextField
+              hintText="Email"
+              errorText={this.props.signupError}
+              name='email'
+              value={this.state.email}
+              onChange={this.onChange}
+            />
+            <Dialog
+              title="Unique Password"
+              actions={dialogActions}
+              modal={false}
+              open={this.state.dialogOpen}
+              onRequestClose={this.handleClose}
+            >
+              <div>
+                <i class="copy outline icon"></i>
+                <span>
+                  Copy the unique password below to create your account:
+                </span>
+              </div>
+              <br />
+              <div>
+                <b>{this.state.password}</b>
+              </div>
+            </Dialog>
+            {formChange}
+          </CardText>
+        </Card>
       </div>
     );
   }

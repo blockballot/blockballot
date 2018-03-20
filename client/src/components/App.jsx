@@ -17,7 +17,6 @@ import cookie from 'react-cookie';
 import Voter from './Voter';
 import Vote from './Vote';
 import $ from 'jquery';
-import '../style/app.css'
 
 
 class App extends React.Component {
@@ -34,15 +33,17 @@ class App extends React.Component {
     this.signupSubmit = this.signupSubmit.bind(this);
   }
 
-  // componentDidMount() {
-  //   if (cookie.load('loggedIn') === 'true' && this.state.loggedIn === false) {
-  //     let currentUser = cookie.load('username');
-  //     this.setState({
-  //       loggedIn: true,
-  //       currentUser: currentUser
-  //     });
-  //   }
-  // }
+  componentDidMount() {
+    if (cookie !== undefined) {
+      if (cookie.load('loggedIn') === 'true' && this.state.loggedIn === false) {
+        let currentUser = cookie.load('username');
+        this.setState({
+          loggedIn: true,
+          currentUser: currentUser
+        });
+      }
+    }
+  }
 
   signupSubmit(signup) {
     console.log('SIGNUP', signup);
@@ -132,6 +133,7 @@ class App extends React.Component {
         />
 
         <Route
+          style={{backgroundColor: '#F0F8FF'}}
           exact path='/login'
           render={ () =>
             <Login 

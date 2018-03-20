@@ -1,9 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {TextField, RaisedButton, FlatButton, Dialog} from 'material-ui';
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
-import { Row, Col } from 'react-bootstrap';
+import {CardText, CardHeader, Grid, TextField, RaisedButton, FlatButton, Dialog, Card} from 'material-ui';
+import { Responsive, Button, Form, Header, Image, Message, Segment, Container } from 'semantic-ui-react';
 
+const style = {
+  width: 400,
+  height: 500,
+  position: 'absolute',
+  top:200,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  margin: 'auto'
+}
 
 class Login extends React.Component {
   constructor(props) {
@@ -57,82 +66,71 @@ class Login extends React.Component {
       />
     ]
     return (
-      <div className="loginForm">
-        <TextField
-          hintText="Email"
-          errorText={this.props.loginEmailError}
-          name='email'
-          value={this.state.email}
-          onChange={this.onChange}
-        /><br />
-        <TextField
-          hintText="Password"
-          errorText={this.props.loginPasswordError}
-          name='password'
-          value={this.state.password}
-          onChange={this.onChange}
-        /><br />
-        <RaisedButton 
-          label="Log in"
-          onClick={this.loginClick}
-        />
-
-        <FlatButton
-          label="Forgot Password"
-          onClick={this.handleOpen}
-        />
-
-        <Dialog
-          title="Forgot Password?"
-          actions={dialogActions}
-          modal={false}
-          open={this.state.dialogOpen}
-          onRequestClose={this.handleClose}
-        >
-          <div>
-            Enter your account email and we'll send you a new password.
-          </div>
-          <TextField
-          hintText="Email"
-          name='forgotPasswordEmail'
-          value={this.state.forgotPasswordEmail}
-          onChange={this.onChange}
+      <div style = {style}>
+        <Card>
+          <CardHeader
+            titleStyle={{marginLeft: 20, marginTop: 10, fontSize: 25}}
+            title="Log in"
           />
-          <RaisedButton> Send </RaisedButton>
-          <br />
-          
-        </Dialog>
 
+          <CardText style={{marginLeft: 20}}>
+            <TextField
+              hintText="Email"
+              errorText={this.props.loginEmailError}
+              name='email'
+              value={this.state.email}
+              onChange={this.onChange}
+            /><br />
+            <TextField
+              hintText="Password"
+              errorText={this.props.loginPasswordError}
+              name='password'
+              value={this.state.password}
+              onChange={this.onChange}
+            /><br />
+
+            <div style= {{marginTop: 20}}>
+              <RaisedButton 
+                label="Log in"
+                onClick={this.loginClick}
+              />
+
+              <FlatButton style = {{marginLeft: 10}}
+                label="Forgot Password?"
+                onClick={this.handleOpen}
+              />
+            </div>
+
+            <Dialog
+              contentStyle={{width: 500}}
+              title="Forgot Password?"
+              actions={dialogActions}
+              modal={false}
+              open={this.state.dialogOpen}
+              onRequestClose={this.handleClose}
+            >
+              <div>
+                Enter your account email and we'll send you a new password.
+              </div>
+              <br />
+              <TextField
+              hintText="Email"
+              name='forgotPasswordEmail'
+              value={this.state.forgotPasswordEmail}
+              onChange={this.onChange}
+              />
+              <RaisedButton
+              style={{marginTop: 10, marginLeft: 20}}
+              >Send 
+              </RaisedButton>
+              <br />
+            </Dialog>
+          </CardText>
+
+        </Card>
       </div>
     );
   }
 }
-
-
-
-
-    {/*<GridList
-      cols={2}
-      cellHeight={200}
-      padding={1}
-      style={styles.gridList}
-    >
-      {tilesData.map((tile) => (
-        <GridTile
-          key={tile.img}
-          title={tile.title}
-          actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
-          actionPosition="left"
-          titlePosition="top"
-          titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
-          cols={tile.featured ? 2 : 1}
-          rows={tile.featured ? 2 : 1}
-        >
-          <img src={tile.img} />
-        </GridTile>
-      ))}
-    </GridList>*/}
-
-
 
 export default Login;
