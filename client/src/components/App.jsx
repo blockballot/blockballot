@@ -41,8 +41,10 @@ class App extends React.Component {
   // }
 
   signupSubmit(signup) {
+    console.log('SIGNUP', signup);
     let user = {
-      email: `${signup.username}`,
+      name: `${signup.name}`,
+      email: `${signup.email}`,
       password: `${signup.password}`
     };
     $.ajax({

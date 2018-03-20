@@ -46,13 +46,15 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/signup', (req, res) => {
+  let name = req.body.name;
   let email = req.body.email;
   let password = req.body.password;
+  console.log('INFO', name, email, password);
 
   bcrypt.hash(password, 10).then(hash => {
-    db.Org.findOne({where: {orgEmail: email}}).then(org => {
+    db.Org.findOne({where: {orgName: name}}).then(org => {
       if (!org) {
-        db.Org.create({orgEmail: email, orgPassword: hash})
+        db.Org.create({orgName: name, orgEmail: email, orgPassword: hash})
           .then(newUser => {
             if (newUser) {
               res.status(200).send();
