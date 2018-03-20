@@ -1,8 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import PasswordInput from 'grommet/components/PasswordInput';
-import Vote from './Vote.jsx'
-import VoterResults from './VoterResults.jsx'
+import Vote from './Vote.jsx';
+import VoteResults from './VoterResults.jsx';
+import { TextField, RaisedButton }from 'material-ui';
+import '../style/voter.css';
+
 
 class Voter extends React.Component {
   constructor(props) {
@@ -11,7 +13,8 @@ class Voter extends React.Component {
       uniqueId: '',
       isLogin: false,
       isVoteSubmitted: false,
-      isBallotCompleted: false
+      isBallotCompleted: false,
+      errorText: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,19 +28,28 @@ class Voter extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    axios({
-      method: 'POST',
-      url: '/api/Voter',
-      data: {
-        uniqueId: this.state.uniqueId
-      }
-    })
-    .then(function (res) {
-      console.log('found unique ID', res);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    // axios({
+    //   method: 'POST',
+    //   url: '/api/Voter',
+    //   data: {
+    //     uniqueId: this.state.uniqueId
+    //   }
+    // })
+    // .then(function (res) {
+    //   console.log('found unique ID', res);
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
+    if(this.state.uniqueId === 'test') {
+      this.setState({
+        isLogin: true
+      });
+    } else {
+      this.setState({
+        errorText: "Your unique code is incorrect. Please, try again"
+      });
+    }
   }
 
   render() {
@@ -49,23 +61,32 @@ class Voter extends React.Component {
       } else {
         if(this.state.isVoteSubmitted) {
           return (
-            <VoterResults />
+            <VoteResults />
           )
         } else {
           return (
-            <VoterVote />
+            <Vote />
           )
         }
       }
     } else {
       return (
-        <form>
+        <div>
+          <div className="title">ENTER YOUR UNIQUE CODE -type "test"</div>
+          <form className="center">
             <label>
-            <div>ENTER YOUR UNIQUE CODE</div>
-            <input type="password" name="uniqueId" value={this.state.uniqueId} onChange={this.handleChange} />
-            </label>
-            <input type="submit" value="Submit" onClick={this.handleSubmit} />
-        </form>
+            <TextField 
+              type="password" 
+              name="uniqueId" 
+              value={this.state.uniqueId} 
+              onChange={this.handleChange}
+              floatingLabelText="Enter Unique Code" 
+              errorText= {this.state.errorText}
+              />
+            </label><br/>
+            <RaisedButton label="Submit" type="submit" value="Submit" onClick={this.handleSubmit} />
+          </form>
+        </div>
       )
     }
   }

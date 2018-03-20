@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import Checkbox from 'material-ui/Checkbox';
+import VoteResults from './VoterResults.jsx';
+import { RaisedButton, Checkbox} from 'material-ui';
+import '../style/voter.css';
+
 
 class Vote extends React.Component {
   constructor(props) {
@@ -10,16 +13,16 @@ class Vote extends React.Component {
       isLogin: false,
       isVoteSubmitted: false,
       isBallotCompleted: false,
-      ballotName: 'ballot name from database', // database input will replace 
+      ballotName: 'what is your favorite color', // database input will replace 
       ballotOption: [  // database input will replace 
-        { optionName:'question1',
+        { optionName:'red',
           optionAnswer: false
         },
-        { optionName:'question2',
-        optionAnswer: true
+        { optionName:'blue',
+          optionAnswer: false
         },
-        { optionName:'question3',
-        optionAnswer: false
+        { optionName:'green',
+          optionAnswer: false
         }
       ]
     };
@@ -32,11 +35,15 @@ class Vote extends React.Component {
   } 
 
   updateCheck(event) {
-    // this.setState((oldState) => {
-    //   return {
-    //     checked: !oldState.checked,
-    //   };
-    // });
+    for (var i = 0; i < this.state.ballotOption.length; i++) {
+      if (this.state.ballotOption[i].optionName === event.target.name) {
+        let newBallotOptions = this.state.ballotOption.slice();
+        newBallotOptions[i].optionAnswer = !this.state.ballotOption[i].optionAnswer;
+        this.setState ({
+          ballotOption: newBallotOptions
+        })
+      }
+    }
   }
 
   handleSubmit(event) {
@@ -54,24 +61,34 @@ class Vote extends React.Component {
     // .catch(function (error) {
     //   console.log(error);
     // });
+    this.setState ({
+      isVoteSubmitted: true
+    })
+
   }
 
   render() {
     let ballotInfo = this.state;
     let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
-      return  <Checkbox className="checkbox" labelPosition="left" key={index} label={option.optionName} checked={option.optionAnswer} onCheck={this.updateCheck}/>
+      return  <Checkbox className="checkbox" labelPosition="left" key={index} label={option.optionName} checked={option.optionAnswer} onCheck={this.updateCheck} name={option.optionName}/>
     })
-
-    return (
-      <form>
-        <label>
-          <div>VOTE PAGE</div>
-          <div>{ballotInfo.ballotName}</div>
-          <div className="block" >{ballotQuestionList}</div>
-        </label>
-        <input type="submit" value="Submit" onClick={this.handleSubmit} />
-      </form>
-    )
+    
+    if(this.state.isVoteSubmitted === true) {
+      return (
+        <VoteResults ballotOption={this.state.ballotOption} ballotName= {this.state.ballotName} />
+      )
+    } else {
+      return (
+        <form id="voteForm">
+          <label>
+            <div>VOTE PAGE</div>
+            <div>{ballotInfo.ballotName}</div>
+            <div className="block" >{ballotQuestionList}</div>
+          </label>
+          <RaisedButton label="Submit" type="submit" value="Submit" onClick={this.handleSubmit} />
+        </form>
+      )
+    }
   }
 }
 
