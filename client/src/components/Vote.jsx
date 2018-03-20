@@ -16,10 +16,10 @@ class Vote extends React.Component {
           optionAnswer: false
         },
         { optionName:'question2',
-        optionAnswer: true
+          optionAnswer: false
         },
         { optionName:'question3',
-        optionAnswer: false
+          optionAnswer: false
         }
       ]
     };
@@ -32,11 +32,15 @@ class Vote extends React.Component {
   } 
 
   updateCheck(event) {
-    // this.setState((oldState) => {
-    //   return {
-    //     checked: !oldState.checked,
-    //   };
-    // });
+    for (var i = 0; i < this.state.ballotOption.length; i++) {
+      if (this.state.ballotOption[i].optionName === event.target.name) {
+        let newBallotOptions = this.state.ballotOption.slice();
+        newBallotOptions[i].optionAnswer = !this.state.ballotOption[i].optionAnswer;
+        this.setState ({
+          ballotOption: newBallotOptions
+        })
+      }
+    }
   }
 
   handleSubmit(event) {
@@ -54,14 +58,15 @@ class Vote extends React.Component {
     // .catch(function (error) {
     //   console.log(error);
     // });
+
+    
   }
 
   render() {
     let ballotInfo = this.state;
     let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
-      return  <Checkbox className="checkbox" labelPosition="left" key={index} label={option.optionName} checked={option.optionAnswer} onCheck={this.updateCheck}/>
+      return  <Checkbox className="checkbox" labelPosition="left" key={index} label={option.optionName} checked={option.optionAnswer} onCheck={this.updateCheck} name={option.optionName}/>
     })
-
     return (
       <form>
         <label>

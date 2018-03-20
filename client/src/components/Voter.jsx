@@ -59,6 +59,7 @@ class Voter extends React.Component {
       }
     } else {
       return (
+        <div>
         <form>
             <label>
             <div>ENTER YOUR UNIQUE CODE</div>
@@ -66,6 +67,8 @@ class Voter extends React.Component {
             </label>
             <input type="submit" value="Submit" onClick={this.handleSubmit} />
         </form>
+          <Vote />
+        </div>
       )
     }
   }
