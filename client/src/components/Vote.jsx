@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Checkbox from 'material-ui/Checkbox';
+import VoteResults from './VoterResults.jsx'
 
 class Vote extends React.Component {
   constructor(props) {
@@ -58,8 +59,10 @@ class Vote extends React.Component {
     // .catch(function (error) {
     //   console.log(error);
     // });
+    this.setState ({
+      isVoteSubmitted: true
+    })
 
-    
   }
 
   render() {
@@ -67,16 +70,23 @@ class Vote extends React.Component {
     let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
       return  <Checkbox className="checkbox" labelPosition="left" key={index} label={option.optionName} checked={option.optionAnswer} onCheck={this.updateCheck} name={option.optionName}/>
     })
-    return (
-      <form>
-        <label>
-          <div>VOTE PAGE</div>
-          <div>{ballotInfo.ballotName}</div>
-          <div className="block" >{ballotQuestionList}</div>
-        </label>
-        <input type="submit" value="Submit" onClick={this.handleSubmit} />
-      </form>
-    )
+    
+    if(this.state.isVoteSubmitted === true) {
+      return (
+        <VoteResults ballotOption={this.state.ballotOption} ballotName= {this.state.ballotName} />
+      )
+    } else {
+      return (
+        <form id="voteForm">
+          <label>
+            <div>VOTE PAGE</div>
+            <div>{ballotInfo.ballotName}</div>
+            <div className="block" >{ballotQuestionList}</div>
+          </label>
+          <input type="submit" value="Submit" onClick={this.handleSubmit} />
+        </form>
+      )
+    }
   }
 }
 
