@@ -25,106 +25,6 @@ import {
   Visibility
 } from 'semantic-ui-react';
 
-// let { DateTimePicker } = ReactWidgets
-// const style = {
-//   marginRight: 20,
-// };
-
-// const RamaContract = contract(Voting);
-// const EvContract = contract(TestVote);
-
-// let candidates = ['Norbie', 'Evaline', 'Paula', 'Michael'];
-
-// class CreatePoll extends React.Component {
-//   constructor() {
-//     super();
-//     this.submitVote = this.submitVote.bind(this);
-//     this.submitVote2 = this.submitVote2.bind(this);
-//   }
-
-//   componentWillMount() {
-//     if (typeof web3 !== 'undefined') {
-//       console.warn("Using web3 detected from external source like Metamask")
-//       // Use Mist/MetaMask's provider
-//       window.web3 = new Web3(web3.currentProvider);
-//     } else {
-//       console.warn("No web3 detected. Falling back to http://localhost:8545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask");
-//     // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-//       window.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-//   }
-//   RamaContract.setProvider(web3.currentProvider);
-//   EvContract.setProvider(web3.currentProvider);
-//   }
-
-//   submitVote(candidate) {
-//     let candidateName = "Evaline";
-//     try {
-//       console.log('Vote has been submitted');
-
-//       /* Voting.deployed() returns an instance of the contract. Every call
-//        * in Truffle returns a promise which is why we have used then()
-//        * everywhere we have a transaction call
-//        */
-//       EvContract.deployed().then((contractInstance) => {
-//         contractInstance.voteForCandidate(candidateName, {gas: 2800000, from: web3.eth.accounts[0]})
-//         .then(() => {
-//           console.log(candidateName)
-//           return contractInstance.totalVotesFor.call(candidateName)
-//           .then((voteCount) => {
-//             console.log(voteCount);
-//           });
-//         });
-//       });
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   }
-
-
-//   submitVote2(candidate) {
-//     let candidateName = "Rama";
-//     try {
-//       console.log('Vote has been submitted');
-
-//       /* Voting.deployed() returns an instance of the contract. Every call
-//        * in Truffle returns a promise which is why we have used then()
-//        * everywhere we have a transaction call
-//        */
-//       RamaContract.deployed().then((contractInstance) => {
-//         contractInstance.voteForCandidate(candidateName, {gas: 2800000, from: web3.eth.accounts[0]})
-//         .then(() => {
-//           console.log(candidateName)
-//           return contractInstance.totalVotesFor.call(candidateName)
-//           .then((voteCount) => {
-//             console.log(voteCount);
-//           });
-//         });
-//       });
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   }
-
-//   render() {
-//     return (
-//       <div>
-//       <FloatingActionButton
-//         style={style}
-//         onClick={this.submitVote}
-//       >
-//         <ContentAdd />
-//       </FloatingActionButton>
-//       <FloatingActionButton
-//         style={style}
-//         onClick={this.submitVote2}
-//       >
-//         <ContentAdd />
-//       </FloatingActionButton>
-//       </div>
-//     )
-//   }
-// }
-
 class CreatePoll extends React.Component {
   constructor() {
     super();
@@ -133,18 +33,19 @@ class CreatePoll extends React.Component {
       password: '',
       forgotPasswordEmail: '',
       dialogOpen: false,
-      title: '',
-      options: '',
+      ballotName: '',
+      ballotOption: [{optionName:'', optionAnswer:false}],
       start: {},
       end: {},
       voterAccess: ''
-    }
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleStartDate = this.handleStartDate.bind(this);
     this.handleEndDate = this.handleEndDate.bind(this);
+    this.handleAddOption = this.handleAddOption.bind(this);
+    this.handleRemoveOption = this.handleRemoveOption.bind(this);
   }
-
 
   handleChange(event) {
     this.setState({
@@ -164,6 +65,14 @@ class CreatePoll extends React.Component {
       });
   }
 
+  handleAddOption() {
+    this.setState({ ballotOption: this.state.ballotOption.concat([{ optionName: '', optionAnswer:false }]) });
+  }
+  
+  handleRemoveOption(idx) {
+    this.setState({ ballotOption: this.state.ballotOption.filter((s, sidx) => idx !== sidx) });
+  }
+  
   handleSubmit(event) {
     alert('Your favorite flavor is: ' + this.state.value);
     event.preventDefault();
@@ -171,6 +80,20 @@ class CreatePoll extends React.Component {
 
   render() {
     var date = this.state;
+    var options = this.state.ballotOption.map((option, index) => (
+      <div>
+        <input
+          type="text"
+          placeholder="Enter your options"
+          value={option.optionName}
+          onChange={this.handleOptionChange}
+          key={index}
+        />
+        <button type="button" onClick={this.handleRemoveOption}>Remove</button>
+      </div>
+    ))
+
+
     return (
       <div>
       <div>CreatePoll</div>
@@ -181,8 +104,9 @@ class CreatePoll extends React.Component {
         </label><br/>
  
         <label>
-          Options:
-          <input type="text" name="options" value={this.state.options} onChange={this.handleChange}/>
+          Options: <br/>
+          {options}  <br/>
+          <button type="button" onClick={this.handleAddOption}>Add Option</button>
         </label><br/>
 
          <label>
