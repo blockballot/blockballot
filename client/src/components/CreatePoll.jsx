@@ -69,8 +69,11 @@ class CreatePoll extends React.Component {
     this.setState({ ballotOption: this.state.ballotOption.concat([{ optionName: '', optionAnswer:false }]) });
   }
   
-  handleRemoveOption(idx) {
-    this.setState({ ballotOption: this.state.ballotOption.filter((s, sidx) => idx !== sidx) });
+  handleRemoveOption(event) {
+    let removeIndex = Number(event.target.name);
+    console.log(removeIndex)
+    console.log(this.state.ballotOption.filter((option, i) => removeIndex !== i))
+    this.setState({ ballotOption: this.state.ballotOption.filter((option, i) => removeIndex !== i) });
   }
   
   handleSubmit(event) {
@@ -90,7 +93,7 @@ class CreatePoll extends React.Component {
           onChange={this.handleOptionChange}
           key={index}
         />
-        <button type="button" onClick={this.handleRemoveOption}>Remove</button>
+        <input type="button" name={index} value="remove" onClick={this.handleRemoveOption} />
       </div>
     ))
 
