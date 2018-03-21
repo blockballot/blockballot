@@ -3,7 +3,7 @@ import axios from 'axios';
 import { default as Web3} from 'web3';
 import getWeb3 from '../../../helpers/getWeb3.js';
 import contract from 'truffle-contract';
-import VoteResults from './VoterResults.jsx';
+import VoterResults from './VoterResults.jsx';
 import TestVote from '../../../build/contracts/TestVote.json';
 import { Divider, Card, RaisedButton, Checkbox} from 'material-ui';
 import '../style/voter.css';
@@ -19,18 +19,23 @@ class Vote extends React.Component {
       storageValue: 0,
       contractInstance: null,
       voteHash: null,
-      candidateName: 'Evaline',
+      candidateName: 'Lenny',
       isVoteSubmitted: false,
       isBallotCompleted: false,
-      ballotName: 'what is your favorite color', // database input will replace
-      ballotOption: [  // database input will replace
-        { optionName:'red',
+
+      // Need to replace the below vars with dynamic data
+      ballotName: 'Election for Board of Trustees',
+      ballotOption: [
+        { optionName:'Mark Cuban',
           optionAnswer: false
         },
-        { optionName:'blue',
+        { optionName:'Dwayne "The Rock" Johnson',
           optionAnswer: false
         },
-        { optionName:'green',
+        { optionName:'Oprah Winfrey',
+          optionAnswer: false
+        },
+        { optionName:'Lenny',
           optionAnswer: false
         }
       ]
@@ -93,33 +98,39 @@ class Vote extends React.Component {
       return TestContractInstance.totalVotesFor.call(candidateName)
     }).then((voteCount) => {
       console.log(voteCount);
-      this.setState({storageValue: voteCount.c[0]})
+      this.setState({
+        storageValue: voteCount.c[0],
+        isVoteSubmitted: true
+      });
     });
   }
 
   render() {
     let ballotInfo = this.state;
     let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
-      return ( <div>
-                  <Checkbox
-                    style={{ marginTop: 16, marginBottom: 16 }}
-                    labelPosition="left"
-                    key={index}
-                    label={option.optionName}
-                    checked={option.optionAnswer}
-                    onCheck={this.updateCheck}
-                    name={option.optionName}
-                    />
-                  <Divider />
-                </div>
-              )
-            })
+      return (
+        <div>
+          <Checkbox
+            style={{ marginTop: 16, marginBottom: 16 }}
+            labelPosition="left"
+            key={index}
+            label={option.optionName}
+            checked={option.optionAnswer}
+            onCheck={this.updateCheck}
+            name={option.optionName}
+            />
+          <Divider />
+        </div>
+      )
+    });
 
     if(this.state.isVoteSubmitted === true) {
       return (
-        <VoteResults
+        <VoterResults
           ballotOption={this.state.ballotOption}
-          ballotName= {this.state.ballotName} />
+          ballotName={this.state.ballotName}
+          voteHash={this.state.voteHash}
+        />
       )
     } else {
 
@@ -131,8 +142,10 @@ class Vote extends React.Component {
               <div style={{fontSize: 16, minWidth: 400}}>
                 <b>{ballotInfo.ballotName}</b><br/>
                 <div>{ballotQuestionList}</div>
-              </div><br/>
-              <RaisedButton label="Submit" onClick={this.submitVote} />
+              </div>
+              <br/>
+              <RaisedButton
+                label="Submit" onClick={this.submitVote}/>
             </Card>
           </form>
         </div>
