@@ -70,7 +70,7 @@ class Login extends React.Component {
         <Card>
           <CardHeader
             titleStyle={{marginLeft: 20, marginTop: 10, fontSize: 25}}
-            title="Log in"
+            title="Log In"
           />
 
           <CardText style={{marginLeft: 20}}>
@@ -91,7 +91,7 @@ class Login extends React.Component {
 
             <div style= {{marginTop: 20}}>
               <RaisedButton 
-                label="Log in"
+                label="Log In"
                 onClick={this.loginClick}
               />
 

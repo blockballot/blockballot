@@ -55,9 +55,11 @@ class Dashboard extends React.Component {
           <div class="ui four link cards">
             
             {polls.map((poll) =>
-              <Poll
-              poll={poll}
-              />
+              <Link to="/pollresults">
+                <Poll
+                poll={poll}
+                />
+              </Link>
             )}
 
           </div>
