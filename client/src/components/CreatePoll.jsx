@@ -117,6 +117,7 @@ class CreatePoll extends React.Component {
           Title:
           <input type="text" name="title" value={this.state.title} onChange={this.handleInputChange} />
         </label><br/>
+          {this.state.title}<br/>
         <label>
           Options: <br/>
           {optionEntry}  <br/>
@@ -135,7 +136,7 @@ class CreatePoll extends React.Component {
                 timeIntervals={15}
                 dateFormat="LLL"
                 timeCaption="time"
-                withPortal
+
             /><br/>
             {this.state.start.toString()}
         </label><br/>  
@@ -150,7 +151,7 @@ class CreatePoll extends React.Component {
                 timeIntervals={15}
                 dateFormat="LLL"
                 timeCaption="time"
-                withPortal
+
             /><br/>
               {this.state.end.toString()}
         </label><br/>
