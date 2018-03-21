@@ -126,9 +126,7 @@ class Login extends React.Component {
               <br />
             </Dialog>
           </CardText>
-
         </Card>
-        <CreatePoll />
       </div>
     );
   }
