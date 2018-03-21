@@ -114,7 +114,7 @@ class CreatePoll extends React.Component {
       <div>CreatePoll</div>
       <form>
         <label>
-          Title:dddddd
+          Title:
           <input type="text" name="title" value={this.state.title} onChange={this.handleInputChange} />
         </label><br/>
           {this.state.title}<br/>
