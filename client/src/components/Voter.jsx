@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import Vote from './Vote.jsx';
 import VoteResults from './VoterResults.jsx';
-import { TextField, RaisedButton }from 'material-ui';
+import { Card, TextField, RaisedButton } from 'material-ui';
 import '../style/voter.css';
 
 
@@ -72,20 +72,22 @@ class Voter extends React.Component {
     } else {
       return (
         <div>
-          <div className="title">ENTER YOUR UNIQUE CODE -type "test"</div>
-          <form className="center">
-            <label>
-            <TextField 
-              type="password" 
-              name="uniqueId" 
-              value={this.state.uniqueId} 
-              onChange={this.handleChange}
-              floatingLabelText="Enter Unique Code" 
-              errorText= {this.state.errorText}
-              />
-            </label><br/>
-            <RaisedButton label="Submit" type="submit" value="Submit" onClick={this.handleSubmit} />
-          </form>
+          <div className="header">ENTER YOUR UNIQUE CODE <br/>
+          for demo, submit "test" to enter 
+          </div>
+            <form>
+              <Card className="center">
+                <TextField 
+                  type="password" 
+                  name="uniqueId" 
+                  value={this.state.uniqueId} 
+                  onChange={this.handleChange}
+                  floatingLabelText="Enter Unique Code" 
+                  errorText= {this.state.errorText}
+                  /><br/>
+                <RaisedButton label="Submit" type="submit" value="Submit" onClick={this.handleSubmit} />
+              </Card>
+            </form>
         </div>
       )
     }

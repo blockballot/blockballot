@@ -5,9 +5,7 @@ import getWeb3 from '../../../helpers/getWeb3.js';
 import contract from 'truffle-contract';
 import VoteResults from './VoterResults.jsx';
 import TestVote from '../../../build/contracts/TestVote.json';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import { RaisedButton, Checkbox} from 'material-ui';
+import { Divider, Card, RaisedButton, Checkbox} from 'material-ui';
 import '../style/voter.css';
 
 
@@ -102,23 +100,42 @@ class Vote extends React.Component {
   render() {
     let ballotInfo = this.state;
     let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
-      return  <Checkbox className="checkbox" labelPosition="left" key={index} label={option.optionName} checked={option.optionAnswer} onCheck={this.updateCheck} name={option.optionName}/>
-    })
-
+      return ( <div>
+                  <Checkbox 
+                    style={{ marginTop: 16, marginBottom: 16 }} 
+                    labelPosition="left" 
+                    key={index} 
+                    label={option.optionName} 
+                    checked={option.optionAnswer} 
+                    onCheck={this.updateCheck} 
+                    name={option.optionName}
+                    />
+                  <Divider />
+                </div>
+              )
+            })
+    
     if(this.state.isVoteSubmitted === true) {
       return (
-        <VoteResults ballotOption={this.state.ballotOption} ballotName= {this.state.ballotName} />
+        <VoteResults 
+          ballotOption={this.state.ballotOption} 
+          ballotName= {this.state.ballotName} />
       )
     } else {
+   
       return (
-        <form id="voteForm">
-          <label>
-            <div>VOTE PAGE</div>
-            <div>{ballotInfo.ballotName}</div>
-            <div className="block" >{ballotQuestionList}</div>
-          </label>
-          <RaisedButton label="Submit" onClick={this.submitVote} />
-        </form>
+        <div>
+          <div className="header">VOTE PAGE</div>
+          <form  >
+            <Card className="center">
+              <div style={{fontSize: 16, minWidth: 400}}>
+                <b>{ballotInfo.ballotName}</b><br/>
+                <div>{ballotQuestionList}</div>
+              </div><br/>  
+              <RaisedButton label="Submit" onClick={this.submitVote} />
+            </Card>
+          </form>
+        </div>
       )
     }
   }

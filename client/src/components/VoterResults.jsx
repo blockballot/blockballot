@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Checkbox from 'material-ui/Checkbox';
+import { Card, Divider, TextField, RaisedButton } from 'material-ui';
 import '../style/voter.css';
 
 class VoteResults extends React.Component {
@@ -29,16 +30,20 @@ class VoteResults extends React.Component {
       }, []);
 
     return (
-      <form>
-        <label>
-          <div>VOTER RESULTS PAGE</div>
-          <div>{this.state.ballotName}</div>
-          <div>Your Choices</div>
-          <div className="block" >
-            {voteResult}
+      <div>
+        <div className="header">
+          VOTER RESULTS <br/>
+          {this.state.ballotName}
+        </div>
+        <Card className="center">
+          <div style={{fontSize: 16, minWidth: 400}}>
+            <b>Your Choice</b>
+            <div>
+              {voteResult}
+            </div>
           </div>
-        </label>
-      </form>
+        </Card>
+      </div>
     )
   }
 }
