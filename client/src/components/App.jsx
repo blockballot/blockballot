@@ -150,12 +150,12 @@ class App extends React.Component {
             <Dashboard />
           }
         />
-        {/* <Route
+        <Route
           exact path='/createpoll'
           render={ () =>
             <CreatePoll />
           }
-        /> */}
+        />
       </div>
     )
   }
