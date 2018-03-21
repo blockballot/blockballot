@@ -53,6 +53,8 @@ const Option = sequelize.define('option', {
   optionName: {
     type: Sequelize.STRING
   }
+  //count:
+  //foreign key to poll:
 });
 
 //test

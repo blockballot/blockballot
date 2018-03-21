@@ -69,7 +69,7 @@ app.post('/signup', (req, res) => {
   });
 });
 
-app.get('/signup', (req, res) => {
+app.get('/password', (req, res) => {
   res.status(200).send(helpers.createPassword());
 });
 
