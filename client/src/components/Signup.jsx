@@ -50,7 +50,7 @@ class Signup extends React.Component {
   handleOpen () {
     $.ajax({
       type: 'GET',
-      url: '/signup',
+      url: '/password',
       success: (res) => {
         this.setState({
           dialogOpen: true,
