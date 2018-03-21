@@ -7,6 +7,11 @@
    },
    "difficulty": "0x20",
    "gasLimit": "0x8000000",
-   "alloc": {}
+   "alloc": {
+        "5296cb6eaf0308d2493386a32be2e78c9e84b226": { "balance": "100000000" },
+        "e8cf7d97d601314304981a7dcd01f39a68d9de73": { "balance": "100000000" }
+    }
 }
 }
+
+// 0xcf674884af8a4b52f698270e7bdc3b94d7ca25d8
