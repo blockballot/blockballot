@@ -151,13 +151,12 @@ class App extends React.Component {
           }
         />
 
-        {/*<Route
+        <Route
           exact path='/createpoll'
           render={ () =>
             <CreatePoll />
           }
-        />*/}
-        <CreatePoll />
+        />
       </div>
     )
   }
