@@ -1,14 +1,7 @@
 import React from 'react';
-import { default as Web3} from 'web3';
-import { default as contract } from 'truffle-contract';
-import Voting from '../../../build/contracts/Voting.json';
-import TestVote from '../../../build/contracts/TestVote.json';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-
 import {
   Button,
   Container,
@@ -39,41 +32,56 @@ class CreatePoll extends React.Component {
       end: {},
       voterAccess: ''
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleStartDate = this.handleStartDate.bind(this);
-    this.handleEndDate = this.handleEndDate.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleStartDateChange = this.handleStartDateChange.bind(this);
+    this.handleOptionChange = this.handleOptionChange.bind(this);
+    this.handleEndDateChange = this.handleEndDateChange.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
     this.handleRemoveOption = this.handleRemoveOption.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
+  handleInputChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
 
-  handleStartDate(event) {
+  handleStartDateChange(event) {
     this.setState({
       start: event._d
     });
   }
 
-  handleEndDate(event) {
-      this.setState({
-        end: event._d
-      });
+  handleEndDateChange(event) {
+    this.setState({
+      end: event._d
+    });
+  }
+
+  handleOptionChange(event) {
+    let matchIndex = Number(event.target.name)
+    let newballotOption = this.state.ballotOption.map((option, index) => {
+      if(matchIndex === index) {
+        option.optionName = event.target.value;
+      }
+    });
+    this.setState({
+      balletOption: newballotOption
+    });
   }
 
   handleAddOption() {
-    this.setState({ ballotOption: this.state.ballotOption.concat([{ optionName: '', optionAnswer:false }]) });
+    this.setState({ 
+      ballotOption: this.state.ballotOption.concat([{ optionName: '', optionAnswer:false }]) 
+    });
   }
   
   handleRemoveOption(event) {
     let removeIndex = Number(event.target.name);
-    console.log(removeIndex)
-    console.log(this.state.ballotOption.filter((option, i) => removeIndex !== i))
-    this.setState({ ballotOption: this.state.ballotOption.filter((option, i) => removeIndex !== i) });
+    this.setState({ 
+      ballotOption: this.state.ballotOption.filter((option, i) => removeIndex !== i) 
+    });
   }
   
   handleSubmit(event) {
@@ -81,22 +89,25 @@ class CreatePoll extends React.Component {
     event.preventDefault();
   }
 
-
   render() {
-    var date = this.state;
-    var options = this.state.ballotOption.map((option, index) => (
-      <div>
+    let optionEntry = this.state.ballotOption.map((option, index) => (
+      <div key={index}>
         <input
           type="text"
           placeholder="Enter your options"
+          name={index}
           value={option.optionName}
           onChange={this.handleOptionChange}
-          key={index}
         />
         <input type="button" name={index} value="remove" onClick={this.handleRemoveOption} />
       </div>
     ))
 
+    var option = this.state.ballotOption.map((option, index) => (
+      <div key={index}>
+        {option.optionName}
+      </div>
+    ))
 
     return (
       <div>
@@ -104,20 +115,21 @@ class CreatePoll extends React.Component {
       <form>
         <label>
           Title:
-          <input type="text" name="title" value={this.state.title} onChange={this.handleChange} />
+          <input type="text" name="title" value={this.state.title} onChange={this.handleInputChange} />
         </label><br/>
- 
         <label>
           Options: <br/>
-          {options}  <br/>
+          {optionEntry}  <br/>
           <button type="button" onClick={this.handleAddOption}>Add Option</button>
         </label><br/>
+          {option}
 
-         <label>
+        <label>
           start:
             <DatePicker
                 placeholderText="Click to select a date"
-                onChange={this.handleStartDate}
+                selected={moment(this.state.start)}
+                onChange={this.handleStartDateChange}
                 showTimeSelect
                 timeFormat="HH:mm"
                 timeIntervals={15}
@@ -125,14 +137,14 @@ class CreatePoll extends React.Component {
                 timeCaption="time"
                 withPortal
             /><br/>
-            {date.start.toString()}
-        </label><br/>
-          
+            {this.state.start.toString()}
+        </label><br/>  
         <label>
           end:
             <DatePicker
                 placeholderText="Click to select a date"
-                onChange={this.handleEndDate}
+                selected={moment(this.state.end)}
+                onChange={this.handleEndDateChange}
                 showTimeSelect
                 timeFormat="HH:mm"
                 timeIntervals={15}
@@ -140,14 +152,12 @@ class CreatePoll extends React.Component {
                 timeCaption="time"
                 withPortal
             /><br/>
-              {date.end.toString()}
+              {this.state.end.toString()}
         </label><br/>
-
         {/* <label>
           voter access:
-          <input type="text" name="voterAccess" value={this.state.voterAccess} onChange={this.handleChange}/>
+          <input type="text" name="voterAccess" value={this.state.voterAccess} onChange={this.handleInputChange}/>
         </label><br/> */}
-
         <input label="Launch" type="submit" value="Submit" onClick={this.handleSubmit} />
       </form>
     </div>
