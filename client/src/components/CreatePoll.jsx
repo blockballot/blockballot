@@ -78,6 +78,7 @@ class CreatePoll extends React.Component {
     event.preventDefault();
   }
 
+
   render() {
     var date = this.state;
     var options = this.state.ballotOption.map((option, index) => (

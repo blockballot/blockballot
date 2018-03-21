@@ -7,4 +7,4 @@ module.exports = function(deployer) {
 candidates. The third argument is a hash where we specify the gas required to deploy our code. The gas amount varies depending on the size of your contract.
 */
 
-// TestVote.deployed().then(function(instance) {return instance.validCandidate('Rama')}).then(function(results) {console.log(results)})
+// TestVote.deployed().then(function(instance) {return instance.validCandidate('Evaline')}).then(function(results) {console.log(results)})

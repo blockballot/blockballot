@@ -114,7 +114,7 @@ class Landing extends React.Component {
                 </p>
                 <Header as='h3' style={{ fontSize: '2em' }}>Blockchain for Transparency</Header>
                 <p style={{ fontSize: '1.33em' }}>
-                  Because voter data is permanently written to the Ethereum blockchain, BlockBallot is the safest, most transparent way to organize a vote.
+                  Because voter data is permanently written to a private Ethereum blockchain, BlockBallot is the safest, most transparent way to organize a vote.
                 </p>
               </Grid.Column>
               <Grid.Column floated='right' width={6}>
