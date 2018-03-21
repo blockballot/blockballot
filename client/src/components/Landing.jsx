@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../style/landing.css';
 import {
   Button,
   Container,
@@ -30,13 +29,14 @@ class Landing extends React.Component {
     return (
       <Responsive>
         <Segment
+          vertical
+          className="mainSegment"
           style={{
             minHeight: 700,
             padding: '1em 0em',
             backgroundSize: 'cover',
             backgroundImage: 'url(https://c1.staticflickr.com/1/820/39104766100_936bc7c75d_o.jpg)'
           }}
-          vertical
         >
           <Menu
             pointing
@@ -46,24 +46,22 @@ class Landing extends React.Component {
             <Menu.Item as='a' active>Home</Menu.Item>
             <Menu.Item as='a'>About Us</Menu.Item>
             <Menu.Item as='a'>
-              <Link to="/voter">
+              <Link to='/voter'>
                 Voter Login (Temp)
               </Link>
             </Menu.Item>
             <Menu.Item position='right'>
-              <Link to="/login">
+              <Link to='/login'>
                 <Button as='a' >Log in</Button>
               </Link>
-              <Link to="/signup">
-                <Button as='a' style={{ marginLeft: '0.5em' }}>Sign Up</Button>
+              <Link to='/signup'>
+                <Button as='a' style={{marginLeft: '0.5em'}}>Sign Up</Button>
               </Link>
             </Menu.Item>
           </Menu>
           <Container
             text
-            style={{
-              textAlign: 'center'
-            }}
+            style={{textAlign: 'center'}}
           >
             <Header
               as='h1'
@@ -84,9 +82,11 @@ class Landing extends React.Component {
                 marginTop: '1.5em'
               }}
             />
+              <Link to='/createpoll'>
             <Button primary size='huge'>
-              Get Started
+                Get Started
             </Button>
+              </Link>
           </Container>
         </Segment>
         <Segment
@@ -97,7 +97,11 @@ class Landing extends React.Component {
             backgroundColor: '#F0F8FF'
           }}
         >
-          <Grid container stackable className="getStartedGrid" verticalAlign='middle'>
+          <Grid
+            container
+            stackable
+            verticalAlign='middle'
+            style={{marginTop: '3em'}}>
             <Grid.Row>
               <Grid.Column width={8}>
                 <Header
@@ -109,11 +113,19 @@ class Landing extends React.Component {
                 >
                   How to Get Started
                 </Header>
-                <p style={{ fontSize: '1.33em' }}>
+                <p style={{
+                  fontSize: '1.33em',
+                  textAlign: 'center',
+                  }}
+                >
                   Sign up your organization for a BlockBallot account, design custom ballots, and track results with our analytics dashboard.
                 </p>
-                <Header as='h3' style={{ fontSize: '2em' }}>Blockchain for Transparency</Header>
-                <p style={{ fontSize: '1.33em' }}>
+                <Header as='h3' style={{fontSize: '2em'}}>Blockchain for Transparency</Header>
+                <p style={{
+                  fontSize: '1.33em',
+                  textAlign: 'center'
+                  }}
+                >
                   Because voter data is permanently written to a private Ethereum blockchain, BlockBallot is the safest, most transparent way to organize a vote.
                 </p>
               </Grid.Column>
@@ -133,7 +145,7 @@ class Landing extends React.Component {
             <Grid divided inverted stackable>
               <Grid.Row>
                 <Grid.Column width={3}>
-                  <Header inverted as='h4' content='About' />
+                  <Header style={{textAlign: 'left'}} inverted as='h4' content='About' />
                   <List link inverted>
                     <List.Item as='a'>About Us</List.Item>
                     <List.Item as='a'>Source Code</List.Item>
@@ -141,7 +153,7 @@ class Landing extends React.Component {
                   </List>
                 </Grid.Column>
                 <Grid.Column width={3}>
-                  <Header inverted as='h4' content='Actions' />
+                  <Header style={{textAlign: 'left'}} inverted as='h4' content='Actions' />
                   <List link inverted>
                     <Link to='/signup'>
                       <List.Item as='a'>Signup</List.Item>
@@ -154,7 +166,7 @@ class Landing extends React.Component {
                   </List>
                 </Grid.Column>
                 <Grid.Column width={7}>
-                  <Header as='h4' inverted>BlockBallot</Header>
+                  <Header style={{textAlign: 'left'}} as='h4' inverted>BlockBallot</Header>
                   <p>Elections and other collective decision-making processes are too important to risk the threat of data manipulation. Bind your decisions to the Ethereum blockchain with BlockBallot.</p>
                   <a href='https://www.freepik.com/free-vector/vector-network-background-abstract-polygon-triangle_1306336.htm'>Vector Background Designed by Freepik</a>
                   <br/>
