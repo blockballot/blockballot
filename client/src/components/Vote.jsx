@@ -101,28 +101,28 @@ class Vote extends React.Component {
     let ballotInfo = this.state;
     let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
       return ( <div>
-                  <Checkbox 
-                    style={{ marginTop: 16, marginBottom: 16 }} 
-                    labelPosition="left" 
-                    key={index} 
-                    label={option.optionName} 
-                    checked={option.optionAnswer} 
-                    onCheck={this.updateCheck} 
+                  <Checkbox
+                    style={{ marginTop: 16, marginBottom: 16 }}
+                    labelPosition="left"
+                    key={index}
+                    label={option.optionName}
+                    checked={option.optionAnswer}
+                    onCheck={this.updateCheck}
                     name={option.optionName}
                     />
                   <Divider />
                 </div>
               )
             })
-    
+
     if(this.state.isVoteSubmitted === true) {
       return (
-        <VoteResults 
-          ballotOption={this.state.ballotOption} 
+        <VoteResults
+          ballotOption={this.state.ballotOption}
           ballotName= {this.state.ballotName} />
       )
     } else {
-   
+
       return (
         <div>
           <div className="header">VOTE PAGE</div>
@@ -131,7 +131,7 @@ class Vote extends React.Component {
               <div style={{fontSize: 16, minWidth: 400}}>
                 <b>{ballotInfo.ballotName}</b><br/>
                 <div>{ballotQuestionList}</div>
-              </div><br/>  
+              </div><br/>
               <RaisedButton label="Submit" onClick={this.submitVote} />
             </Card>
           </form>
