@@ -156,7 +156,6 @@ class App extends React.Component {
           render={ () =>
             <CreatePoll />
           }
-        />
       </div>
     )
   }

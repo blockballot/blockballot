@@ -126,7 +126,7 @@ class Vote extends React.Component {
       return (
         <div>
           <div className="header">VOTE PAGE</div>
-          <form  >
+          <form>
             <Card className="center">
               <div style={{fontSize: 16, minWidth: 400}}>
                 <b>{ballotInfo.ballotName}</b><br/>
