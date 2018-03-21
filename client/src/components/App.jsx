@@ -157,7 +157,7 @@ class App extends React.Component {
             <CreatePoll />
           }
         />*/}
-        <CreatePoll />
+        {/* <CreatePoll /> */}
       </div>
     )
   }

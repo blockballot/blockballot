@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {CardText, CardHeader, Grid, TextField, RaisedButton, FlatButton, Dialog, Card} from 'material-ui';
 import { Responsive, Button, Form, Header, Image, Message, Segment, Container } from 'semantic-ui-react';
-
+import CreatePoll from './CreatePoll.jsx';
 const style = {
   width: 400,
   height: 500,
@@ -128,6 +128,7 @@ class Login extends React.Component {
           </CardText>
 
         </Card>
+        <CreatePoll />
       </div>
     );
   }
