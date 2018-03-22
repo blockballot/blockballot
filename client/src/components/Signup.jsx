@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import {Card, CardText, CardHeader, TextField, RaisedButton, Dialog, FlatButton, GridList} from 'material-ui';
 import $ from 'jquery';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import {CopyToClipboard} from 'react-copy-to-clipboard'
 
 const style = {
   width: 400,
@@ -140,14 +141,17 @@ class Signup extends React.Component {
               onRequestClose={this.handleClose}
             >
               <div>
-                <i className="copy outline icon"></i>
-                <span>
-                  Copy the unique password below to create your account:
-                </span>
-              </div>
-              <br />
-              <div>
-                <b>{this.state.password}</b>
+                Copy the unique password below to create your account:
+              </div>  
+                <br />
+              <div style={{cursor: 'pointer'}}>
+                <CopyToClipboard text={this.state.password}>
+                  <i className="copy outline icon"></i>
+                </CopyToClipboard>
+                <CopyToClipboard text={this.state.password}>
+                  <b>{this.state.password}</b>
+                </CopyToClipboard>
+
               </div>
             </Dialog>
             {formChange}
