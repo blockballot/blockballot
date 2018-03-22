@@ -41,7 +41,7 @@ class Voter extends React.Component {
     // .catch(function (error) {
     //   console.log(error);
     // });
-    if(this.state.uniqueId === 'test') {
+    if(this.state.uniqueId === '093-89-435') {
       this.setState({
         isLogin: true
       });
