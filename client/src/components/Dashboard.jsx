@@ -1,6 +1,6 @@
 import React from 'react';
 import Poll from './Poll.jsx';
-import {Link} from 'react-router-dom';
+import {Link, Route} from 'react-router-dom';
 import {
   Card,
   Button,
@@ -15,7 +15,8 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      polls: samplePolls
+      polls: samplePolls,
+      currentPoll: {}
     }
   }
 
@@ -34,7 +35,9 @@ class Dashboard extends React.Component {
   //   });
   // }
 
+
   render() {
+    console.log(this.props);
     let polls = this.state.polls;
     return (
       <div>
@@ -55,11 +58,10 @@ class Dashboard extends React.Component {
           <div class="ui four link cards">
             
             {polls.map((poll) =>
-              <Link to="/pollresults">
-                <Poll
-                poll={poll}
-                />
-              </Link>
+              <Poll
+              poll={poll}
+              handlePollClick = {this.props.handlePollClick}
+              />
             )}
 
           </div>
@@ -72,9 +74,10 @@ class Dashboard extends React.Component {
 
 const samplePolls = [
 {
-  pollName: 'Poll 1',
+  pollName: 'Favorite Color',
   date: '5/13/18',
-  voteCount: 10
+  voteCount: 127,
+  options: [{red: 20}, {blue: 48}, {green: 40}, {purple: 19}]
 },
 {
   pollName: 'Poll 2',

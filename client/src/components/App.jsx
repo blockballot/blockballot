@@ -16,6 +16,7 @@ import VoterResults from './VoterResults';
 import cookie from 'react-cookie';
 import Voter from './Voter';
 import Vote from './Vote';
+import PollResults from './PollResults'
 import $ from 'jquery';
 
 
@@ -27,10 +28,12 @@ class App extends React.Component {
       loggedIn: false,
       signupError: '',
       loginEmailError: '',
-      loginPasswordError: ''
+      loginPasswordError: '',
+      currentPoll: {}
     }
     this.loginSubmit = this.loginSubmit.bind(this);
     this.signupSubmit = this.signupSubmit.bind(this);
+    this.handlePollClick = this.handlePollClick.bind(this);
   }
 
   componentDidMount() {
@@ -108,6 +111,13 @@ class App extends React.Component {
     $.get('/logout');
   }
 
+  handlePollClick(poll) {
+    this.setState({
+      currentPoll: poll
+    });
+    this.props.history.push(`/pollresults`);
+  }
+
   render () {
     return (
       <div>
@@ -147,7 +157,8 @@ class App extends React.Component {
         <Route
           exact path='/dashboard'
           render={ () =>
-            <Dashboard />
+            <Dashboard 
+            handlePollClick = {this.handlePollClick}/>
           }
         />
         <Route
@@ -156,6 +167,16 @@ class App extends React.Component {
             <CreatePoll />
           }
         />
+
+        <Route
+          exact path='/pollresults'
+          render={ () =>
+            <PollResults
+            poll={this.state.currentPoll} 
+            />
+          }
+        />
+        
       </div>
     )
   }
