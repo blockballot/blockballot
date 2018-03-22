@@ -28,7 +28,7 @@ const PollResults = (props) => {
 }
 
 var data = {
-  labels: ['red', 'blue', 'green', 'purple'],
+  labels: ['Mark Cuban', 'Dwayne "The Rock" Johnson', 'Oprah Winfrey', 'Lenny'],
   datasets: [
     {
       fillColor: "rgba(240,248,255,0.5)",

@@ -75,7 +75,6 @@ class Voter extends React.Component {
           <div className="header">
           Enter Your Unique Code
           <br/>
-          (Demo Code: "test")
           </div>
             <form>
               <Card className="center">
@@ -84,8 +83,9 @@ class Voter extends React.Component {
                   name="uniqueId"
                   value={this.state.uniqueId}
                   onChange={this.handleChange}
-                  floatingLabelText="Enter Code"
+                  hintText="Enter Code"
                   errorText= {this.state.errorText}
+                  underlineStyle={{borderBottomColor: '#2284d1'}}
                   /><br/>
                 <RaisedButton label="Submit" type="submit" value="Submit" onClick={this.handleSubmit} />
               </Card>
