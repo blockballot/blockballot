@@ -47,12 +47,12 @@ class Landing extends React.Component {
             <Menu.Item as='a'>About Us</Menu.Item>
             <Menu.Item as='a'>
               <Link to='/voter'>
-                Voter Login
+                Voters
               </Link>
             </Menu.Item>
             <Menu.Item position='right'>
               <Link to='/login'>
-                <Button as='a' >Log in</Button>
+                <Button as='a' >Log In</Button>
               </Link>
               <Link to='/signup'>
                 <Button as='a' style={{marginLeft: '0.5em'}}>Sign Up</Button>

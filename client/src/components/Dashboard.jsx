@@ -47,7 +47,7 @@ class Dashboard extends React.Component {
           <Link to='/createpoll'>
             <button
               style={{marginLeft: 50}}
-              class="ui button">
+              className="ui button">
               Create Poll
             </button>
           </Link>
@@ -55,7 +55,7 @@ class Dashboard extends React.Component {
 
 
         <div style={{marginLeft: 50, marginRight:50, marginTop: 50}}>
-          <div class="ui four link cards">
+          <div className="ui four link cards">
             
             {polls.map((poll) =>
               <Poll

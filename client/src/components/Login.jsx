@@ -61,8 +61,8 @@ class Login extends React.Component {
     const dialogActions = [
       <FlatButton
         label="Close"
-        primary={true}
         onClick={this.handleClose}
+        style={{color: '#2284d1'}}
       />
     ]
     return (
@@ -80,6 +80,9 @@ class Login extends React.Component {
               name='email'
               value={this.state.email}
               onChange={this.onChange}
+              underlineStyle={{borderBottomColor: '#2284d1'}}
+
+
             /><br />
             <TextField
               hintText="Password"
@@ -87,6 +90,8 @@ class Login extends React.Component {
               name='password'
               value={this.state.password}
               onChange={this.onChange}
+              underlineStyle={{borderBottomColor: '#2284d1'}}
+
             /><br />
 
             <div style= {{marginTop: 20}}>
@@ -102,7 +107,7 @@ class Login extends React.Component {
             </div>
 
             <Dialog
-              contentStyle={{width: 500}}
+              contentStyle={{width: 500, color: '#2284d1'}}
               title="Forgot Password?"
               actions={dialogActions}
               modal={false}
@@ -118,9 +123,10 @@ class Login extends React.Component {
               name='forgotPasswordEmail'
               value={this.state.forgotPasswordEmail}
               onChange={this.onChange}
+              underlineStyle={{borderBottomColor: '#2284d1'}}              
               />
               <RaisedButton
-              style={{marginTop: 10, marginLeft: 20}}
+              style={{marginTop: 10, marginLeft: 20, textColor: '#2284d1'}}
               >Send 
               </RaisedButton>
               <br />

@@ -5,28 +5,25 @@ import {Link, Redirect, Route} from 'react-router-dom';
 
 const Poll = (props) => {
   return (
-      <div class="card"
-      onClick={() => props.handlePollClick(props.poll)}>
-        <div class="content">
-          
-          <div class="header">
+      <div className="card"
+      onClick={() => props.handlePollClick(props.poll)}
+      >
+        <div className="content">
+          <div className="header">
             {props.poll.pollName}
           </div>
-
           <br />
-
-          <div class="extra content">
+          <div className="extra content">
             <span className="left floated">
               {props.poll.date}
             </span>
             <span className="right floated">
               {props.poll.voteCount}
-              <i class="check square outline icon"></i> 
+              <i className="check square outline icon"></i> 
             </span>
           </div>
 
         </div>
-
       </div>
   )   
 }

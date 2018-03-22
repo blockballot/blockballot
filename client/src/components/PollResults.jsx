@@ -6,11 +6,11 @@ import {Bar as BarChart} from 'react-chartjs';
 const PollResults = (props) => {
   return (
     <div>
-      <div class="header" style ={{marginTop: 100, marginBottom: 20}}>
+      <div className="header" style ={{marginTop: 100, marginBottom: 20}}>
         {props.poll.pollName}
       </div>
 
-      <div class="header">
+      <div className="header">
         <BarChart 
         data={data} 
         options={options}
@@ -19,12 +19,11 @@ const PollResults = (props) => {
         />
       </div>
 
-      <div class="header">
+      <div className="header">
        Total votes: {props.poll.voteCount}
       </div>
 
     </div>
-
   )      
 }
 
@@ -32,10 +31,10 @@ var data = {
   labels: ['red', 'blue', 'green', 'purple'],
   datasets: [
     {
-      fillColor: "rgba(151,187,205,0.5)",
-      strokeColor: "rgba(151,187,205,0.8)",
-      highlightFill: "rgba(151,187,205,0.75)",
-      highlightStroke: "rgba(151,187,205,1)",
+      fillColor: "rgba(240,248,255,0.5)",
+      strokeColor: "rgba(34,132,209,0.8)",
+      highlightFill: "rgba(34,132,209,0.75)",
+      highlightStroke: "rgba(34,132,209,1)",
       data: [28, 48, 40, 19]
     }
   ]
