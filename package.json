@@ -41,7 +41,7 @@
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
     "react-chartjs": "^1.2.0",
-    "react-cookie": "^2.1.4",
+    "react-cookie": "^1.0.5",
     "react-copy-to-clipboard": "^5.0.1",
     "react-datepicker": "^1.2.2",
     "react-dom": "^16.2.0",

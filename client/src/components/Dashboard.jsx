@@ -74,7 +74,7 @@ class Dashboard extends React.Component {
 
 const samplePolls = [
 {
-  pollName: 'Favorite Color',
+  pollName: 'Election for Board of Trustees',
   date: '5/13/18',
   voteCount: 127,
   options: [{red: 20}, {blue: 48}, {green: 40}, {purple: 19}]
