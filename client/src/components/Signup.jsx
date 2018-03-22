@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import {Card, CardText, CardHeader, TextField, RaisedButton, Dialog, FlatButton, GridList} from 'material-ui';
 import $ from 'jquery';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import {CopyToClipboard} from 'react-copy-to-clipboard'
 
 const style = {
   width: 400,
@@ -74,7 +75,6 @@ class Signup extends React.Component {
     const dialogActions = [
       <FlatButton
         label="Close"
-        primary={true}
         onClick={this.handleClose}
       />
     ]
@@ -86,6 +86,8 @@ class Signup extends React.Component {
           name='password'
           value={this.state.password}
           onChange={this.onChange}
+          underlineStyle={{borderBottomColor: '#2284d1'}}
+
         /> 
         <RaisedButton 
         style={{marginTop: 20}}
@@ -118,6 +120,8 @@ class Signup extends React.Component {
               errorText=''
               value={this.state.name}
               onChange={this.onChange}
+              underlineStyle={{borderBottomColor: '#2284d1'}}
+
             /><br />
             <TextField
               hintText="Email"
@@ -125,6 +129,8 @@ class Signup extends React.Component {
               name='email'
               value={this.state.email}
               onChange={this.onChange}
+              underlineStyle={{borderBottomColor: '#2284d1'}}
+
             />
             <Dialog
               contentStyle={{width: 600}}
@@ -135,14 +141,17 @@ class Signup extends React.Component {
               onRequestClose={this.handleClose}
             >
               <div>
-                <i class="copy outline icon"></i>
-                <span>
-                  Copy the unique password below to create your account:
-                </span>
-              </div>
-              <br />
-              <div>
-                <b>{this.state.password}</b>
+                Copy the unique password below to create your account:
+              </div>  
+                <br />
+              <div style={{cursor: 'pointer'}}>
+                <CopyToClipboard text={this.state.password}>
+                  <i className="copy outline icon"></i>
+                </CopyToClipboard>
+                <CopyToClipboard text={this.state.password}>
+                  <b>{this.state.password}</b>
+                </CopyToClipboard>
+
               </div>
             </Dialog>
             {formChange}
