@@ -82,6 +82,7 @@ class Signup extends React.Component {
     <div>
       <TextField
           hintText="Password"
+          type="password"
           errorText=''
           name='password'
           value={this.state.password}
