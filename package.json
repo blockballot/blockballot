@@ -2,9 +2,10 @@
   "name": "blockballot",
   "version": "1.0.0",
   "description": "A decentralized voting platform",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
     "test": "echo \"No tests currently defined, exiting for now\" && exit 0",
+    "start": "node --ignore data server/index.js",
     "server-dev": "nodemon --ignore data server/index.js",
     "react-dev": "webpack -d --watch"
   },

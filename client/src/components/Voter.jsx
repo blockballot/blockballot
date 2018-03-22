@@ -72,17 +72,19 @@ class Voter extends React.Component {
     } else {
       return (
         <div>
-          <div className="header">ENTER YOUR UNIQUE CODE <br/>
-          for demo, submit "test" to enter 
+          <div className="header">
+          Enter Your Unique Code
+          <br/>
+          (Demo Code: "test")
           </div>
             <form>
               <Card className="center">
-                <TextField 
-                  type="password" 
-                  name="uniqueId" 
-                  value={this.state.uniqueId} 
+                <TextField
+                  type="password"
+                  name="uniqueId"
+                  value={this.state.uniqueId}
                   onChange={this.handleChange}
-                  floatingLabelText="Enter Unique Code" 
+                  floatingLabelText="Enter Code"
                   errorText= {this.state.errorText}
                   /><br/>
                 <RaisedButton label="Submit" type="submit" value="Submit" onClick={this.handleSubmit} />

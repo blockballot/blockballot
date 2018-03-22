@@ -47,7 +47,7 @@ class Landing extends React.Component {
             <Menu.Item as='a'>About Us</Menu.Item>
             <Menu.Item as='a'>
               <Link to='/voter'>
-                Voter Login (Temp)
+                Voter Login
               </Link>
             </Menu.Item>
             <Menu.Item position='right'>
@@ -148,7 +148,7 @@ class Landing extends React.Component {
                   <Header style={{textAlign: 'left'}} inverted as='h4' content='About' />
                   <List link inverted>
                     <List.Item as='a'>About Us</List.Item>
-                    <List.Item as='a'>Source Code</List.Item>
+                    <List.Item as='a' href='https://github.com/blockballot/blockballot'>Source Code</List.Item>
                     <List.Item as='a'>White Paper</List.Item>
                   </List>
                 </Grid.Column>
@@ -162,7 +162,10 @@ class Landing extends React.Component {
                     <Link to='/login'>
                       <List.Item as='a'>Login</List.Item>
                     </Link>
-                    <List.Item as='a'>Create Poll</List.Item>
+                    <br/>
+                    <Link to='/createpoll'>
+                      <List.Item as='a'>Create Poll</List.Item>
+                    </Link>
                   </List>
                 </Grid.Column>
                 <Grid.Column width={7}>

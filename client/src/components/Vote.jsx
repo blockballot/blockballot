@@ -136,11 +136,10 @@ class Vote extends React.Component {
 
       return (
         <div>
-          <div className="header">VOTE PAGE</div>
+          <div className="header">{ballotInfo.ballotName}</div>
           <form>
             <Card className="center">
               <div style={{fontSize: 16, minWidth: 400}}>
-                <b>{ballotInfo.ballotName}</b><br/>
                 <div>{ballotQuestionList}</div>
               </div>
               <br/>

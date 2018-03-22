@@ -37,7 +37,7 @@ class VoterResults extends React.Component {
         <div className="subHeader">
           Your response has been permanently recorded for the following:
         </div>
-        <div className="subHeader">
+        <div className="ballotName">
           {this.state.ballotName}
         </div>
         <Card className="center">
