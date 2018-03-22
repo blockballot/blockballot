@@ -158,7 +158,7 @@ class App extends React.Component {
           exact path='/dashboard'
           render={ () =>
             <Dashboard 
-            handlePollClick = {this.handlePollClick}/>
+            handlePollClick={this.handlePollClick}/>
           }
         />
         <Route
