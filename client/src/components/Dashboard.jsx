@@ -1,6 +1,6 @@
 import React from 'react';
 import Poll from './Poll.jsx';
-import {Link, Route} from 'react-router-dom';
+import {Link, Route, Redirect} from 'react-router-dom';
 import {
   Card,
   Button,
@@ -9,21 +9,24 @@ import {
   Icon,
   Segment,
 } from 'semantic-ui-react';
- 
+import cookie from 'react-cookie';
+
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       polls: samplePolls,
-      currentPoll: {}
+      currentPoll: {},
+      loggedIn: false,
+      currentUser: ''
     }
   }
 
   // componentDidMount() {
   //   $.ajax({
   //     type: 'GET',
-  //     url: '/dashboard',
+  //     url: '/pollList',
   //     success: (data) => {
   //       this.setState({
   //         polls: data
@@ -35,10 +38,11 @@ class Dashboard extends React.Component {
   //   });
   // }
 
-
   render() {
-    console.log(this.props);
     let polls = this.state.polls;
+    if (cookie.load('loggedIn') !== 'true') {
+      return (<Redirect to='/login' />)
+    } 
     return (
       <div>
 

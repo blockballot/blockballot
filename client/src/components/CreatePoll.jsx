@@ -4,6 +4,7 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Card, TextField, Divider, RaisedButton } from 'material-ui';
 import '../style/voter.css';
+import { Redirect } from 'react-router-dom';
 
 class CreatePoll extends React.Component {
   constructor() {
@@ -91,6 +92,7 @@ class CreatePoll extends React.Component {
   }
 
   render() {
+
     let optionEntry = this.state.ballotOption.map((option, index) => (
       <div key={index}>
         <TextField 
@@ -142,7 +144,9 @@ class CreatePoll extends React.Component {
       );
   
     return (
+
       <div>
+
         <div className="header">CreatePoll</div>
         <section style={{ display: "flex", padding: 30}}>
           <div style={{ flex: 1, padding: 5 }}> 

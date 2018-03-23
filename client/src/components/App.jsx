@@ -17,7 +17,10 @@ import cookie from 'react-cookie';
 import Voter from './Voter';
 import Vote from './Vote';
 import PollResults from './PollResults'
+import Poll from './Poll'
+import AboutUs from './AboutUs'
 import $ from 'jquery';
+import Nav from './Nav'
 
 
 class App extends React.Component {
@@ -29,15 +32,17 @@ class App extends React.Component {
       signupError: '',
       loginEmailError: '',
       loginPasswordError: '',
-      currentPoll: {}
+      currentPoll: {},
+      activeItem: ''
     }
     this.loginSubmit = this.loginSubmit.bind(this);
     this.signupSubmit = this.signupSubmit.bind(this);
     this.handlePollClick = this.handlePollClick.bind(this);
+    this.handleNavClick = this.handleNavClick.bind(this);
   }
 
   componentDidMount() {
-    if (cookie.load('loggedIn') === 'true' && this.state.loggedIn === false) {
+    if (cookie.load('loggedIn') === 'true') {
       let currentUser = cookie.load('username');
       this.setState({
         loggedIn: true,
@@ -47,7 +52,6 @@ class App extends React.Component {
   }
 
   signupSubmit(signup) {
-    console.log('SIGNUP', signup);
     let user = {
       name: `${signup.name}`,
       email: `${signup.email}`,
@@ -75,14 +79,12 @@ class App extends React.Component {
       email: `${login.email}`,
       password: `${login.password}`
     };
-    console.log(user);
     $.ajax({
       type: 'POST',
       url: '/login',
       data: user,
       success: (res, textStatus, jqXHR) => {
         if (jqXHR.status === 200) {
-          console.log('Success!');
           this.setState({
             loggedIn: true,
             currentUser: user.email
@@ -91,6 +93,7 @@ class App extends React.Component {
         }
       },
       error: (err) => {
+        console.log('error!')
         if (err.status === 401) {
           this.setState({
             loginEmailError: err.responseText
@@ -107,6 +110,9 @@ class App extends React.Component {
 
   logoutSubmit() {
     $.get('/logout');
+    this.setState({
+      loggedIn: false
+    })
   }
 
   handlePollClick(poll) {
@@ -116,12 +122,25 @@ class App extends React.Component {
     this.props.history.push(`/pollresults`);
   }
 
+  handleNavClick(item) {
+    this.setState({
+      activeItem: item
+    })
+  }
+
   render () {
     return (
-      <div>
+
+      <div> 
+        <Nav 
+        loggedIn = {this.state.loggedIn}
+        pathname = {this.props.location.pathname}
+        activeItem = {this.state.activeItem}/>
+
         <Route exact path='/'
           render={ () =>
-            <Landing />
+            <Landing 
+            loggedIn={this.state.loggedIn}/>
           }
         />
 
@@ -141,7 +160,6 @@ class App extends React.Component {
         />
 
         <Route
-          style={{backgroundColor: '#F0F8FF'}}
           exact path='/login'
           render={ () =>
             <Login
@@ -156,13 +174,16 @@ class App extends React.Component {
           exact path='/dashboard'
           render={ () =>
             <Dashboard 
+            loggedIn={this.state.loggedIn}
             handlePollClick={this.handlePollClick}/>
           }
         />
         <Route
           exact path='/createpoll'
           render={ () =>
-            <CreatePoll />
+            <CreatePoll 
+            loggedIn={this.state.loggedIn}
+            />
           }
         />
 
@@ -170,8 +191,16 @@ class App extends React.Component {
           exact path='/pollresults'
           render={ () =>
             <PollResults
-            poll={this.state.currentPoll} 
+            poll={this.state.currentPoll}
+            loggedIn={this.state.loggedIn}
             />
+          }
+        />
+
+        <Route
+          exact path='/aboutus'
+          render={ () =>
+            <AboutUs/>
           }
         />
         
