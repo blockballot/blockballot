@@ -39,8 +39,7 @@ class Dashboard extends React.Component {
 
   render() {
     let polls = this.state.polls;
-    let loggedIn = this.props.loggedIn;
-    if (!loggedIn) {
+    if (!this.props.loggedIn) {
       return (<Redirect to='/login' />)
     }
     return (
