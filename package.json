@@ -7,7 +7,8 @@
     "test": "echo \"No tests currently defined, exiting for now\" && exit 0",
     "start": "node --ignore data server/index.js",
     "server-dev": "nodemon --ignore data server/index.js",
-    "react-dev": "webpack -d --watch"
+    "react-dev": "webpack -d --watch",
+    "geth-server": "geth --datadir data --networkid 3210 --rpc --rpccorsdomain 'http://127.0.0.1:3000' --fast --rpcapi personal,eth"
   },
   "repository": {
     "type": "git",
@@ -50,7 +51,8 @@
     "semantic-ui-css": "^2.3.1",
     "semantic-ui-react": "^0.78.3",
     "sequelize": "^4.37.1",
-    "shimmer": "^1.2.0"
+    "shimmer": "^1.2.0",
+    "solc": "^0.4.21"
   },
   "devDependencies": {
     "babel": "^6.23.0",
@@ -58,7 +60,6 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.11",
     "file-loader": "^1.1.11",
