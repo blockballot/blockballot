@@ -143,6 +143,7 @@ class CreatePoll extends React.Component {
   
     return (
       <div>
+
         <div className="header">CreatePoll</div>
         <section style={{ display: "flex", padding: 30}}>
           <div style={{ flex: 1, padding: 5 }}> 

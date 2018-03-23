@@ -18,6 +18,7 @@ import Voter from './Voter';
 import Vote from './Vote';
 import PollResults from './PollResults'
 import $ from 'jquery';
+import Nav from './Nav'
 
 
 class App extends React.Component {
@@ -29,11 +30,13 @@ class App extends React.Component {
       signupError: '',
       loginEmailError: '',
       loginPasswordError: '',
-      currentPoll: {}
+      currentPoll: {},
+      activeItem: ''
     }
     this.loginSubmit = this.loginSubmit.bind(this);
     this.signupSubmit = this.signupSubmit.bind(this);
     this.handlePollClick = this.handlePollClick.bind(this);
+    this.handleNavClick = this.handleNavClick.bind(this);
   }
 
   componentDidMount() {
@@ -109,6 +112,12 @@ class App extends React.Component {
     $.get('/logout');
   }
 
+  handleNavClick(menuItem) {
+    this.setState({
+      activeItem: menuItem
+    })
+  }
+
   handlePollClick(poll) {
     this.setState({
       currentPoll: poll
@@ -117,8 +126,23 @@ class App extends React.Component {
   }
 
   render () {
+    let currentLocation = this.props.location.pathname;
+    let navComponent = null;
+    if (currentLocation !== '/') {
+      navComponent = (
+        <Nav
+        loggedIn={this.state.loggedIn}
+        handleNavClick={this.handleNavItemClick}
+        activeItem={this.state.activeItem}
+        />
+      )
+    }
     return (
-      <div>
+
+      <div> 
+
+       {navComponent}
+
         <Route exact path='/'
           render={ () =>
             <Landing />
@@ -172,6 +196,13 @@ class App extends React.Component {
             <PollResults
             poll={this.state.currentPoll} 
             />
+          }
+        />
+
+        <Route
+          exact path='/poll'
+          render={ () =>
+            <Poll/>
           }
         />
         
