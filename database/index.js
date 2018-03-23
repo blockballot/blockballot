@@ -11,7 +11,7 @@ sequelize.authenticate().then(() => {
 });
 
 const Org = sequelize.define('org', {
-  orgId: {
+  id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true
@@ -28,7 +28,7 @@ const Org = sequelize.define('org', {
 });
 
 const Poll = sequelize.define('poll', {
-  pollId: {
+  id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true
@@ -41,11 +41,14 @@ const Poll = sequelize.define('poll', {
   },
   pollTimeEnd: {
     type: Sequelize.DATE
+  },
+  pollHash: {
+    type: Sequelize.STRING
   }
 });
 
 const Option = sequelize.define('option', {
-  optionId: {
+  id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true
@@ -53,13 +56,21 @@ const Option = sequelize.define('option', {
   optionName: {
     type: Sequelize.STRING
   }
-  //count:
-  //foreign key to poll:
 });
 
-//test
-const Voter = sequelize.define('voter', {
-  voterId: {
+const Vote = sequelize.define('vote', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  voteHash: {
+    type: Sequelize.STRING
+  }
+});
+
+const VoteKey = sequelize.define('votekey', {
+  id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true
@@ -68,36 +79,37 @@ const Voter = sequelize.define('voter', {
     type: Sequelize.STRING
   }
 });
-Poll.hasMany(Option);
-Org.hasMany(Poll);
 
+Poll.hasMany(Option);
+Option.belongsTo(Poll);
+Org.hasMany(Poll);
+Poll.belongsTo(Org);
+Option.hasMany(Vote);
+Vote.belongsTo(Option);
+Poll.hasMany(VoteKey);
+VoteKey.belongsTo(Poll);
 
 Org.sync().then(() => {
-  console.log('Org table created')
+  console.log('Org table created');
 });
 Poll.sync().then(() => {
-  console.log('Poll table created')
+  console.log('Poll table created');
 });
 Option.sync().then(() => {
-  console.log('Option table created')
+  console.log('Option table created');
 });
-Voter.sync().then(() => {
-  console.log('Voter table created')
+Vote.sync().then(() => {
+  console.log('Vote table created');
 });
+VoteKey.sync().then(() => {
+  console.log('VoteKey table created');
+})
 
 
 module.exports = {
-
-  checkVoter: (data) => {
-    Voter.findOrCreate({where: {voterUniqueId: data}})
-    .spread ((voter, created) => {
-      console.log(voter.get({
-        plain: true
-      }))
-    })
-  },
   Org: Org,
   Poll: Poll,
   Option: Option,
-  Voter: Voter
+  Vote: Vote,
+  VoteKey: VoteKey
 }
