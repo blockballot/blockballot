@@ -62,16 +62,14 @@ class Login extends React.Component {
       <FlatButton
         label="Close"
         onClick={this.handleClose}
-        style={{color: '#2284d1'}}
-      />
+        style={{color: '#2284d1'}}/>
     ]
     return (
       <div style = {style}>
         <Card>
           <CardHeader
             titleStyle={{marginLeft: 20, marginTop: 10, fontSize: 25}}
-            title="Log In"
-          />
+            title="Log In"/>
 
           <CardText style={{marginLeft: 20}}>
             <TextField
@@ -80,10 +78,10 @@ class Login extends React.Component {
               name='email'
               value={this.state.email}
               onChange={this.onChange}
-              underlineStyle={{borderBottomColor: '#2284d1'}}
+              underlineStyle={{borderBottomColor: '#2284d1'}}/>
 
+            <br/>
 
-            /><br />
             <TextField
               hintText="Password"
               type="password"
@@ -91,20 +89,18 @@ class Login extends React.Component {
               name='password'
               value={this.state.password}
               onChange={this.onChange}
-              underlineStyle={{borderBottomColor: '#2284d1'}}
+              underlineStyle={{borderBottomColor: '#2284d1'}}/>
 
-            /><br />
+            <br/>
 
             <div style= {{marginTop: 20}}>
               <RaisedButton 
                 label="Log In"
-                onClick={this.loginClick}
-              />
+                onClick={this.loginClick}/>
 
               <FlatButton style = {{marginLeft: 10}}
                 label="Forgot Password?"
-                onClick={this.handleOpen}
-              />
+                onClick={this.handleOpen}/>
             </div>
 
             <Dialog
@@ -113,27 +109,31 @@ class Login extends React.Component {
               actions={dialogActions}
               modal={false}
               open={this.state.dialogOpen}
-              onRequestClose={this.handleClose}
-            >
+              onRequestClose={this.handleClose}>
               <div>
                 Enter your account email and we'll send you a new password.
               </div>
-              <br />
+              <br/>
               <TextField
-              hintText="Email"
-              name='forgotPasswordEmail'
-              value={this.state.forgotPasswordEmail}
-              onChange={this.onChange}
-              underlineStyle={{borderBottomColor: '#2284d1'}}              
+                hintText="Email"
+                name='forgotPasswordEmail'
+                value={this.state.forgotPasswordEmail}
+                onChange={this.onChange}
+                underlineStyle={{borderBottomColor: '#2284d1'}}              
               />
               <RaisedButton
-              style={{marginTop: 10, marginLeft: 20, textColor: '#2284d1'}}
-              >Send 
+                style={{marginTop: 10, marginLeft: 20, textColor: '#2284d1'}}>
+                Send 
               </RaisedButton>
-              <br />
+              <br/>
             </Dialog>
+
           </CardText>
         </Card>
+
+        <div style={{margin: 'auto', width: '50%', marginTop: 20}}>
+          Don't have an account? <Link style={{marginLeft: 5}} to='/signup'> Sign up </Link>
+        </div>
       </div>
     );
   }

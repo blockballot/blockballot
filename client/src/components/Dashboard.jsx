@@ -9,7 +9,8 @@ import {
   Icon,
   Segment,
 } from 'semantic-ui-react';
- 
+import cookie from 'react-cookie';
+
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -37,9 +38,9 @@ class Dashboard extends React.Component {
 
 
   render() {
-    console.log(this.props);
     let polls = this.state.polls;
-    if (!this.props.loggedIn) {
+    let loggedIn = this.props.loggedIn;
+    if (!loggedIn) {
       return (<Redirect to='/login' />)
     }
     return (

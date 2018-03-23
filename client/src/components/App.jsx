@@ -18,6 +18,7 @@ import Voter from './Voter';
 import Vote from './Vote';
 import PollResults from './PollResults'
 import Poll from './Poll'
+import AboutUs from './AboutUs'
 import $ from 'jquery';
 import Nav from './Nav'
 
@@ -41,7 +42,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if (cookie.load('loggedIn') === 'true' && this.state.loggedIn === false) {
+    if (cookie.load('loggedIn') === 'true') {
       let currentUser = cookie.load('username');
       this.setState({
         loggedIn: true,
@@ -85,13 +86,14 @@ class App extends React.Component {
       url: '/login',
       data: user,
       success: (res, textStatus, jqXHR) => {
+        console.log('hi');
+
         if (jqXHR.status === 200) {
           this.setState({
             loggedIn: true,
             currentUser: user.email
           });
           this.props.history.push(`/dashboard`);
-          console.log('hi');
         }
       },
       error: (err) => {
@@ -116,12 +118,6 @@ class App extends React.Component {
     })
   }
 
-  handleNavClick(menuItem) {
-    this.setState({
-      activeItem: menuItem
-    })
-  }
-
   handlePollClick(poll) {
     this.setState({
       currentPoll: poll
@@ -129,27 +125,25 @@ class App extends React.Component {
     this.props.history.push(`/pollresults`);
   }
 
+  handleNavClick(item) {
+    this.setState({
+      activeItem: item
+    })
+  }
+
   render () {
-    let currentLocation = this.props.location.pathname;
-    let navComponent = null;
-    if (currentLocation !== '/') {
-      navComponent = (
-        <Nav
-        loggedIn={this.state.loggedIn}
-        handleNavClick={this.handleNavItemClick}
-        activeItem={this.state.activeItem}
-        />
-      )
-    }
     return (
 
       <div> 
-
-       {navComponent}
+        <Nav 
+        loggedIn = {this.state.loggedIn}
+        pathname = {this.props.location.pathname}
+        activeItem = {this.state.activeItem}/>
 
         <Route exact path='/'
           render={ () =>
-            <Landing />
+            <Landing 
+            loggedIn={this.state.loggedIn}/>
           }
         />
 
@@ -207,11 +201,9 @@ class App extends React.Component {
         />
 
         <Route
-          exact path='/poll'
+          exact path='/aboutus'
           render={ () =>
-            <Poll
-            loggedIn={this.state.loggedIn}
-            />
+            <AboutUs/>
           }
         />
         

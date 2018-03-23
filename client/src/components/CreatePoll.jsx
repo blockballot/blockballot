@@ -92,9 +92,7 @@ class CreatePoll extends React.Component {
   }
 
   render() {
-    if (!this.props.loggedIn) {
-      return (<Redirect to='/login' />)
-    }
+
     let optionEntry = this.state.ballotOption.map((option, index) => (
       <div key={index}>
         <TextField 

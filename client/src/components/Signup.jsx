@@ -79,32 +79,30 @@ class Signup extends React.Component {
       />
     ]
     const formChange = this.state.passwordGen ? (
-    <div>
-      <TextField
-          hintText="Password"
-          type="password"
-          errorText=''
-          name='password'
-          value={this.state.password}
-          onChange={this.onChange}
-          underlineStyle={{borderBottomColor: '#2284d1'}}
-
-        /> 
-        <RaisedButton 
-        style={{marginTop: 20}}
-        label="Create Account"
-        onClick={this.signupClick}
-      />
-    </div>
-    ) : (
       <div>
-        <RaisedButton 
+        <TextField
+            hintText="Password"
+            type="password"
+            errorText=''
+            name='password'
+            value={this.state.password}
+            onChange={this.onChange}
+            underlineStyle={{borderBottomColor: '#2284d1'}}/> 
+
+          <RaisedButton 
           style={{marginTop: 20}}
-          label="Generate Password"
-          onClick={this.handleOpen}
+          label="Create Account"
+          onClick={this.signupClick}
         />
-      </div>
-    );
+      </div>) 
+
+      : (<div>
+          <RaisedButton 
+            style={{marginTop: 20}}
+            label="Generate Password"
+            onClick={this.handleOpen}
+          />
+        </div>);
 
     return (
       <div style = {style}>
@@ -121,26 +119,26 @@ class Signup extends React.Component {
               errorText=''
               value={this.state.name}
               onChange={this.onChange}
-              underlineStyle={{borderBottomColor: '#2284d1'}}
+              underlineStyle={{borderBottomColor: '#2284d1'}}/>
 
-            /><br />
+            <br/>
+
             <TextField
               hintText="Email"
               errorText={this.props.signupError}
               name='email'
               value={this.state.email}
               onChange={this.onChange}
-              underlineStyle={{borderBottomColor: '#2284d1'}}
+              underlineStyle={{borderBottomColor: '#2284d1'}}/>
 
-            />
             <Dialog
               contentStyle={{width: 600}}
               title="Unique Password"
               actions={dialogActions}
               modal={false}
               open={this.state.dialogOpen}
-              onRequestClose={this.handleClose}
-            >
+              onRequestClose={this.handleClose}>
+
               <div>
                 Copy the unique password below to create your account:
               </div>  
@@ -158,6 +156,9 @@ class Signup extends React.Component {
             {formChange}
           </CardText>
         </Card>
+        <div style={{margin: 'auto', width: '50%', marginTop: 20}}>
+          Already have an account? <Link style={{marginLeft: 5}} to='/login'> Log In </Link>
+        </div>
       </div>
     );
   }

@@ -15,6 +15,8 @@ import {
   Sidebar,
   Visibility
 } from 'semantic-ui-react';
+import Nav from './Nav';
+import cookie from 'react-cookie';
 
 
 class Landing extends React.Component {
@@ -26,6 +28,7 @@ class Landing extends React.Component {
   }
 
   render() {
+
     return (
       <Responsive>
         <Segment
@@ -36,33 +39,10 @@ class Landing extends React.Component {
             padding: '1em 0em',
             backgroundSize: 'cover',
             backgroundImage: 'url(https://c1.staticflickr.com/1/820/39104766100_936bc7c75d_o.jpg)'
-          }}
-        >
-          <Menu
-            pointing
-            secondary
-            size='large'
-          >
-            <Menu.Item as='a' active>Home</Menu.Item>
-            <Menu.Item as='a'>About Us</Menu.Item>
-            <Menu.Item as='a'>
-              <Link to='/voter'>
-                Voters
-              </Link>
-            </Menu.Item>
-            <Menu.Item position='right'>
-              <Link to='/login'>
-                <Button as='a' >Log In</Button>
-              </Link>
-              <Link to='/signup'>
-                <Button as='a' style={{marginLeft: '0.5em'}}>Sign Up</Button>
-              </Link>
-            </Menu.Item>
-          </Menu>
+          }}>
           <Container
             text
-            style={{textAlign: 'center'}}
-          >
+            style={{textAlign: 'center'}}>
             <Header
               as='h1'
               content='BlockBallot'
@@ -80,13 +60,12 @@ class Landing extends React.Component {
                 fontSize: '1.7em',
                 fontWeight: 'normal',
                 marginTop: '1.5em'
-              }}
-            />
-              <Link to='/createpoll'>
-            <Button primary size='huge'>
+              }}/>
+            <Link to='/createpoll'>
+              <Button primary size='huge'>
                 Get Started
-            </Button>
-              </Link>
+              </Button>
+            </Link>
           </Container>
         </Segment>
         <Segment
@@ -95,8 +74,7 @@ class Landing extends React.Component {
             minHeight: 700,
             padding: '1em 0em',
             backgroundColor: '#F0F8FF'
-          }}
-        >
+          }}>
           <Grid
             container
             stackable
@@ -109,23 +87,20 @@ class Landing extends React.Component {
                   style={{
                     fontSize: '2em',
                     marginTop: '1em'
-                  }}
-                >
+                  }}>
                   How to Get Started
                 </Header>
                 <p style={{
                   fontSize: '1.33em',
                   textAlign: 'center',
-                  }}
-                >
+                  }}>
                   Sign up your organization for a BlockBallot account, design custom ballots, and track results with our analytics dashboard.
                 </p>
                 <Header as='h3' style={{fontSize: '2em'}}>Blockchain for Transparency</Header>
                 <p style={{
                   fontSize: '1.33em',
                   textAlign: 'center'
-                  }}
-                >
+                  }}>
                   Because voter data is permanently written to a private Ethereum blockchain, BlockBallot is the safest, most transparent way to organize a vote.
                 </p>
               </Grid.Column>
