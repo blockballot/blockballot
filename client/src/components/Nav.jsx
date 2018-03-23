@@ -15,10 +15,7 @@ class Nav extends React.Component {
       navComponent = (
       <Menu pointing secondary>
         <Link to='/dashboard'>
-          <Menu.Item 
-          name="Dashboard"
-          active={this.props.activeItem === 'Dashboard'}
-          onClick={() => this.handleNavClick('Dashboard')}/>
+          <Menu.Item name="Dashboard"/>
         </Link>
         <Link to='/createpoll'>
           <Menu.Item name="Create Poll"/>
@@ -39,10 +36,7 @@ class Nav extends React.Component {
       navComponent = (
         <Menu pointing secondary>
 
-          <Menu.Item 
-          as='a'  
-          active={this.props.activeItem === 'Home'}
-          onClick={() => this.handleNavClick('Home')}>
+          <Menu.Item as='a'>
             <Link to='/'>
               Home
             </Link>

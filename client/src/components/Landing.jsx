@@ -28,7 +28,7 @@ class Landing extends React.Component {
   }
 
   render() {
-
+    console.log(cookie.load('loggedIn'));
     return (
       <Responsive>
         <Segment
@@ -51,8 +51,7 @@ class Landing extends React.Component {
                 fontWeight: 'normal',
                 marginBottom: 0,
                 marginTop: '3em'
-              }}
-            />
+              }}/>
             <Header
               as='h2'
               content='Decentralized Voting for a Transparent World'

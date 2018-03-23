@@ -1,8 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import {CardText, CardHeader, Grid, TextField, RaisedButton, FlatButton, Dialog, Card} from 'material-ui';
 import { Responsive, Button, Form, Header, Image, Message, Segment, Container } from 'semantic-ui-react';
 import CreatePoll from './CreatePoll.jsx';
+import cookie from 'react-cookie';
+
 const style = {
   width: 400,
   height: 500,
@@ -58,6 +60,9 @@ class Login extends React.Component {
   
   //need error handling still for empty fields
   render() {
+    if (cookie.load('loggedIn') === 'true') {
+      return (<Redirect to='/dashboard' />)
+    } 
     const dialogActions = [
       <FlatButton
         label="Close"

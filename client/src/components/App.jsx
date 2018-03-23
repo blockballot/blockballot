@@ -52,7 +52,6 @@ class App extends React.Component {
   }
 
   signupSubmit(signup) {
-    console.log('SIGNUP', signup);
     let user = {
       name: `${signup.name}`,
       email: `${signup.email}`,
@@ -80,14 +79,11 @@ class App extends React.Component {
       email: `${login.email}`,
       password: `${login.password}`
     };
-    console.log(user);
     $.ajax({
       type: 'POST',
       url: '/login',
       data: user,
       success: (res, textStatus, jqXHR) => {
-        console.log('hi');
-
         if (jqXHR.status === 200) {
           this.setState({
             loggedIn: true,
@@ -97,6 +93,7 @@ class App extends React.Component {
         }
       },
       error: (err) => {
+        console.log('error!')
         if (err.status === 401) {
           this.setState({
             loginEmailError: err.responseText

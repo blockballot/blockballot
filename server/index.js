@@ -25,6 +25,7 @@ app.use(session({
 }));
 
 app.post('/login', (req, res) => {
+  console.log('hi')
   let email = req.body.email;
   let password = req.body.password;
   db.Org.findOne({ where: { orgEmail: email } })

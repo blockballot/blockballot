@@ -2,10 +2,11 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import {Link, Redirect} from 'react-router-dom';
 import {Bar as BarChart} from 'react-chartjs';
+import cookie from 'react-cookie';
 
 const PollResults = (props) => {
-  if (props.loggedIn === false) {
-    return (<Redirect to='/login' />) 
+  if (cookie.load('loggedIn') !== 'true') {
+    return (<Redirect to='/login' />)
   } else if (props.poll === undefined) {
     return (<Redirect to='/dashboard' />)
   }

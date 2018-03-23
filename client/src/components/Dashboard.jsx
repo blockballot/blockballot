@@ -17,14 +17,16 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       polls: samplePolls,
-      currentPoll: {}
+      currentPoll: {},
+      loggedIn: false,
+      currentUser: ''
     }
   }
 
   // componentDidMount() {
   //   $.ajax({
   //     type: 'GET',
-  //     url: '/dashboard',
+  //     url: '/pollList',
   //     success: (data) => {
   //       this.setState({
   //         polls: data
@@ -36,12 +38,11 @@ class Dashboard extends React.Component {
   //   });
   // }
 
-
   render() {
     let polls = this.state.polls;
-    if (!this.props.loggedIn) {
+    if (cookie.load('loggedIn') !== 'true') {
       return (<Redirect to='/login' />)
-    }
+    } 
     return (
       <div>
 
