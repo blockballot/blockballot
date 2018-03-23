@@ -10,7 +10,9 @@ class Nav extends React.Component {
 
   render() {
     let activeItem = this.props.activeItem;
-      return (
+    let navComponent = null;
+    if (this.props.loggedIn) {
+      navComponent = (
         <Menu pointing secondary>
           <Link to="/dashboard">
             <Menu.Item
@@ -47,7 +49,35 @@ class Nav extends React.Component {
           </Menu.Menu>
         </Menu>
       )
-    
+    } else {
+      navComponent = (
+        <Menu pointing secondary>
+          <Link to="/">
+            <Menu.Item
+              name="Home"
+              active={activeItem === 'Home'}
+              onClick={this.props.handleNavClick}
+            >
+            </Menu.Item>
+          </Link>
+          
+          <Link to="/voter">
+            <Menu.Item
+              className="menuItem"
+              name="Submit Vote"
+              active={activeItem === 'Submit Vote'}
+              onClick={this.props.handleNavClick}
+            />
+          </Link>
+        </Menu>
+      )
+    }
+
+    return (
+      <div>
+      {navComponent}
+      </div>
+    )
   }
 }
 
