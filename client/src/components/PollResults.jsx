@@ -4,6 +4,9 @@ import {Link, Redirect} from 'react-router-dom';
 import {Bar as BarChart} from 'react-chartjs';
 
 const PollResults = (props) => {
+  // if (!props.loggedIn) {
+  //   return (<Redirect to='/login' />)
+  // }
   return (
     <div>
       <div className="header" style ={{marginTop: 100, marginBottom: 20}}>

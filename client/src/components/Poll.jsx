@@ -4,6 +4,9 @@ import PollResults from './PollResults.jsx';
 import {Link, Redirect, Route} from 'react-router-dom';
 
 const Poll = (props) => {
+  // if (!props.loggedIn) {
+  //   return (<Redirect to='/login' />)
+  // }
   return (
       <div className="card"
       onClick={() => props.handlePollClick(props.poll)}

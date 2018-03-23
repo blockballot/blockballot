@@ -17,6 +17,7 @@ import cookie from 'react-cookie';
 import Voter from './Voter';
 import Vote from './Vote';
 import PollResults from './PollResults'
+import Poll from './Poll'
 import $ from 'jquery';
 import Nav from './Nav'
 
@@ -85,12 +86,12 @@ class App extends React.Component {
       data: user,
       success: (res, textStatus, jqXHR) => {
         if (jqXHR.status === 200) {
-          console.log('Success!');
           this.setState({
             loggedIn: true,
             currentUser: user.email
           });
           this.props.history.push(`/dashboard`);
+          console.log('hi');
         }
       },
       error: (err) => {
@@ -110,6 +111,9 @@ class App extends React.Component {
 
   logoutSubmit() {
     $.get('/logout');
+    this.setState({
+      loggedIn: false
+    })
   }
 
   handleNavClick(menuItem) {
@@ -165,7 +169,6 @@ class App extends React.Component {
         />
 
         <Route
-          style={{backgroundColor: '#F0F8FF'}}
           exact path='/login'
           render={ () =>
             <Login
@@ -180,13 +183,16 @@ class App extends React.Component {
           exact path='/dashboard'
           render={ () =>
             <Dashboard 
+            loggedIn={this.state.loggedIn}
             handlePollClick={this.handlePollClick}/>
           }
         />
         <Route
           exact path='/createpoll'
           render={ () =>
-            <CreatePoll />
+            <CreatePoll 
+            loggedIn={this.state.loggedIn}
+            />
           }
         />
 
@@ -194,7 +200,8 @@ class App extends React.Component {
           exact path='/pollresults'
           render={ () =>
             <PollResults
-            poll={this.state.currentPoll} 
+            poll={this.state.currentPoll}
+            loggedIn={this.state.loggedIn}
             />
           }
         />
@@ -202,7 +209,9 @@ class App extends React.Component {
         <Route
           exact path='/poll'
           render={ () =>
-            <Poll/>
+            <Poll
+            loggedIn={this.state.loggedIn}
+            />
           }
         />
         

@@ -1,6 +1,6 @@
 import React from 'react';
 import Poll from './Poll.jsx';
-import {Link, Route} from 'react-router-dom';
+import {Link, Route, Redirect} from 'react-router-dom';
 import {
   Card,
   Button,
@@ -39,6 +39,9 @@ class Dashboard extends React.Component {
   render() {
     console.log(this.props);
     let polls = this.state.polls;
+    if (!this.props.loggedIn) {
+      return (<Redirect to='/login' />)
+    }
     return (
       <div>
 
