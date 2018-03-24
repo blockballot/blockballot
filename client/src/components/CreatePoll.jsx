@@ -4,7 +4,9 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Card, TextField, Divider, RaisedButton } from 'material-ui';
 import '../style/voter.css';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
+import cookie from 'react-cookie';
+
 
 class CreatePoll extends React.Component {
   constructor() {
@@ -93,7 +95,26 @@ class CreatePoll extends React.Component {
   }
 
   render() {
-
+    let submitButton = null;
+    if (cookie.load('loggedIn') === 'true') {
+      submitButton = (
+        <RaisedButton 
+          style={{ backgroundColor: "navy" }}
+          type="submit" 
+          label="Create Poll" 
+          onClick={this.handleSubmit}/>
+      )
+    } else {
+      submitButton = (
+        <Link to='/signup'>
+          <RaisedButton 
+            style={{ backgroundColor: "navy" }}
+            type="submit" 
+            label="Create Poll"/>
+        </Link>
+      )
+    }
+    
     let optionEntry = this.state.ballotOption.map((option, index) => (
       <div key={index}>
         <TextField
@@ -225,12 +246,7 @@ class CreatePoll extends React.Component {
               onClick={this.handleVoterNumberSubmit}
             /><br/>
             <br/>
-            <RaisedButton
-              style={{ backgroundColor: "navy" }}
-              type="submit"
-              label="Create Poll"
-              onClick={this.handleSubmit}
-            />
+            {submitButton}
           </div>
           </Card>
         </div>
