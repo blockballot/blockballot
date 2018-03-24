@@ -67,35 +67,36 @@ class CreatePoll extends React.Component {
   }
 
   handleAddOption() {
-    this.setState({ 
-      ballotOption: this.state.ballotOption.concat([{ optionName: '', optionAnswer:false }]) 
+    this.setState({
+      ballotOption: this.state.ballotOption.concat([{ optionName: '', optionAnswer:false }])
     });
   }
-  
+
   handleRemoveOption(event) {
     let removeIndex = Number(event.target.name);
-    this.setState({ 
-      ballotOption: this.state.ballotOption.filter((option, i) => removeIndex !== i) 
+    this.setState({
+      ballotOption: this.state.ballotOption.filter((option, i) => removeIndex !== i)
     });
   }
 
   handleVoterNumberSubmit(event) {
     event.preventDefault();
-    this.setState({ 
+    this.setState({
       isDemoClicked: true
     });
- 
+
   }
-  
+
   handleSubmit(event) {
     event.preventDefault();
+    alert('Your Poll is Deployed')
   }
 
   render() {
 
     let optionEntry = this.state.ballotOption.map((option, index) => (
       <div key={index}>
-        <TextField 
+        <TextField
           id="option"
           type="text"
           placeholder="Enter your options"
@@ -103,12 +104,12 @@ class CreatePoll extends React.Component {
           value={option.optionName}
           onChange={this.handleOptionChange}
         />
-        <input 
+        <input
           type="button"
-          style={{color: "red"}} 
-          name={index} 
-          value="x" 
-          onClick={this.handleRemoveOption} 
+          style={{color: "red"}}
+          name={index}
+          value="x"
+          onClick={this.handleRemoveOption}
         />
       </div>
     ))
@@ -139,37 +140,36 @@ class CreatePoll extends React.Component {
         </div>
       ))) : (
         <div>
-          
+
         </div>
       );
-  
+
     return (
 
       <div>
-
-        <div className="header">CreatePoll</div>
+        <div className="header">Create Poll</div>
         <section style={{ display: "flex", padding: 30}}>
-          <div style={{ flex: 1, padding: 5 }}> 
+          <div style={{ flex: 1, padding: 5 }}>
           <Card style={{ padding: 30 }}>
           <div>
             <label>
               <b>TITLE:</b> <br/>
-              <TextField 
+              <TextField
                 id="title"
-                type="text" 
-                name="title" 
+                type="text"
+                name="title"
                 placeholder="Enter title"
-                value={this.state.title} 
-                onChange={this.handleInputChange} 
+                value={this.state.title}
+                onChange={this.handleInputChange}
               />
             </label><br/>
-              
+
             <label>
               <b>OPTIONS:</b> <br/>
               {optionEntry}
-              <RaisedButton 
-                label="Add Option Entry"  
-                onClick={this.handleAddOption} 
+              <RaisedButton
+                label="Add Option Entry"
+                onClick={this.handleAddOption}
                />
             </label><br/>
               <br/><br/>
@@ -189,7 +189,7 @@ class CreatePoll extends React.Component {
                     dateFormat="LLL"
                     timeCaption="time"
                 />
-            </label><br/>  
+            </label><br/>
             <label>
               CLOSING:
                 <DatePicker
@@ -210,26 +210,26 @@ class CreatePoll extends React.Component {
 
             <label><br/>
             <b>UNIQUE CODES:</b> <br/>
-              <TextField 
+              <TextField
                 id="Unique"
-                type="text" 
-                name="voterNumber" 
-                floatingLabelText="Enter number of voters" 
-                value={this.state.voterNumber} 
-                onChange={this.handleInputChange} 
+                type="text"
+                name="voterNumber"
+                floatingLabelText="Enter number of voters"
+                value={this.state.voterNumber}
+                onChange={this.handleInputChange}
               />
             </label><br/>
-            <RaisedButton 
-              type="submit" 
-              label="Get Unique Codes" 
-              onClick={this.handleVoterNumberSubmit} 
+            <RaisedButton
+              type="submit"
+              label="Get Unique Codes"
+              onClick={this.handleVoterNumberSubmit}
             /><br/>
             <br/>
-            <RaisedButton 
+            <RaisedButton
               style={{ backgroundColor: "navy" }}
-              type="submit" 
-              label="Create Poll" 
-              onClick={this.handleSubmit} 
+              type="submit"
+              label="Create Poll"
+              onClick={this.handleSubmit}
             />
           </div>
           </Card>
@@ -239,7 +239,7 @@ class CreatePoll extends React.Component {
           <Card style={{ padding: 30, minHeight: "627px", fontSize: "14px"}}>
             <div style={{ textAlign: "center", marginBottom: "30px"}}>
               <b>{this.state.title}</b>
-            </div>  
+            </div>
 
 
             <div style={{ marginBottom: "30px"}}>

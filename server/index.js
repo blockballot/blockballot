@@ -1,4 +1,4 @@
-require('dotenv').config();
+const env = require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -13,8 +13,8 @@ const helpers = require('../helpers/helpers.js')
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/../client/dist'));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -82,7 +82,7 @@ app.get('/logout', (req, res) => {
   });
 });
 
-/*for Test*/
+/* For Test */
 app.post('/api/Voter', (req, res) => {
   console.log('server', db.checkVoter(req.body.uniqueId))
   res.send('Hello World')
