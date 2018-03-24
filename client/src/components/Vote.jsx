@@ -13,7 +13,6 @@ class Vote extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      uniqueId: '',
       isLoggedIn: false,
       web3: null,
       storageValue: 0,
@@ -24,21 +23,8 @@ class Vote extends React.Component {
       isBallotCompleted: false,
 
       // Need to replace the below vars with dynamic data
-      ballotName: 'Election for Board of Trustees',
-      ballotOption: [
-        { optionName:'Mark Cuban',
-          optionAnswer: false
-        },
-        { optionName:'Dwayne "The Rock" Johnson',
-          optionAnswer: false
-        },
-        { optionName:'Oprah Winfrey',
-          optionAnswer: false
-        },
-        { optionName:'Lenny',
-          optionAnswer: false
-        }
-      ]
+      ballotName: '',
+      ballotOption: []
     };
     this.updateCheck = this.updateCheck.bind(this);
     this.submitVote = this.submitVote.bind(this);
@@ -55,6 +41,31 @@ class Vote extends React.Component {
     .catch(() => {
       console.log('Error finding web3.')
     })
+
+    var option = this;
+    axios({
+      method: 'POST',
+      url: '/api/poll',
+      data: { 
+        pollId: this.props.pollId
+      }
+    })
+    .then(function (res) {
+      console.log(res)
+      var options = res.data.map(function(element) {
+        return element.optionName
+      });
+      var name = res.data[0].poll.pollName;
+      option.setState({
+        ballotName: name,
+        ballotOption: options
+      });
+    })
+    .catch(function (error) {      
+      voter.setState({
+        errorText: "Your unique code is incorrect. Please, try again"
+      });
+    });
   }
 
   updateCheck(event) {
@@ -101,6 +112,27 @@ class Vote extends React.Component {
       this.setState({
         storageValue: voteCount.c[0],
         isVoteSubmitted: true
+      });
+    });
+
+    axios({
+      method: 'POST',
+      url: '/api/voteresult',
+      data: {
+        uniqueId: this.state.uniqueId
+      }
+    })
+    .then(function (res) {
+      var poll = res.data.pollId;
+      voter.setState({
+        isLogin: true,
+        pollId: poll
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+      voter.setState({
+        errorText: "Your unique code is incorrect. Please, try again"
       });
     });
   }

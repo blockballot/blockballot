@@ -82,16 +82,36 @@ app.get('/logout', (req, res) => {
   });
 });
 
-/*for Test*/
-app.post('/api/Voter', (req, res) => {
+app.post('/api/voter', (req, res) => {
   db.VoteKey.findOne({where: {voterUniqueId: req.body.uniqueId}}).then(voteruniqueid => {
     if (!voteruniqueid) {
       res.status(500).send('Invalid unique ID. Please try again.')
     } else {
-      res.status(200).send(`User logged in with ${voteruniqueid}`);
+      res.status(200).send(voteruniqueid);
     }
   })
 })
+
+app.post('/api/poll', (req, res) => {
+  db.Option.findAll({where: {pollId: req.body.pollId}, include: [db.Poll]}).then(option => {
+    if (!option) {
+      res.status(500).send('There was an error. Please try again later.')
+    } else {
+      res.status(200).send(option);
+    }
+  })
+})
+
+app.post('/api/voteresult', (req, res) => {
+  db.Option.findAll({where: {pollId: req.body.pollId}, include: [db.Poll]}).then(option => {
+    if (!option) {
+      res.status(500).send('There was an error. Please try again later.')
+    } else {
+      res.status(200).send(option);
+    }
+  })
+})
+
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));

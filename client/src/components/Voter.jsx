@@ -14,6 +14,7 @@ class Voter extends React.Component {
       isLogin: false,
       isVoteSubmitted: false,
       isBallotCompleted: false,
+      pollId: 0, 
       errorText: ''
     };
     this.handleChange = this.handleChange.bind(this);
@@ -31,15 +32,16 @@ class Voter extends React.Component {
     var voter = this;
     axios({
       method: 'POST',
-      url: '/api/Voter',
+      url: '/api/voter',
       data: {
         uniqueId: this.state.uniqueId
       }
     })
     .then(function (res) {
-      console.log('found unique ID', res);
+      var poll = res.data.pollId;
       voter.setState({
-        isLogin: true
+        isLogin: true,
+        pollId: poll
       });
     })
     .catch(function (error) {
@@ -59,11 +61,11 @@ class Voter extends React.Component {
       } else {
         if(this.state.isVoteSubmitted) {
           return (
-            <VoteResults />
+            <VoteResults  />
           )
         } else {
           return (
-            <Vote />
+            <Vote pollId={this.state.pollId} />
           )
         }
       }

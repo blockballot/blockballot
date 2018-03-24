@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"No tests currently defined, exiting for now\" && exit 0",
     "start": "node --ignore data server/index.js",
-    "server-dev": "nodemon --ignore data server/index.js",
+    "server-dev": "nodemon --ignore data --inspect server/index.js",
     "react-dev": "webpack -d --watch",
     "geth-server": "geth --datadir data --networkid 3210 --rpc --rpccorsdomain 'http://127.0.0.1:3000' --fast --rpcapi personal,eth"
   },
