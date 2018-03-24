@@ -1,16 +1,19 @@
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize('blockballot', 'root', '' , {
-// in mysql create databases blockballot
-  dialect: 'mysql'
+const Sequelize = require("sequelize");
+const sequelize = new Sequelize("blockballot", "root", "", {
+  // in mysql create databases blockballot
+  dialect: "mysql"
 });
 
-sequelize.authenticate().then(() => {
-  console.log('MySQL Connection has been established successfully.');
-}).catch(err => {
-  console.error('MySQL Unable to connect to the database:', err);
-});
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("MySQL Connection has been established successfully.");
+  })
+  .catch(err => {
+    console.error("MySQL Unable to connect to the database:", err);
+  });
 
-const Org = sequelize.define('org', {
+const Org = sequelize.define("org", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -25,17 +28,17 @@ const Org = sequelize.define('org', {
   orgEmail: {
     type: Sequelize.STRING
   },
-  'createdAt': {
+  createdAt: {
     type: Sequelize.DATE(3),
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
   },
-  'updatedAt': {
-      type: Sequelize.DATE(3),
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)'),
-  },
+  updatedAt: {
+    type: Sequelize.DATE(3),
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
+  }
 });
 
-const Poll = sequelize.define('poll', {
+const Poll = sequelize.define("poll", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -53,17 +56,17 @@ const Poll = sequelize.define('poll', {
   pollHash: {
     type: Sequelize.STRING
   },
-  'createdAt': {
+  createdAt: {
     type: Sequelize.DATE(3),
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
   },
-  'updatedAt': {
-      type: Sequelize.DATE(3),
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)'),
-  },
+  updatedAt: {
+    type: Sequelize.DATE(3),
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
+  }
 });
 
-const Option = sequelize.define('option', {
+const Option = sequelize.define("option", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -72,17 +75,17 @@ const Option = sequelize.define('option', {
   optionName: {
     type: Sequelize.STRING
   },
-  'createdAt': {
+  createdAt: {
     type: Sequelize.DATE(3),
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
   },
-  'updatedAt': {
-      type: Sequelize.DATE(3),
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)'),
-  },
+  updatedAt: {
+    type: Sequelize.DATE(3),
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
+  }
 });
 
-const Vote = sequelize.define('vote', {
+const Vote = sequelize.define("vote", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -91,17 +94,17 @@ const Vote = sequelize.define('vote', {
   voteHash: {
     type: Sequelize.STRING
   },
-  'createdAt': {
+  createdAt: {
     type: Sequelize.DATE(3),
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
   },
-  'updatedAt': {
-      type: Sequelize.DATE(3),
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)'),
-  },
+  updatedAt: {
+    type: Sequelize.DATE(3),
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
+  }
 });
 
-const VoteKey = sequelize.define('votekey', {
+const VoteKey = sequelize.define("votekey", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -110,14 +113,14 @@ const VoteKey = sequelize.define('votekey', {
   voterUniqueId: {
     type: Sequelize.STRING
   },
-  'createdAt': {
+  createdAt: {
     type: Sequelize.DATE(3),
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
   },
-  'updatedAt': {
-      type: Sequelize.DATE(3),
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)'),
-  },
+  updatedAt: {
+    type: Sequelize.DATE(3),
+    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
+  }
 });
 
 Poll.hasMany(Option);
@@ -128,7 +131,6 @@ Option.hasMany(Vote);
 Vote.belongsTo(Option);
 Poll.hasMany(VoteKey);
 VoteKey.belongsTo(Poll);
-
 sequelize.sync();
 
 module.exports = {
@@ -137,4 +139,4 @@ module.exports = {
   Option: Option,
   Vote: Vote,
   VoteKey: VoteKey
-}
+};
