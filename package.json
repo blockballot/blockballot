@@ -4,7 +4,7 @@
   "description": "A decentralized voting platform",
   "main": "server/index.js",
   "scripts": {
-    "test": "mocha test/test-server.js --timeout 10000",
+    "test": "mocha test/test-server.js --timeout 10000 --exit",
     "start": "node --ignore data server/index.js",
     "server-dev": "nodemon --ignore data server/index.js",
     "react-dev": "webpack -d --watch",
