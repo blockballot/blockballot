@@ -1,4 +1,4 @@
-const SHA256 = require('crypto-js/SHA256');
+const SHA256 = require('crypto-js').SHA256;
 const rn = require('random-number');
 const rw = require('random-words');
 
