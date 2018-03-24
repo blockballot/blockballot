@@ -28,28 +28,26 @@ class Voter extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    // axios({
-    //   method: 'POST',
-    //   url: '/api/Voter',
-    //   data: {
-    //     uniqueId: this.state.uniqueId
-    //   }
-    // })
-    // .then(function (res) {
-    //   console.log('found unique ID', res);
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
-    if(this.state.uniqueId === '093-89-435') {
-      this.setState({
+    var voter = this;
+    axios({
+      method: 'POST',
+      url: '/api/Voter',
+      data: {
+        uniqueId: this.state.uniqueId
+      }
+    })
+    .then(function (res) {
+      console.log('found unique ID', res);
+      voter.setState({
         isLogin: true
       });
-    } else {
-      this.setState({
+    })
+    .catch(function (error) {
+      console.log(error);
+      voter.setState({
         errorText: "Your unique code is incorrect. Please, try again"
       });
-    }
+    });
   }
 
   render() {

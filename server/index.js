@@ -84,8 +84,13 @@ app.get('/logout', (req, res) => {
 
 /*for Test*/
 app.post('/api/Voter', (req, res) => {
-  console.log('server', db.checkVoter(req.body.uniqueId))
-  res.send('Hello World')
+  db.VoteKey.findOne({where: {voterUniqueId: req.body.uniqueId}}).then(voteruniqueid => {
+    if (!voteruniqueid) {
+      res.status(500).send('Invalid unique ID. Please try again.')
+    } else {
+      res.status(200).send(`User logged in with ${voteruniqueid}`);
+    }
+  })
 })
 
 app.get('/*', (req, res) => {
