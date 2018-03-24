@@ -7,4 +7,4 @@ cache:
 services:
   - mysql
 before_install:
-  - mysql -u root < database/index.js
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS blockballot;'
