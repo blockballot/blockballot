@@ -10,8 +10,8 @@ const createContract = function(options) {
     const abi = JSON.parse(compiledContract.contracts[':Voting'].interface);
     const votingContract = web3.eth.contract(abi);
     const byteCode = '0x' + compiledContract.contracts[':Voting'].bytecode;
-    web3.personal.unlockAccount(web3.eth.accounts[0], 'raven');
-    const deployedContract = votingContract.new(options, { data: byteCode, from: web3.eth.accounts[0], gas: 470000});
+    web3.personal.unlockAccount(process.env.BC_ACCOUNT, process.env.BC_PASSWORD);
+    const deployedContract = votingContract.new(options, { data: byteCode, from: process.env.BC_ACCOUNT, gas: 470000});
     return deployedContract;
   }
   catch (err) {

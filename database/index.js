@@ -24,7 +24,15 @@ const Org = sequelize.define('org', {
   },
   orgEmail: {
     type: Sequelize.STRING
-  }
+  },
+  'createdAt': {
+    type: Sequelize.DATE(3),
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
+  },
+  'updatedAt': {
+      type: Sequelize.DATE(3),
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)'),
+  },
 });
 
 const Poll = sequelize.define('poll', {
@@ -44,7 +52,15 @@ const Poll = sequelize.define('poll', {
   },
   pollHash: {
     type: Sequelize.STRING
-  }
+  },
+  'createdAt': {
+    type: Sequelize.DATE(3),
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
+  },
+  'updatedAt': {
+      type: Sequelize.DATE(3),
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)'),
+  },
 });
 
 const Option = sequelize.define('option', {
@@ -55,7 +71,15 @@ const Option = sequelize.define('option', {
   },
   optionName: {
     type: Sequelize.STRING
-  }
+  },
+  'createdAt': {
+    type: Sequelize.DATE(3),
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
+  },
+  'updatedAt': {
+      type: Sequelize.DATE(3),
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)'),
+  },
 });
 
 const Vote = sequelize.define('vote', {
@@ -66,7 +90,15 @@ const Vote = sequelize.define('vote', {
   },
   voteHash: {
     type: Sequelize.STRING
-  }
+  },
+  'createdAt': {
+    type: Sequelize.DATE(3),
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
+  },
+  'updatedAt': {
+      type: Sequelize.DATE(3),
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)'),
+  },
 });
 
 const VoteKey = sequelize.define('votekey', {
@@ -77,7 +109,15 @@ const VoteKey = sequelize.define('votekey', {
   },
   voterUniqueId: {
     type: Sequelize.STRING
-  }
+  },
+  'createdAt': {
+    type: Sequelize.DATE(3),
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3)'),
+  },
+  'updatedAt': {
+      type: Sequelize.DATE(3),
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)'),
+  },
 });
 
 Poll.hasMany(Option);
@@ -89,22 +129,7 @@ Vote.belongsTo(Option);
 Poll.hasMany(VoteKey);
 VoteKey.belongsTo(Poll);
 
-Org.sync().then(() => {
-  console.log('Org table created');
-});
-Poll.sync().then(() => {
-  console.log('Poll table created');
-});
-Option.sync().then(() => {
-  console.log('Option table created');
-});
-Vote.sync().then(() => {
-  console.log('Vote table created');
-});
-VoteKey.sync().then(() => {
-  console.log('VoteKey table created');
-})
-
+sequelize.sync();
 
 module.exports = {
   Org: Org,
