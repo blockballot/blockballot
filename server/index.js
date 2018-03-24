@@ -103,13 +103,17 @@ app.post('/api/poll', (req, res) => {
 })
 
 app.post('/api/voteresult', (req, res) => {
-  db.Option.findAll({where: {pollId: req.body.pollId}, include: [db.Poll]}).then(option => {
-    if (!option) {
-      res.status(500).send('There was an error. Please try again later.')
-    } else {
-      res.status(200).send(option);
-    }
-  })
+  console.log('xxxxxxx', req.body)
+  db.Vote.create({voteHash: req.body.voteHash, optionId: req.body.voted })
+    .then(newUser => {
+      if (newUser) {
+        res.status(200).send();
+      } else {
+        res.status(500).send('There was an error. Please try again later.')
+      }
+    }).catch(err =>
+      console.log(err)
+    )
 })
 
 

@@ -8,7 +8,6 @@ import TestVote from '../../../build/contracts/TestVote.json';
 import { Divider, Card, RaisedButton, Checkbox, RadioButton, RadioButtonGroup} from 'material-ui';
 import '../style/voter.css';
 
-
 class Vote extends React.Component {
   constructor(props) {
     super(props);
@@ -54,6 +53,7 @@ class Vote extends React.Component {
       var options = res.data.map(function(element) {
         return element
       });
+      console.log(options)
       var name = res.data[0].poll.pollName;
       option.setState({
         ballotName: name,
@@ -68,19 +68,8 @@ class Vote extends React.Component {
     });
   }
 
-  updateCheck(event) {
- 
-
-    this.setState({
-      selectedOption: event.target.value,
-      candidateName: event.target.optionname
-    });
-    console.log(this.state.selectedOption)
-    console.log(this.state.candidateName)
-  }
-
   instantiateContract() {
-    console.log('instantiate contract')
+    console.log(' contract instantiated')
     const TestContract = contract(TestVote);
     TestContract.setProvider(this.state.web3.currentProvider);
 
@@ -90,6 +79,14 @@ class Vote extends React.Component {
           contractInstance: instance
         });
       });
+    });
+  }
+
+  updateCheck(event) {
+    var eventValue = event.target.value.split('.')
+    this.setState({
+      selectedOption: eventValue[0],
+      candidateName: eventValue[1]
     });
   }
 
@@ -106,7 +103,6 @@ class Vote extends React.Component {
       this.setState({
         voteHash: result.tx
       }
-      
     );
     return TestContractInstance.totalVotesFor.call(candidateName)
     }).then((voteCount) => {
@@ -117,27 +113,22 @@ class Vote extends React.Component {
       });
     });
 
-  
-
-        axios({
-          method: 'POST',
-          url: '/api/voteresult',
-          data: {
-            voted: Number(voted.state.selectedOption),
-            voteHash: result.tx
-          }
-        })
-        .then(function (res) {
-    
-        })
-        .catch(function (error) {
-    
-        });
-
-
-
-
+    //need to add to the testcontract instance
+    axios({
+      method: 'POST',
+      url: '/api/voteresult',
+      data: {
+        voted: Number(voted.state.selectedOption),
+        voteHash: result.tx
+      }
+    })
+    .then(function (res) {
+    })
+    .catch(function (error) {
+    });
   }
+
+
 
   render() {
     const styles = {
@@ -152,17 +143,15 @@ class Vote extends React.Component {
     let ballotInfo = this.state;
     let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
       return (
-          <RadioButton
-            style={styles.radioButton}
-            key={index}
-            label={option.optionName}
-            value={option.id}
-            optionname={option.optionName}
-            />
+        <RadioButton
+          style={styles.radioButton}
+          key={index}
+          label={option.id + ": " + option.optionName}
+          value={option.id + "." + option.optionName}
+        />
       )
     });
     
-
     if(this.state.isVoteSubmitted === true) {
       return (
         <VoterResults
@@ -172,14 +161,13 @@ class Vote extends React.Component {
         />
       )
     } else {
-
       return (
         <div>
           <div className="header">{ballotInfo.ballotName}</div>
           <form>
             <Card className="center">
               <div style={{fontSize: 16, minWidth: 400}}>
-                <RadioButtonGroup name="voteoptions" labelPosition="left" valueSelected={Number(this.state.selectedOption)} onChange={this.updateCheck}>
+                <RadioButtonGroup name="voteoptions" labelPosition="left" valueSelected={this.state.selectedOption + "." + this.state.candidateName} onChange={this.updateCheck}>
                   {ballotQuestionList}
                 </RadioButtonGroup>
               </div>
