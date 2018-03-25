@@ -37,6 +37,7 @@
     "moment": "^2.21.0",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.2",
+    "nodemailer": "^4.6.3",
     "prop-types": "^15.6.1",
     "random-number": "0.0.9",
     "random-words": "^1.0.0",

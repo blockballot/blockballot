@@ -4,6 +4,7 @@ import {CardText, CardHeader, Grid, TextField, RaisedButton, FlatButton, Dialog,
 import { Responsive, Button, Form, Header, Image, Message, Segment, Container } from 'semantic-ui-react';
 import CreatePoll from './CreatePoll.jsx';
 import cookie from 'react-cookie';
+import $ from 'jquery';
 
 const style = {
   width: 400,
@@ -29,6 +30,7 @@ class Login extends React.Component {
     this.loginClick = this.loginClick.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleForgotPassword = this.handleForgotPassword.bind(this);
   }
   
   onChange(e) {
@@ -57,6 +59,20 @@ class Login extends React.Component {
       dialogOpen: false,
     });
   };
+
+  handleForgotPassword() {
+    $.ajax({
+      type: 'POST',
+      url: '/email',
+      data: {email: this.state.forgotPasswordEmail},
+      success: (res, textStatus, jqXHR) => {
+        console.log('email sent');
+      },
+      error: (err) => {
+        console.log('error');
+      }
+    })
+  }
   
   //need error handling still for empty fields
   render() {
@@ -127,7 +143,8 @@ class Login extends React.Component {
                 underlineStyle={{borderBottomColor: '#2284d1'}}              
               />
               <RaisedButton
-                style={{marginTop: 10, marginLeft: 20, textColor: '#2284d1'}}>
+                style={{marginTop: 10, marginLeft: 20, textColor: '#2284d1'}}
+                onClick={this.handleForgotPassword}>
                 Send 
               </RaisedButton>
               <br/>

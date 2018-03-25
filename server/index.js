@@ -6,6 +6,8 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const Sequelize = require('sequelize');
+const nodemailer = require('nodemailer');
+
 
 const auth = require('../helpers/authHelpers.js');
 const db = require('../database/index.js');
@@ -117,6 +119,32 @@ app.post('/api/voteresult', (req, res) => {
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
+
+app.post('/email', (req, res) => {
+  let email = req.body.email;
+  let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    port: 587,
+    secure: false, 
+    auth: {
+        user: 'blockballot@gmail.com', 
+        pass: process.env.PASSWORD 
+    }
+  });
+
+  let mailOptions = {
+      from: '"BlockBallot" <blockballot@gmail.com>', 
+      to: `${email}`, 
+      subject: 'Link to reset your password', 
+      html: '<b>Click the link below to reset your password.</b>' 
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+        return console.log(error);
+    }
+  });
 });
 
 app.listen(process.env.PORT || 3000, () => console.log('Listening on port 3000'));
