@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import cookie from "react-cookie";
 import {
   Button,
   Container,
@@ -15,9 +16,6 @@ import {
   Sidebar,
   Visibility
 } from 'semantic-ui-react';
-import Nav from './Nav';
-import cookie from 'react-cookie';
-
 
 class Landing extends React.Component {
   constructor(props) {
@@ -42,29 +40,29 @@ class Landing extends React.Component {
           }}>
           <Container
             text
-            style={{textAlign: 'center'}}>
+            style={{textAlign: 'right'}}>
             <Header
               as='h1'
               content='BlockBallot'
               style={{
-                fontSize: '4em',
+                fontSize: '5em',
                 fontWeight: 'normal',
                 marginBottom: 0,
-                marginTop: '3em'
+                marginTop: '2.0em',
+                fontFamily: 'Hammersmith One',
+                textAlign: 'left'
+
               }}/>
             <Header
               as='h2'
-              content='Decentralized Voting for a Transparent World'
+              content='Decentralized Voting for a More Transparent World'
               style={{
-                fontSize: '1.7em',
-                fontWeight: 'normal',
-                marginTop: '1.5em'
+                fontSize: '2em',
+                fontFamily: 'Roboto Condensed',
+                marginTop: '1em',
+                textAlign: 'left',
+                color: '#4183D9'
               }}/>
-            <Link to='/createpoll'>
-              <Button primary size='huge'>
-                Get Started
-              </Button>
-            </Link>
           </Container>
         </Segment>
         <Segment
@@ -100,7 +98,7 @@ class Landing extends React.Component {
                   fontSize: '1.33em',
                   textAlign: 'center'
                   }}>
-                  Because voter data is permanently written to a private Ethereum blockchain, BlockBallot is the safest, most transparent way to organize a vote.
+                  Because voter data is permanently written to the Ethereum blockchain, BlockBallot is the safest, most transparent way to organize a vote.
                 </p>
               </Grid.Column>
               <Grid.Column floated='right' width={6}>
@@ -121,7 +119,10 @@ class Landing extends React.Component {
                 <Grid.Column width={3}>
                   <Header style={{textAlign: 'left'}} inverted as='h4' content='About' />
                   <List link inverted>
-                    <List.Item as='a'>About Us</List.Item>
+                    <Link to='/aboutus'>
+                      <List.Item as='a'>About Us</List.Item>
+                    </Link>
+                    <br />
                     <List.Item as='a' href='https://github.com/blockballot/blockballot'>Source Code</List.Item>
                     <List.Item as='a'>White Paper</List.Item>
                   </List>
@@ -139,6 +140,10 @@ class Landing extends React.Component {
                     <br/>
                     <Link to='/createpoll'>
                       <List.Item as='a'>Create Poll</List.Item>
+                    </Link>
+                    <br/>
+                    <Link to='/voter'>
+                      <List.Item as='a'>Voter</List.Item>
                     </Link>
                   </List>
                 </Grid.Column>
