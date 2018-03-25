@@ -74,7 +74,6 @@ class Voter extends React.Component {
         <div>
           <div className="header">
           Enter Your Unique Code
-          <br/>
           </div>
             <form>
               <Card className="center">

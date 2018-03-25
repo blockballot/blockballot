@@ -1,12 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Switch,
-  Redirect
-} from 'react-router-dom';
 import Landing from './Landing.jsx';
 import Signup from './Signup.jsx';
 import Login from './Login.jsx';
@@ -20,7 +12,15 @@ import PollResults from './PollResults'
 import Poll from './Poll'
 import AboutUs from './AboutUs'
 import $ from 'jquery';
-import Nav from './Nav'
+import Nav from './Nav';
+import { withRouter } from 'react-router';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch,
+  Redirect
+} from 'react-router-dom';
 
 
 class App extends React.Component {
@@ -131,11 +131,13 @@ class App extends React.Component {
   render () {
     return (
 
-      <div> 
+      <div>
+
         <Nav 
-        loggedIn = {this.state.loggedIn}
-        pathname = {this.props.location.pathname}
-        activeItem = {this.state.activeItem}/>
+          loggedIn = {this.state.loggedIn}
+          pathname = {this.props.location.pathname}
+          activeItem = {this.state.activeItem}
+        />
 
         <Route exact path='/'
           render={ () =>
