@@ -1,22 +1,12 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import {CardText, CardHeader, Grid, TextField, RaisedButton, FlatButton, Dialog, Card} from 'material-ui';
+import {Card, CardText, CardHeader, Grid, TextField, RaisedButton, FlatButton, Dialog} from 'material-ui';
 import { Responsive, Button, Form, Header, Image, Message, Segment, Container } from 'semantic-ui-react';
-import CreatePoll from './CreatePoll.jsx';
+import { BarLoader } from 'react-spinners';
 import cookie from 'react-cookie';
 import $ from 'jquery';
-import { BarLoader } from 'react-spinners';
+import CreatePoll from './CreatePoll.jsx';
 
-const style = {
-  width: 400,
-  height: 500,
-  position: 'absolute',
-  top:200,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  margin: 'auto'
-}
 
 class Login extends React.Component {
   constructor(props) {
@@ -104,7 +94,16 @@ class Login extends React.Component {
         style={{color: 'white'}}/>
     ]
     return (
-      <div style = {style}>
+      <div style={{
+        width: 400,
+        height: 500,
+        position: 'absolute',
+        top:200,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        margin: 'auto'
+      }}>
         <Card>
           <CardHeader
             titleStyle={{marginLeft: 20, marginTop: 10, fontSize: 25}}
