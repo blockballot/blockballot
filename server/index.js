@@ -102,11 +102,10 @@ app.post('/api/poll', (req, res) => {
 })
 
 app.post('/api/voteresult', (req, res) => {
-  console.log('xxxxxxx', req.body)
   db.Vote.create({voteHash: req.body.voteHash, optionId: req.body.voted })
     .then(newUser => {
       if (newUser) {
-        res.status(200).send();
+        res.status(200).send(newUser);
       } else {
         res.status(500).send('There was an error. Please try again later.')
       }

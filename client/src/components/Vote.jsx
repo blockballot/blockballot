@@ -20,7 +20,6 @@ class Vote extends React.Component {
       isVoteSubmitted: false,
       isBallotCompleted: false,
       selectedOption: '',
-      // Need to replace the below vars with dynamic data
       candidateName: 'norbie',
       ballotName: '',
       ballotOption: []
@@ -30,6 +29,7 @@ class Vote extends React.Component {
   }
 
   componentWillMount() {
+    console.log('call getweb3')
     getWeb3
     .then(results => {
       this.setState({
@@ -53,7 +53,6 @@ class Vote extends React.Component {
       var options = res.data.map(function(element) {
         return element
       });
-      console.log(options)
       var name = res.data[0].poll.pollName;
       option.setState({
         ballotName: name,
@@ -69,10 +68,10 @@ class Vote extends React.Component {
   }
 
   instantiateContract() {
-    console.log(' contract instantiated')
-    const TestContract = contract(TestVote);
-    TestContract.setProvider(this.state.web3.currentProvider);
-
+    const TestContract = contract(TestVote);  //how did we get the testvote?  did it auto compiled from the contract?
+    console.log(TestContract)
+    TestContract.setProvider(this.state.web3.currentProvider); // current provider
+  
     this.state.web3.eth.getAccounts((error, accounts) => {
       TestContract.deployed().then((instance) => {
         this.setState({
@@ -92,59 +91,62 @@ class Vote extends React.Component {
 
   submitVote(candidate) {
     // Replace state variable with candidate param onclick
-    let candidateName = this.state.candidateName;
-    console.log(candidateName);
-    var TestContractInstance;
+    // let candidateName = this.state.candidateName;
+    // console.log(candidateName);
+    // var TestContractInstance;
 
-    TestContractInstance = this.state.contractInstance;
-    TestContractInstance.voteForCandidate(candidateName, {gas: 2800000, from: this.state.web3.eth.accounts[0]})
-    .then((result) => {
-      var voted = this;
-      this.setState({
-        voteHash: result.tx
-      }
-    );
-    return TestContractInstance.totalVotesFor.call(candidateName)
-    }).then((voteCount) => {
-      console.log(voteCount);
-      this.setState({
-        storageValue: voteCount.c[0],
-        isVoteSubmitted: true
-      });
-    });
+    // TestContractInstance = this.state.contractInstance;
+    // TestContractInstance.voteForCandidate(candidateName, {gas: 2800000, from: this.state.web3.eth.accounts[0]})
+    // .then((result) => {
+    //   var voted = this;
+    //   this.setState({
+    //     voteHash: result.tx
+    //   }
+    // );
+    // return TestContractInstance.totalVotesFor.call(candidateName)
+    // }).then((voteCount) => {
+    //   console.log(voteCount);
+    //   this.setState({
+    //     storageValue: voteCount.c[0],
+    //     isVoteSubmitted: true
+    //   });
+    // });
 
     //need to add to the testcontract instance
+    var voted = this;
     axios({
       method: 'POST',
       url: '/api/voteresult',
       data: {
         voted: Number(voted.state.selectedOption),
-        voteHash: result.tx
+        voteHash: voted.state.voteHash
       }
     })
     .then(function (res) {
+      console.log(res)
+      console.log('vote has been submitted')
+      voted.setState({
+        isVoteSubmitted: true
+      });
     })
     .catch(function (error) {
+      console.log(error)
     });
   }
 
 
 
   render() {
-    const styles = {
-      block: {
-        maxWidth: 250,
-      },
-      radioButton: {
-        marginBottom: 16,
-      },
-    };
+    console.log(this.state.web3)
+    // console.log(this.state.selectedOption)
+    // console.log(this.state.candidateName)
+
 
     let ballotInfo = this.state;
     let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
       return (
         <RadioButton
-          style={styles.radioButton}
+          style={{ marginButton: 16 }}
           key={index}
           label={option.id + ": " + option.optionName}
           value={option.id + "." + option.optionName}
