@@ -91,6 +91,7 @@ app.post('/api/voter', (req, res) => {
       res.status(200).send(voteruniqueid);
     }
   })
+});
 
 app.post('/api/poll', (req, res) => {
   db.Option.findAll({where: {pollId: req.body.pollId}, include: [db.Poll]}).then(option => {
