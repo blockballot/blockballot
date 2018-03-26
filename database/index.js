@@ -94,13 +94,15 @@ const Vote = sequelize.define("vote", {
   voteHash: {
     type: Sequelize.STRING
   },
-  createdAt: {
-    type: Sequelize.DATE(3),
-    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
+  'createdAt': {
+    type: "TIMESTAMP", 
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    allowNull: false
   },
-  updatedAt: {
-    type: Sequelize.DATE(3),
-    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
+  'updatedAt': {
+      type: "TIMESTAMP",
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      allowNull: false
   }
 });
 
@@ -113,13 +115,15 @@ const VoteKey = sequelize.define("votekey", {
   voterUniqueId: {
     type: Sequelize.STRING
   },
-  createdAt: {
-    type: Sequelize.DATE(3),
-    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
+  'createdAt': {
+    type: "TIMESTAMP", 
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    allowNull: false
   },
-  updatedAt: {
-    type: Sequelize.DATE(3),
-    defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
+  'updatedAt': {
+      type: "TIMESTAMP",
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      allowNull: false
   }
 });
 

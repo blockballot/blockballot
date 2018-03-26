@@ -14,6 +14,7 @@ class Voter extends React.Component {
       isLogin: false,
       isVoteSubmitted: false,
       isBallotCompleted: false,
+      pollId: 0, 
       errorText: ''
     };
     this.handleChange = this.handleChange.bind(this);
@@ -28,28 +29,27 @@ class Voter extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    // axios({
-    //   method: 'POST',
-    //   url: '/api/Voter',
-    //   data: {
-    //     uniqueId: this.state.uniqueId
-    //   }
-    // })
-    // .then(function (res) {
-    //   console.log('found unique ID', res);
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
-    if(this.state.uniqueId === '093-89-435') {
-      this.setState({
-        isLogin: true
+    var voter = this;
+    axios({
+      method: 'POST',
+      url: '/api/voter',
+      data: {
+        uniqueId: this.state.uniqueId
+      }
+    })
+    .then(function (res) {
+      var poll = res.data.pollId;
+      voter.setState({
+        isLogin: true,
+        pollId: poll
       });
-    } else {
-      this.setState({
+    })
+    .catch(function (error) {
+      console.log(error);
+      voter.setState({
         errorText: "Your unique code is incorrect. Please, try again"
       });
-    }
+    });
   }
 
   render() {
@@ -61,11 +61,11 @@ class Voter extends React.Component {
       } else {
         if(this.state.isVoteSubmitted) {
           return (
-            <VoteResults />
+            <VoteResults  />
           )
         } else {
           return (
-            <Vote />
+            <Vote pollId={this.state.pollId} />
           )
         }
       }

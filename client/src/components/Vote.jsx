@@ -5,40 +5,25 @@ import getWeb3 from '../../../helpers/getWeb3.js';
 import contract from 'truffle-contract';
 import VoterResults from './VoterResults.jsx';
 import TestVote from '../../../build/contracts/TestVote.json';
-import { Divider, Card, RaisedButton, Checkbox} from 'material-ui';
+import { Divider, Card, RaisedButton, Checkbox, RadioButton, RadioButtonGroup} from 'material-ui';
 import '../style/voter.css';
-
 
 class Vote extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      uniqueId: '',
       isLoggedIn: false,
       web3: null,
       storageValue: 0,
       contractInstance: null,
-      voteHash: null,
-      candidateName: 'Lenny',
+      voteHash: 'ssss',
       isVoteSubmitted: false,
       isBallotCompleted: false,
-
+      selectedOption: '',
       // Need to replace the below vars with dynamic data
-      ballotName: 'Election for Board of Trustees',
-      ballotOption: [
-        { optionName:'Mark Cuban',
-          optionAnswer: false
-        },
-        { optionName:'Dwayne "The Rock" Johnson',
-          optionAnswer: false
-        },
-        { optionName:'Oprah Winfrey',
-          optionAnswer: false
-        },
-        { optionName:'Lenny',
-          optionAnswer: false
-        }
-      ]
+      candidateName: 'norbie',
+      ballotName: '',
+      ballotOption: []
     };
     this.updateCheck = this.updateCheck.bind(this);
     this.submitVote = this.submitVote.bind(this);
@@ -55,21 +40,36 @@ class Vote extends React.Component {
     .catch(() => {
       console.log('Error finding web3.')
     })
-  }
 
-  updateCheck(event) {
-    for (var i = 0; i < this.state.ballotOption.length; i++) {
-      if (this.state.ballotOption[i].optionName === event.target.name) {
-        let newBallotOptions = this.state.ballotOption.slice();
-        newBallotOptions[i].optionAnswer = !this.state.ballotOption[i].optionAnswer;
-        this.setState ({
-          ballotOption: newBallotOptions
-        })
+    var option = this;
+    axios({
+      method: 'POST',
+      url: '/api/poll',
+      data: { 
+        pollId: this.props.pollId
       }
-    }
+    })
+    .then(function (res) {
+      var options = res.data.map(function(element) {
+        return element
+      });
+      console.log(options)
+      var name = res.data[0].poll.pollName;
+      option.setState({
+        ballotName: name,
+        ballotOption: options,
+        selectedOption: options[0].id
+      });
+    })
+    .catch(function (error) {      
+      voter.setState({
+        errorText: "Your unique code is incorrect. Please, try again"
+      });
+    });
   }
 
   instantiateContract() {
+    console.log(' contract instantiated')
     const TestContract = contract(TestVote);
     TestContract.setProvider(this.state.web3.currentProvider);
 
@@ -82,6 +82,14 @@ class Vote extends React.Component {
     });
   }
 
+  updateCheck(event) {
+    var eventValue = event.target.value.split('.')
+    this.setState({
+      selectedOption: eventValue[0],
+      candidateName: eventValue[1]
+    });
+  }
+
   submitVote(candidate) {
     // Replace state variable with candidate param onclick
     let candidateName = this.state.candidateName;
@@ -89,13 +97,14 @@ class Vote extends React.Component {
     var TestContractInstance;
 
     TestContractInstance = this.state.contractInstance;
-
     TestContractInstance.voteForCandidate(candidateName, {gas: 2800000, from: this.state.web3.eth.accounts[0]})
     .then((result) => {
+      var voted = this;
       this.setState({
         voteHash: result.tx
-      });
-      return TestContractInstance.totalVotesFor.call(candidateName)
+      }
+    );
+    return TestContractInstance.totalVotesFor.call(candidateName)
     }).then((voteCount) => {
       console.log(voteCount);
       this.setState({
@@ -103,27 +112,46 @@ class Vote extends React.Component {
         isVoteSubmitted: true
       });
     });
+
+    //need to add to the testcontract instance
+    axios({
+      method: 'POST',
+      url: '/api/voteresult',
+      data: {
+        voted: Number(voted.state.selectedOption),
+        voteHash: result.tx
+      }
+    })
+    .then(function (res) {
+    })
+    .catch(function (error) {
+    });
   }
 
+
+
   render() {
+    const styles = {
+      block: {
+        maxWidth: 250,
+      },
+      radioButton: {
+        marginBottom: 16,
+      },
+    };
+
     let ballotInfo = this.state;
     let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
       return (
-        <div>
-          <Checkbox
-            style={{ marginTop: 16, marginBottom: 16 }}
-            labelPosition="left"
-            key={index}
-            label={option.optionName}
-            checked={option.optionAnswer}
-            onCheck={this.updateCheck}
-            name={option.optionName}
-            />
-          <Divider />
-        </div>
+        <RadioButton
+          style={styles.radioButton}
+          key={index}
+          label={option.id + ": " + option.optionName}
+          value={option.id + "." + option.optionName}
+        />
       )
     });
-
+    
     if(this.state.isVoteSubmitted === true) {
       return (
         <VoterResults
@@ -133,14 +161,15 @@ class Vote extends React.Component {
         />
       )
     } else {
-
       return (
         <div>
           <div className="header">{ballotInfo.ballotName}</div>
           <form>
             <Card className="center">
               <div style={{fontSize: 16, minWidth: 400}}>
-                <div>{ballotQuestionList}</div>
+                <RadioButtonGroup name="voteoptions" labelPosition="left" valueSelected={this.state.selectedOption + "." + this.state.candidateName} onChange={this.updateCheck}>
+                  {ballotQuestionList}
+                </RadioButtonGroup>
               </div>
               <br/>
               <RaisedButton

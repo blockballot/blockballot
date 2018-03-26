@@ -82,11 +82,39 @@ app.get('/logout', (req, res) => {
   });
 });
 
-/* For Test */
-app.post('/api/Voter', (req, res) => {
-  console.log('server', db.checkVoter(req.body.uniqueId))
-  res.send('Hello World')
+app.post('/api/voter', (req, res) => {
+  db.VoteKey.findOne({where: {voterUniqueId: req.body.uniqueId}}).then(voteruniqueid => {
+    if (!voteruniqueid) {
+      res.status(500).send('Invalid unique ID. Please try again.')
+    } else {
+      res.status(200).send(voteruniqueid);
+    }
+  })
+
+app.post('/api/poll', (req, res) => {
+  db.Option.findAll({where: {pollId: req.body.pollId}, include: [db.Poll]}).then(option => {
+    if (!option) {
+      res.status(500).send('There was an error. Please try again later.')
+    } else {
+      res.status(200).send(option);
+    }
+  })
 })
+
+app.post('/api/voteresult', (req, res) => {
+  console.log('xxxxxxx', req.body)
+  db.Vote.create({voteHash: req.body.voteHash, optionId: req.body.voted })
+    .then(newUser => {
+      if (newUser) {
+        res.status(200).send();
+      } else {
+        res.status(500).send('There was an error. Please try again later.')
+      }
+    }).catch(err =>
+      console.log(err)
+    )
+})
+
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));

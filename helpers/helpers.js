@@ -8,4 +8,11 @@ let createPassword = () => {
   return pw;
 };
 
+let createUniqueId = () => {
+  let string = rn() + rw();
+  let pw = SHA256(string).toString();
+  return pw.substring(0, 10);
+};
+
+exports.createUniqueId = createUniqueId;
 exports.createPassword = createPassword;
