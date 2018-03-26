@@ -114,7 +114,10 @@ class CreatePoll extends React.Component {
         console.log('emails successful')
       },
       error: (err) => {
-        console.log('error');
+        this.setState({
+          loading: false
+        });
+        console.log('error sending emails');
       }
     })
 
@@ -172,7 +175,6 @@ class CreatePoll extends React.Component {
       numVoters: data.length,
       displayInfoCSV: true
     })
-    console.dir(this.state.emails)
   }
 
   render() {
@@ -275,7 +277,7 @@ class CreatePoll extends React.Component {
     if (this.state.emailConfirmation === true) {
       pollConfirmation = (
         <div>
-        Poll created! Your voters received emails with a unique voting ID.
+        Poll created! Your voters can check their inbox for a unique voting ID.
         </div>
       )
     }
@@ -285,7 +287,7 @@ class CreatePoll extends React.Component {
         <div className="header">Create Poll</div>
         {/*<section style={{ display: "flex", padding: 30}}>*/}
           <div style={{ flex: 1, padding: 5 }}>
-          <Card style={{ padding: 30 }}>
+          <Card style={{ padding: 30, margin: 15, marginBottom: 50 }}>
           <div>
             <label>
               <b>TITLE:</b> 
@@ -309,12 +311,9 @@ class CreatePoll extends React.Component {
                 onClick={this.handleAddOption}
                />
             </label>
-            <br/>
-            <br/>
-            <br/>
+            <br/><br/><br/>
             <b>POLL OPENING AND CLOSING TIME:</b>
-            <br/>
-            <br/>
+            <br/><br/>
             <label>
               OPENING:
                 <DatePicker
@@ -361,7 +360,6 @@ class CreatePoll extends React.Component {
               onClick={this.handleVoterNumberSubmit}
             />*/}
             <br/>
-            <br/>
             <CSVReader
               cssClass="csv-input"
               label="Upload a CSV file with voter emails."
@@ -384,7 +382,6 @@ class CreatePoll extends React.Component {
               <br/>
             </Dialog>
 
-            <br/>
             {submitButton}
           </div>
           <br />
@@ -418,7 +415,7 @@ class CreatePoll extends React.Component {
             </Card>
           </div>
         </section>*/}
-    </div>
+      </div>
     )
   }
 }
