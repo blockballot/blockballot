@@ -163,8 +163,8 @@ app.post('/email', (req, res) => {
 });
 
 app.post('/emailcodes', (req, res) => {
-
-  mailer.sendEmailCodes(req.body['emails[]'], function(err, result) {
+  let emails = JSON.parse(req.body.emails);
+  mailer.sendEmailCodes(emails, function(err, result) {
     if (err) {
       res.status(500).send();
     } else {

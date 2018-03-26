@@ -30,8 +30,6 @@ var sendPasswordReset = function(email, callback) {
 }
 
 var sendEmailCodes = function(emails, callback) {
-  console.log('inside sendemailcodes')
-  console.log(emails);
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     port: 588,
@@ -53,7 +51,6 @@ var sendEmailCodes = function(emails, callback) {
     if (error) {
       callback(error);
     } else {
-      console.log('no error');
       callback(null, info);
     }
   });
