@@ -131,6 +131,18 @@ app.post('/email', (req, res) => {
   });
 });
 
+app.post('/emailcodes', (req, res) => {
+
+  mailer.sendEmailCodes(req.body['emails[]'], function(err, result) {
+    if (err) {
+      res.status(500).send();
+    } else {
+      console.log('sending success status')
+      res.status(201).send();
+    }
+  });
+});
+
 app.listen(process.env.PORT || 3000, () => console.log('Listening on port 3000'));
 
 module.exports = app;
