@@ -101,7 +101,7 @@ class Login extends React.Component {
       <FlatButton
         label="Close"
         onClick={this.handleClose}
-        style={{color: '#2284d1'}}/>
+        style={{color: 'white'}}/>
     ]
     return (
       <div style = {style}>
@@ -117,7 +117,7 @@ class Login extends React.Component {
               name='email'
               value={this.state.email}
               onChange={this.onChange}
-              underlineStyle={{borderBottomColor: '#2284d1'}}/>
+              underlineStyle={{borderBottomColor: 'white'}}/>
 
             <br/>
 
@@ -128,7 +128,7 @@ class Login extends React.Component {
               name='password'
               value={this.state.password}
               onChange={this.onChange}
-              underlineStyle={{borderBottomColor: '#2284d1'}}/>
+              underlineStyle={{borderBottomColor: 'white'}}/>
 
             <br/>
 
@@ -143,7 +143,7 @@ class Login extends React.Component {
             </div>
 
             <Dialog
-              contentStyle={{width: 500, color: '#2284d1'}}
+              contentStyle={{width: 500, color: 'white'}}
               title="Forgot Password?"
               actions={dialogActions}
               modal={false}
@@ -158,7 +158,7 @@ class Login extends React.Component {
                 name='forgotPasswordEmail'
                 value={this.state.forgotPasswordEmail}
                 onChange={this.onChange}
-                underlineStyle={{borderBottomColor: '#2284d1'}}              
+                underlineStyle={{borderBottomColor: 'white'}}              
               />
               <RaisedButton
                 style={{marginTop: 10, marginLeft: 20, textColor: '#2284d1'}}
