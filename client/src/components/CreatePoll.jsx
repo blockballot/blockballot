@@ -8,6 +8,7 @@ import { Redirect, Link } from 'react-router-dom';
 import cookie from 'react-cookie';
 import $ from 'jquery';
 import axios from 'axios';
+import CSVReader from 'react-csv-reader';
 
 class CreatePoll extends React.Component {
   constructor() {
@@ -26,7 +27,9 @@ class CreatePoll extends React.Component {
       isDemoClicked: false,
       demoAccessId: ["123-45-678", "453-67-908", "923-65-358", "093-89-435"],
       emails: [],
-      emailConfirmation: false
+      emailConfirmation: false,
+      numVoters: 0,
+      displayInfoCSV: false
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
@@ -37,6 +40,8 @@ class CreatePoll extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.sendEmailCodes = this.sendEmailCodes.bind(this);
     this.handleVoterNumberSubmit = this.handleVoterNumberSubmit.bind(this);
+    this.handleErrorCSV = this.handleErrorCSV.bind(this);
+    this.handleUploadCSV = this.handleUploadCSV.bind(this);
   }
 
   handleInputChange(event) {
@@ -145,6 +150,18 @@ class CreatePoll extends React.Component {
     })
   }
 
+  handleErrorCSV() {
+    console.log('csv upload failed')
+  }
+
+  handleUploadCSV(data) {
+    this.setState({
+      emails: data,
+      numVoters: data.length,
+      displayInfoCSV: true
+    })
+  }
+
   render() {
     let submitButton = null;
     if (cookie.load('loggedIn') === 'true') {
@@ -163,6 +180,15 @@ class CreatePoll extends React.Component {
             type="submit" 
             label="Create Poll"/>
         </Link>
+      )
+    }
+
+    let csvInfo = null;
+    if (this.state.displayInfoCSV === true) {
+      csvInfo = (
+        <div>
+        Number of participants: {this.state.numVoters}
+        </div>
       )
     }
     
@@ -295,11 +321,17 @@ class CreatePoll extends React.Component {
               type="submit"
               label="Get Unique Codes"
               onClick={this.handleVoterNumberSubmit}
-            /><br/>
-            <RaisedButton
-              label="Send Codes"
-              onClick={this.sendEmailCodes}
             />
+            <br/>
+            <br/>
+            <CSVReader
+              cssClass="csv-input"
+              label="Upload a CSV file including emails of the participants."
+              onFileLoaded={this.handleUploadCSV}
+              onError={this.handleErrorCSV}
+            />
+            <br/>
+            {csvInfo}
             <br/>
             {submitButton}
           </div>
