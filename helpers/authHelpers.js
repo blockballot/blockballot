@@ -20,6 +20,9 @@ let createSession = (req, res, newUser) => {
     res.cookie('loggedIn', 'true', { maxAge: 60 * 60 * 1000 });
     res.cookie('username', newUser.dataValues.orgEmail, { maxAge: 60 * 60 * 1000 });
     req.session.user = newUser.dataValues.orgEmail;
+    req.session.orgId = newUser.dataValues.id;
+    console.log(req.session);
+    res.status(200).send();
   });
 };
 

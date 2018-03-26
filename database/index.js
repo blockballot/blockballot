@@ -103,9 +103,9 @@ const Vote = sequelize.define("vote", {
     allowNull: false
   },
   'updatedAt': {
-      type: "TIMESTAMP",
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      allowNull: false
+    type: "TIMESTAMP",
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    allowNull: false
   }
 });
 
@@ -124,9 +124,9 @@ const VoteKey = sequelize.define("votekey", {
     allowNull: false
   },
   'updatedAt': {
-      type: "TIMESTAMP",
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-      allowNull: false
+    type: "TIMESTAMP",
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    allowNull: false
   }
 });
 

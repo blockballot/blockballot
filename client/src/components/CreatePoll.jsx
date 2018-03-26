@@ -7,7 +7,7 @@ import '../style/voter.css';
 import { Redirect, Link } from 'react-router-dom';
 import cookie from 'react-cookie';
 import $ from 'jquery';
-
+import axios from 'axios';
 
 class CreatePoll extends React.Component {
   constructor() {
@@ -89,12 +89,39 @@ class CreatePoll extends React.Component {
     this.setState({
       isDemoClicked: true
     });
-
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    alert('Your Poll is Deployed')
+    let options = [];
+    for (var i = 0; i < this.state.ballotOption.length; i++) {
+      var optName = this.state.ballotOption[i].optionName;
+      if (optName !== "") {
+        options.push(optName);
+      }
+    }
+    console.log('Sending contract to get mined');
+    axios.post('/contract', {
+      options: options
+    })
+    .then(contractRes => {
+      console.log(contractRes);
+      console.log('Contract mined, updating database');
+      let contractInfo = {
+        pollName: this.state.ballotName,
+        pollStart: this.state.start,
+        pollEnd: this.state.end,
+        pollOptions: options,
+        pollAddress: contractRes.data.address
+      }
+      return axios.post('/poll', contractInfo);
+    })
+    .then(pollRes => {
+      console.log(pollRes)
+    })
+    .catch(err =>  {
+      console.log(err);
+    })
   }
 
   sendEmailCodes() {
@@ -201,11 +228,11 @@ class CreatePoll extends React.Component {
               <b>TITLE:</b> <br/>
               <TextField
                 id="title"
-                type="text"
-                name="title"
+                type="text" 
+                name="ballotName" 
                 placeholder="Enter title"
-                value={this.state.title}
-                onChange={this.handleInputChange}
+                value={this.state.ballotName} 
+                onChange={this.handleInputChange} 
               />
             </label><br/>
 
@@ -282,8 +309,8 @@ class CreatePoll extends React.Component {
         <div style={{ flex: 1, padding: 5, lineHeight: "1.7em" }}>
           <Card style={{ padding: 30, minHeight: "627px", fontSize: "14px"}}>
             <div style={{ textAlign: "center", marginBottom: "30px"}}>
-              <b>{this.state.title}</b>
-            </div>
+              <b>{this.state.ballotName}</b>
+            </div>  
 
 
             <div style={{ marginBottom: "30px"}}>
