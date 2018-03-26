@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {Card, CardText, CardHeader, TextField, RaisedButton, Dialog, FlatButton, GridList} from 'material-ui';
-import $ from 'jquery';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
-import {CopyToClipboard} from 'react-copy-to-clipboard'
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import $ from 'jquery';
 
 const style = {
   width: 400,
@@ -87,7 +87,7 @@ class Signup extends React.Component {
             name='password'
             value={this.state.password}
             onChange={this.onChange}
-            underlineStyle={{borderBottomColor: '#2284d1'}}/> 
+            underlineStyle={{borderBottomColor: 'white'}}/> 
 
           <RaisedButton 
           style={{marginTop: 20}}
@@ -119,17 +119,18 @@ class Signup extends React.Component {
               errorText=''
               value={this.state.name}
               onChange={this.onChange}
-              underlineStyle={{borderBottomColor: '#2284d1'}}/>
+              underlineStyle={{borderBottomColor: 'white'}}
+            />
 
             <br/>
 
             <TextField
-              hintText="Email"
+              hintText="Organization Email"
               errorText={this.props.signupError}
               name='email'
               value={this.state.email}
               onChange={this.onChange}
-              underlineStyle={{borderBottomColor: '#2284d1'}}/>
+              underlineStyle={{borderBottomColor: 'white'}}/>
 
             <Dialog
               contentStyle={{width: 600}}

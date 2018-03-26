@@ -1,22 +1,12 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import {CardText, CardHeader, Grid, TextField, RaisedButton, FlatButton, Dialog, Card} from 'material-ui';
+import {Card, CardText, CardHeader, Grid, TextField, RaisedButton, FlatButton, Dialog} from 'material-ui';
 import { Responsive, Button, Form, Header, Image, Message, Segment, Container } from 'semantic-ui-react';
-import CreatePoll from './CreatePoll.jsx';
+import { BarLoader } from 'react-spinners';
 import cookie from 'react-cookie';
 import $ from 'jquery';
-import { BarLoader } from 'react-spinners';
+import CreatePoll from './CreatePoll.jsx';
 
-const style = {
-  width: 400,
-  height: 500,
-  position: 'absolute',
-  top:200,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  margin: 'auto'
-}
 
 class Login extends React.Component {
   constructor(props) {
@@ -101,10 +91,19 @@ class Login extends React.Component {
       <FlatButton
         label="Close"
         onClick={this.handleClose}
-        style={{color: '#2284d1'}}/>
+        style={{color: 'white'}}/>
     ]
     return (
-      <div style = {style}>
+      <div style={{
+        width: 400,
+        height: 500,
+        position: 'absolute',
+        top:200,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        margin: 'auto'
+      }}>
         <Card>
           <CardHeader
             titleStyle={{marginLeft: 20, marginTop: 10, fontSize: 25}}
@@ -117,7 +116,7 @@ class Login extends React.Component {
               name='email'
               value={this.state.email}
               onChange={this.onChange}
-              underlineStyle={{borderBottomColor: '#2284d1'}}/>
+              underlineStyle={{borderBottomColor: 'white'}}/>
 
             <br/>
 
@@ -128,7 +127,7 @@ class Login extends React.Component {
               name='password'
               value={this.state.password}
               onChange={this.onChange}
-              underlineStyle={{borderBottomColor: '#2284d1'}}/>
+              underlineStyle={{borderBottomColor: 'white'}}/>
 
             <br/>
 
@@ -143,7 +142,7 @@ class Login extends React.Component {
             </div>
 
             <Dialog
-              contentStyle={{width: 500, color: '#2284d1'}}
+              contentStyle={{width: 500, color: 'white'}}
               title="Forgot Password?"
               actions={dialogActions}
               modal={false}
@@ -158,7 +157,7 @@ class Login extends React.Component {
                 name='forgotPasswordEmail'
                 value={this.state.forgotPasswordEmail}
                 onChange={this.onChange}
-                underlineStyle={{borderBottomColor: '#2284d1'}}              
+                underlineStyle={{borderBottomColor: 'white'}}              
               />
               <RaisedButton
                 style={{marginTop: 10, marginLeft: 20, textColor: '#2284d1'}}

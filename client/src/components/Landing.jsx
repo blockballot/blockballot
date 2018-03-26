@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import cookie from "react-cookie";
+import cookie from 'react-cookie';
+import ScrollReveal from 'scrollreveal';
 import {
   Button,
   Container,
@@ -25,13 +26,23 @@ class Landing extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const config = {
+      origin: 'top',
+      duration: 1000,
+      delay: 150,
+      distance: '50px',
+      easing: 'ease'
+    }
+    ScrollReveal().reveal(this.refs.box1, config);
+  }
+
   render() {
     console.log(cookie.load('loggedIn'));
     return (
       <Responsive>
         <Segment
           vertical
-          className="mainSegment"
           style={{
             minHeight: 700,
             padding: '1em 0em',
@@ -53,16 +64,18 @@ class Landing extends React.Component {
                 textAlign: 'left'
 
               }}/>
-            <Header
-              as='h2'
-              content='Decentralized Voting for a More Transparent World'
+            <h2
+              ref='box1'
               style={{
                 fontSize: '2em',
                 fontFamily: 'Roboto Condensed',
                 marginTop: '1em',
                 textAlign: 'left',
                 color: '#4183D9'
-              }}/>
+              }}
+            >
+            Decentralized Voting for a More Transparent World
+            </h2>
           </Container>
         </Segment>
         <Segment
@@ -87,14 +100,18 @@ class Landing extends React.Component {
                   }}>
                   How to Get Started
                 </Header>
-                <p style={{
-                  fontSize: '1.33em',
-                  textAlign: 'center',
+                <p
+                  style={{
+                    fontSize: '1.33em',
+                    textAlign: 'center',
                   }}>
                   Sign up your organization for a BlockBallot account, design custom ballots, and track results with our analytics dashboard.
                 </p>
-                <Header as='h3' style={{fontSize: '2em'}}>Blockchain for Transparency</Header>
-                <p style={{
+                <Header as='h3' style={{fontSize: '2em'}}>
+                  Blockchain for Transparency
+                </Header>
+                <p
+                  style={{
                   fontSize: '1.33em',
                   textAlign: 'center'
                   }}>
