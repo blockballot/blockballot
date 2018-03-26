@@ -2,7 +2,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Card, TextField, Divider, RaisedButton } from 'material-ui';
+import { Card, TextField, Divider, RaisedButton, Dialog, FlatButton } from 'material-ui';
 import '../style/voter.css';
 import { Redirect, Link } from 'react-router-dom';
 import cookie from 'react-cookie';
@@ -14,10 +14,6 @@ class CreatePoll extends React.Component {
   constructor() {
     super();
     this.state = {
-      email: '',
-      password: '',
-      forgotPasswordEmail: '',
-      dialogOpen: false,
       ballotName: '',
       ballotOption: [{optionName:'', optionAnswer:false}],
       calendar: false,
@@ -29,7 +25,8 @@ class CreatePoll extends React.Component {
       emails: [],
       emailConfirmation: false,
       numVoters: 0,
-      displayInfoCSV: false
+      displayInfoCSV: false,
+      voterDialogOpen: false
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
@@ -42,6 +39,8 @@ class CreatePoll extends React.Component {
     this.handleVoterNumberSubmit = this.handleVoterNumberSubmit.bind(this);
     this.handleErrorCSV = this.handleErrorCSV.bind(this);
     this.handleUploadCSV = this.handleUploadCSV.bind(this);
+    this.openVoterDialog = this.openVoterDialog.bind(this);
+    this.closeVoterDialog = this.closeVoterDialog.bind(this);
   }
 
   handleInputChange(event) {
@@ -129,6 +128,18 @@ class CreatePoll extends React.Component {
     })
   }
 
+  openVoterDialog() {
+    this.setState({
+      voterDialogOpen: true
+    })
+  }
+
+  closeVoterDialog() {
+    this.setState({
+      voterDialogOpen: false
+    })
+  }
+
   sendEmailCodes() {
     // this.setState({
     //   loading: true
@@ -160,6 +171,7 @@ class CreatePoll extends React.Component {
       numVoters: data.length,
       displayInfoCSV: true
     })
+    console.dir(this.state.emails)
   }
 
   render() {
@@ -187,7 +199,12 @@ class CreatePoll extends React.Component {
     if (this.state.displayInfoCSV === true) {
       csvInfo = (
         <div>
-        Number of participants: {this.state.numVoters}
+          <div>
+            Total participants: {this.state.numVoters}
+          </div>
+          <div onClick = {this.openVoterDialog} style={{cursor: 'pointer', color: '#2284d1'}}>
+            See Participants
+          </div>
         </div>
       )
     }
@@ -242,6 +259,17 @@ class CreatePoll extends React.Component {
         </div>
       );
 
+    const dialogActions = [
+      <FlatButton
+        label="Close"
+        onClick={this.closeVoterDialog}
+        style={{color: '#2284d1'}}/>
+    ]
+
+    let emails = this.state.emails;
+    let emailList = emails.map((email) =>
+      <ul>{email}</ul>
+    );
     return (
 
       <div>
@@ -326,12 +354,26 @@ class CreatePoll extends React.Component {
             <br/>
             <CSVReader
               cssClass="csv-input"
-              label="Upload a CSV file including emails of the participants."
+              label="Upload a CSV file with voter emails."
               onFileLoaded={this.handleUploadCSV}
               onError={this.handleErrorCSV}
             />
             <br/>
             {csvInfo}
+            <br/>
+
+            <Dialog
+              contentStyle={{width: 500, color: '#2284d1'}}
+              title="Poll Participants"
+              actions={dialogActions}
+              modal={false}
+              open={this.state.voterDialogOpen}
+              onRequestClose={this.handleClose}>
+              
+              <div>{emailList}</div>
+              <br/>
+            </Dialog>
+
             <br/>
             {submitButton}
           </div>
@@ -353,7 +395,6 @@ class CreatePoll extends React.Component {
               <div>
                 {time}
               </div>
-
               <div>
                 {uniqueId}
               </div>
