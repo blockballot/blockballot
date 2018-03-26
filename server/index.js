@@ -9,8 +9,10 @@ const Sequelize = require('sequelize');
 
 const auth = require('../helpers/authHelpers.js');
 const db = require('../database/index.js');
-const helpers = require('../helpers/helpers.js')
 const mailer = require('../helpers/mailer.js');
+const dbHelper = require('../database/dbHelpers.js');
+const helpers = require('../helpers/helpers.js');
+const blockchain = require('../helpers/blockchainHelpers.js');
 
 const app = express();
 
@@ -37,8 +39,6 @@ app.post('/login', (req, res) => {
         auth.comparePassword(password, org, (match) => {
           if (match) {
             auth.createSession(req, res, org);
-            console.log(`Session has been created for ${org.dataValues.orgEmail}`);
-            res.status(200).send();
           } else {
             res.status(402).send('Incorrect password. Please try again.');
           }
@@ -114,12 +114,42 @@ app.post('/api/voteresult', (req, res) => {
     }).catch(err =>
       console.log(err)
     )
-})
-
-
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
+
+/*for Test*/
+app.post('/api/Voter', (req, res) => {
+  console.log('server', db.checkVoter(req.body.uniqueId))
+  res.send('Hello World')
+});
+
+app.post('/contract', (req, res) => {
+  const options = req.body.options;
+  blockchain.createContract(options, (contract) => {
+    res.status(201).send(contract);
+  });
+});
+
+app.post('/poll', (req, res) => {
+  dbHelper.createPoll(req.session.orgId, req.body)
+    .then(newPoll => {
+      let optionArray = [];
+      const pollOpts = req.body.pollOptions;
+      for (var i = 0; i < pollOpts.length; i++) {
+        optionArray.push(dbHelper.createOption(newPoll.dataValues.orgId, pollOpts[i]));
+      }
+      Promise.all(optionArray)
+        .then(results => {
+          res.status(201).send(results);
+        })
+        .catch(err => {
+          res.status(500).send('There was an error in creating a new poll');
+        })
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).send('There was an error in creating a new poll');
+    })
+})
 
 app.post('/email', (req, res) => {
   mailer.sendPasswordReset(req.body.email, function(err, result) {
@@ -142,6 +172,10 @@ app.post('/emailcodes', (req, res) => {
       res.status(201).send();
     }
   });
+});
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
 app.listen(process.env.PORT || 3000, () => console.log('Listening on port 3000'));
