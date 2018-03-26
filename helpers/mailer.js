@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const env = require('dotenv').config();
 
-var sendPasswordReset = function(email) {
+var sendPasswordReset = function(email, callback) {
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     port: 587,
@@ -21,9 +21,10 @@ var sendPasswordReset = function(email) {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      return console.log(error);
+      callback(error);
     } else {
-      console.log('email sent');
+      console.log('no error');
+      callback(null, info);
     }
   });
 }

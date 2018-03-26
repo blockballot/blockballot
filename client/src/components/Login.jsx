@@ -5,6 +5,7 @@ import { Responsive, Button, Form, Header, Image, Message, Segment, Container } 
 import CreatePoll from './CreatePoll.jsx';
 import cookie from 'react-cookie';
 import $ from 'jquery';
+import { BarLoader } from 'react-spinners';
 
 const style = {
   width: 400,
@@ -24,13 +25,15 @@ class Login extends React.Component {
       email: '',
       password: '',
       forgotPasswordEmail: '',
-      dialogOpen: false
+      dialogOpen: false,
+      dialogEmailSent: false,
+      loading: false
     }
     this.onChange = this.onChange.bind(this);
     this.loginClick = this.loginClick.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
-    this.handleForgotPassword = this.handleForgotPassword.bind(this);
+    this.handlePasswordReset = this.handlePasswordReset.bind(this);
   }
   
   onChange(e) {
@@ -60,13 +63,21 @@ class Login extends React.Component {
     });
   };
 
-  handleForgotPassword() {
+  handlePasswordReset() {
+    this.setState({
+      loading: true
+    })
     $.ajax({
       type: 'POST',
       url: '/email',
       data: {email: this.state.forgotPasswordEmail},
-      success: (res, textStatus, jqXHR) => {
-        console.log('email sent');
+      success: (res) => {
+        console.log('email sent - client');
+        this.setState({
+          dialogEmailSent: true,
+          loading: false
+        });
+        console.log(this.state.dialogEmailSent);
       },
       error: (err) => {
         console.log('error');
@@ -74,11 +85,18 @@ class Login extends React.Component {
     })
   }
   
-  //need error handling still for empty fields
   render() {
     if (cookie.load('loggedIn') === 'true') {
       return (<Redirect to='/dashboard' />)
     } 
+    let sendConfirmation = null;
+    if (this.state.dialogEmailSent === true) {
+      sendConfirmation = (
+        <div>
+          <b>Sent! Check your inbox to reset your password.</b>
+        </div>
+      )
+    }
     const dialogActions = [
       <FlatButton
         label="Close"
@@ -144,10 +162,16 @@ class Login extends React.Component {
               />
               <RaisedButton
                 style={{marginTop: 10, marginLeft: 20, textColor: '#2284d1'}}
-                onClick={this.handleForgotPassword}>
+                onClick={this.handlePasswordReset}>
                 Send 
               </RaisedButton>
               <br/>
+              <BarLoader
+                color={'#2284d1'} 
+                loading={this.state.loading}
+                width={250} 
+              />
+              {sendConfirmation}
             </Dialog>
 
           </CardText>

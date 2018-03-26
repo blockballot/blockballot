@@ -121,7 +121,14 @@ app.get('/*', (req, res) => {
 });
 
 app.post('/email', (req, res) => {
-  mailer.sendPasswordReset(req.body.email);
+  mailer.sendPasswordReset(req.body.email, function(err, result) {
+    if (err) {
+      res.status(500).send();
+    } else {
+      console.log('sending success status')
+      res.status(201).send();
+    }
+  });
 });
 
 app.listen(process.env.PORT || 3000, () => console.log('Listening on port 3000'));
