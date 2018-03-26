@@ -10,6 +10,7 @@ const Sequelize = require('sequelize');
 const auth = require('../helpers/authHelpers.js');
 const db = require('../database/index.js');
 const helpers = require('../helpers/helpers.js')
+const mailer = require('../helpers/mailer.js');
 
 const app = express();
 
@@ -90,6 +91,7 @@ app.post('/api/voter', (req, res) => {
       res.status(200).send(voteruniqueid);
     }
   })
+});
 
 app.post('/api/poll', (req, res) => {
   db.Option.findAll({where: {pollId: req.body.pollId}, include: [db.Poll]}).then(option => {
@@ -117,6 +119,29 @@ app.post('/api/voteresult', (req, res) => {
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
+
+app.post('/email', (req, res) => {
+  mailer.sendPasswordReset(req.body.email, function(err, result) {
+    if (err) {
+      res.status(500).send();
+    } else {
+      console.log('sending success status')
+      res.status(201).send();
+    }
+  });
+});
+
+app.post('/emailcodes', (req, res) => {
+
+  mailer.sendEmailCodes(req.body['emails[]'], function(err, result) {
+    if (err) {
+      res.status(500).send();
+    } else {
+      console.log('sending success status')
+      res.status(201).send();
+    }
+  });
 });
 
 app.listen(process.env.PORT || 3000, () => console.log('Listening on port 3000'));

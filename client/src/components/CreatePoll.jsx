@@ -6,6 +6,7 @@ import { Card, TextField, Divider, RaisedButton } from 'material-ui';
 import '../style/voter.css';
 import { Redirect, Link } from 'react-router-dom';
 import cookie from 'react-cookie';
+import $ from 'jquery';
 
 
 class CreatePoll extends React.Component {
@@ -23,7 +24,9 @@ class CreatePoll extends React.Component {
       end: {},
       voterNumber: "4",
       isDemoClicked: false,
-      demoAccessId: ["123-45-678", "453-67-908", "923-65-358", "093-89-435"]
+      demoAccessId: ["123-45-678", "453-67-908", "923-65-358", "093-89-435"],
+      emails: [],
+      emailConfirmation: false
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
@@ -32,7 +35,7 @@ class CreatePoll extends React.Component {
     this.handleAddOption = this.handleAddOption.bind(this);
     this.handleRemoveOption = this.handleRemoveOption.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
+    this.sendEmailCodes = this.sendEmailCodes.bind(this);
     this.handleVoterNumberSubmit = this.handleVoterNumberSubmit.bind(this);
   }
 
@@ -92,6 +95,27 @@ class CreatePoll extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     alert('Your Poll is Deployed')
+  }
+
+  sendEmailCodes() {
+    // this.setState({
+    //   loading: true
+    // })
+    $.ajax({
+      type: 'POST',
+      url: '/emailcodes',
+      data: {emails: this.state.emails},
+      success: (res) => {
+        // this.setState({
+        //   emailConfirmation: true,
+        //   loading: false
+        // });
+        console.log('emails successful')
+      },
+      error: (err) => {
+        console.log('error');
+      }
+    })
   }
 
   render() {
@@ -245,6 +269,10 @@ class CreatePoll extends React.Component {
               label="Get Unique Codes"
               onClick={this.handleVoterNumberSubmit}
             /><br/>
+            <RaisedButton
+              label="Send Codes"
+              onClick={this.sendEmailCodes}
+            />
             <br/>
             {submitButton}
           </div>
