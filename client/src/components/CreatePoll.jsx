@@ -25,7 +25,7 @@ class CreatePoll extends React.Component {
       voterNumber: "4",
       isDemoClicked: false,
       demoAccessId: ["123-45-678", "453-67-908", "923-65-358", "093-89-435"],
-      emails: ['paulaobler@gmail.com', 'rconroy293@gmail.com'],
+      emails: [],
       emailConfirmation: false
     };
     this.handleInputChange = this.handleInputChange.bind(this);
