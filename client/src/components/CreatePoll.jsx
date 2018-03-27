@@ -95,49 +95,42 @@ class CreatePoll extends React.Component {
   }
 
   handleSubmit(event) {
-    console.log(this.state.start)
-    console.log(this.state.end)
     if (this.state.ballotName === '' || Object.keys(this.state.start).length === 0 || Object.keys(this.state.end).length === 0) {
       this.setState({
         open: true
       });
-    } 
-
-   
- 
-  
-    
-    
-    // event.preventDefault();
-    // let options = [];
-    // for (var i = 0; i < this.state.ballotOption.length; i++) {
-    //   var optName = this.state.ballotOption[i].optionName;
-    //   if (optName !== "") {
-    //     options.push(optName);
-    //   }
-    // }
-    // console.log('Sending contract to get mined');
-    // axios.post('/contract', {
-    //   options: options
-    // })
-    // .then(contractRes => {
-    //   console.log(contractRes);
-    //   console.log('Contract mined, updating database');
-    //   let contractInfo = {
-    //     pollName: this.state.ballotName,
-    //     pollStart: this.state.start,
-    //     pollEnd: this.state.end,
-    //     pollOptions: options,
-    //     pollAddress: contractRes.data.address
-    //   }
-    //   return axios.post('/poll', contractInfo);
-    // })
-    // .then(pollRes => {
-    //   console.log(pollRes)
-    // })
-    // .catch(err =>  {
-    //   console.log(err);
-    // })
+      return;
+    }     
+    event.preventDefault();
+    let options = [];
+    for (var i = 0; i < this.state.ballotOption.length; i++) {
+      var optName = this.state.ballotOption[i].optionName;
+      if (optName !== "") {
+        options.push(optName);
+      }
+    }
+    console.log('Sending contract to get mined');
+    axios.post('/contract', {
+      options: options
+    })
+    .then(contractRes => {
+      console.log(contractRes);
+      console.log('Contract mined, updating database');
+      let contractInfo = {
+        pollName: this.state.ballotName,
+        pollStart: this.state.start,
+        pollEnd: this.state.end,
+        pollOptions: options,
+        pollAddress: contractRes.data.address
+      }
+      return axios.post('/poll', contractInfo);
+    })
+    .then(pollRes => {
+      console.log(pollRes)
+    })
+    .catch(err =>  {
+      console.log(err);
+    })
   }
 
   handleClose() {
