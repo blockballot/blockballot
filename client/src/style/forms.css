@@ -1,10 +1,18 @@
-.loginBox {
-  width: 400px;
-  height: 500px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  margin: auto;
-  margin-top: -50px;
-  margin-left: -50px;
+.loginModal {
+  margin-top: 10% !important;
+}
+
+.loginHeader {
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal;
+  font-size: 28px;
+}
+
+.buttonStyle {
+  font-family: sans-serif !important;
+  font-weight: normal !important;
+}
+
+.blueMatch {
+  background-color: #4183D9 !important;
 }

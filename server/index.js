@@ -79,7 +79,7 @@ app.get('/logout', (req, res) => {
   req.session.destroy(() => {
     res.clearCookie('loggedIn');
     console.log('You are logged out');
-    res.redirect('/login');
+    res.redirect('/');
   });
 });
 

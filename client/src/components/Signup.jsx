@@ -5,16 +5,6 @@ import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import $ from 'jquery';
 
-const style = {
-  width: 400,
-  height: 500,
-  position: 'absolute',
-  top:200,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  margin: 'auto'
-}
 
 class Signup extends React.Component {
   constructor(props) {
@@ -81,15 +71,16 @@ class Signup extends React.Component {
     const formChange = this.state.passwordGen ? (
       <div>
         <TextField
-            hintText="Password"
-            type="password"
+            hintText='Password'
+            type='password'
             errorText=''
             name='password'
             value={this.state.password}
             onChange={this.onChange}
-            underlineStyle={{borderBottomColor: 'white'}}/> 
+            underlineFocusStyle={{ borderBottomColor: '#4183D9'}}
+        /> 
 
-          <RaisedButton 
+        <RaisedButton 
           style={{marginTop: 20}}
           label="Create Account"
           onClick={this.signupClick}
@@ -105,21 +96,32 @@ class Signup extends React.Component {
         </div>);
 
     return (
-      <div style = {style}>
+      <div
+        style={{
+          width: 400,
+          height: 500,
+          position: 'absolute',
+          top: 200,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          margin: 'auto'
+        }}
+      >
         <Card>
           <CardHeader
             titleStyle={{marginLeft: 20, marginTop: 10, fontSize: 25}}
-            title="Create your Account"
+            title="Create Your Account"
           />
 
           <CardText style={{marginLeft: 20}}>
             <TextField
-              hintText="Organization Name"
+              hintText='Organization Name'
               name='name'
               errorText=''
               value={this.state.name}
               onChange={this.onChange}
-              underlineStyle={{borderBottomColor: 'white'}}
+              underlineFocusStyle={{ borderBottomColor: '#4183D9'}}
             />
 
             <br/>
@@ -130,7 +132,7 @@ class Signup extends React.Component {
               name='email'
               value={this.state.email}
               onChange={this.onChange}
-              underlineStyle={{borderBottomColor: 'white'}}/>
+              underlineFocusStyle={{ borderBottomColor: '#4183D9'}}/>
 
             <Dialog
               contentStyle={{width: 600}}
@@ -157,7 +159,14 @@ class Signup extends React.Component {
             {formChange}
           </CardText>
         </Card>
-        <div style={{margin: 'auto', width: '50%', marginTop: 20}}>
+        <div
+          style={{
+            width: '100%',
+            marginTop: 20,
+            marginLeft: '25%',
+            fontFamily: 'Roboto, sans-serif'
+          }}
+        >
           Already have an account? <Link style={{marginLeft: 5}} to='/login'> Log In </Link>
         </div>
       </div>
