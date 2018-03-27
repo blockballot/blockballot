@@ -89,7 +89,11 @@ class Landing extends React.Component {
             container
             stackable
             verticalAlign='middle'
-            style={{marginTop: '3em'}}>
+            style={{
+              marginTop: '3em',
+              fontFamily: 'Roboto, sans-serif'
+            }}
+          >
             <Grid.Row>
               <Grid.Column width={8}>
                 <Header
@@ -129,7 +133,14 @@ class Landing extends React.Component {
             </Grid.Row>
           </Grid>
         </Segment>
-        <Segment inverted vertical style={{ padding: '5em 0em' }}>
+        <Segment
+          inverted
+          vertical
+          style={{
+            padding: '5em 0em',
+            fontFamily: 'Roboto, sans-serif'
+          }}
+        >
           <Container>
             <Grid divided inverted stackable>
               <Grid.Row>
@@ -148,19 +159,15 @@ class Landing extends React.Component {
                   <Header style={{textAlign: 'left'}} inverted as='h4' content='Actions' />
                   <List link inverted>
                     <Link to='/signup'>
-                      <List.Item as='a'>Signup</List.Item>
-                    </Link>
-                    <br/>
-                    <Link to='/login'>
-                      <List.Item as='a'>Login</List.Item>
+                      <List.Item as='a'>Create Account</List.Item>
                     </Link>
                     <br/>
                     <Link to='/createpoll'>
-                      <List.Item as='a'>Create Poll</List.Item>
+                      <List.Item as='a'>Create Ballot</List.Item>
                     </Link>
                     <br/>
                     <Link to='/voter'>
-                      <List.Item as='a'>Voter</List.Item>
+                      <List.Item as='a'>Voter Page</List.Item>
                     </Link>
                   </List>
                 </Grid.Column>

@@ -5,7 +5,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import 'semantic-ui-css/semantic.min.css';
 
-ReactDOM.render(
+ReactDOM.render (
   <Router>
     <MuiThemeProvider>
       <AppWithRouter />
