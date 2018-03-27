@@ -99,7 +99,7 @@ class CreatePoll extends React.Component {
   }
 
   handleSubmit(event) {
-    if (this.state.ballotName === '' || Object.keys(this.state.start).length === 0 || Object.keys(this.state.end).length === 0) {
+    if (this.state.ballotName === '' || this.state.start === null || this.state.end === null) {
       this.setState({
         open: true
       });
@@ -342,7 +342,6 @@ class CreatePoll extends React.Component {
             <br/><br/><br/>
             <b>POLL OPENING AND CLOSING TIME:</b>
             <br/>
-
                 <DateTimePicker 
                   onChange={this.handleStartDateChange}
                   floatingLabelText="Enter poll opening time"
