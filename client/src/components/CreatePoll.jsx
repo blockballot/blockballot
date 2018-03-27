@@ -8,15 +8,14 @@ import { Redirect, Link } from 'react-router-dom';
 import cookie from 'react-cookie';
 import $ from 'jquery';
 import axios from 'axios';
+import CSVReader from 'react-csv-reader';
+import { BarLoader } from 'react-spinners';
+
 
 class CreatePoll extends React.Component {
   constructor() {
     super();
     this.state = {
-      email: '',
-      password: '',
-      forgotPasswordEmail: '',
-      dialogOpen: false,
       ballotName: '',
       ballotOption: [{optionName:'', optionAnswer:false}],
       calendar: false,
@@ -27,8 +26,11 @@ class CreatePoll extends React.Component {
       demoAccessId: ["123-45-678", "453-67-908", "923-65-358", "093-89-435"],
       emails: [],
       emailConfirmation: false,
-      open: false
-
+      open: false,
+      numVoters: 0,
+      displayInfoCSV: false,
+      voterDialogOpen: false,
+      loading: false
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
@@ -37,9 +39,12 @@ class CreatePoll extends React.Component {
     this.handleAddOption = this.handleAddOption.bind(this);
     this.handleRemoveOption = this.handleRemoveOption.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.sendEmailCodes = this.sendEmailCodes.bind(this);
     this.handleVoterNumberSubmit = this.handleVoterNumberSubmit.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleErrorCSV = this.handleErrorCSV.bind(this);
+    this.handleUploadCSV = this.handleUploadCSV.bind(this);
+    this.openVoterDialog = this.openVoterDialog.bind(this);
+    this.closeVoterDialog = this.closeVoterDialog.bind(this);
   }
 
   handleInputChange(event) {
@@ -102,6 +107,28 @@ class CreatePoll extends React.Component {
       return;
     }     
     event.preventDefault();
+    this.setState({
+      loading: true
+    })
+    $.ajax({
+      type: 'POST',
+      url: '/emailcodes',
+      data: {emails: JSON.stringify(this.state.emails)},
+      success: (res) => {
+        this.setState({
+          emailConfirmation: true,
+          loading: false
+        });
+        console.log('emails successful')
+      },
+      error: (err) => {
+        this.setState({
+          loading: false
+        });
+        console.log('error sending emails');
+      }
+    })
+
     let options = [];
     for (var i = 0; i < this.state.ballotOption.length; i++) {
       var optName = this.state.ballotOption[i].optionName;
@@ -131,7 +158,9 @@ class CreatePoll extends React.Component {
     .catch(err =>  {
       console.log(err);
     })
+
   }
+
 
   handleClose() {
     this.setState({
@@ -157,6 +186,28 @@ class CreatePoll extends React.Component {
       error: (err) => {
         console.log('error');
       }
+
+  openVoterDialog() {
+    this.setState({
+      voterDialogOpen: true
+    })
+  }
+
+  closeVoterDialog() {
+    this.setState({
+      voterDialogOpen: false
+    })
+  }
+
+  handleErrorCSV() {
+    console.log('csv upload failed')
+  }
+
+  handleUploadCSV(data) {
+    this.setState({
+      emails: data,
+      numVoters: data.length,
+      displayInfoCSV: true
     })
   }
 
@@ -198,6 +249,20 @@ class CreatePoll extends React.Component {
         </Link>
       )
     }
+
+    let csvInfo = null;
+    if (this.state.displayInfoCSV === true) {
+      csvInfo = (
+        <div>
+          <div>
+            Total participants: {this.state.numVoters}
+          </div>
+          <div onClick = {this.openVoterDialog} style={{cursor: 'pointer', color: '#2284d1'}}>
+            See Participants
+          </div>
+        </div>
+      )
+    }
     
     let optionEntry = this.state.ballotOption.map((option, index) => (
       <div key={index}>
@@ -236,7 +301,6 @@ class CreatePoll extends React.Component {
                 <div></div>
                 )
 
-
     /* for demo */
     let isDemoClicked = this.state.isDemoClicked
     let uniqueId = isDemoClicked ? (this.state.demoAccessId.map((id, index) => (
@@ -249,13 +313,33 @@ class CreatePoll extends React.Component {
         </div>
       );
 
+    const dialogActions = [
+      <FlatButton
+        label="Close"
+        onClick={this.closeVoterDialog}
+        style={{color: '#2284d1'}}/>
+    ]
+
+    let emails = this.state.emails;
+    let emailList = emails.map((email) =>
+      <ul>{email}</ul>
+    );
+
+    let pollConfirmation = null;
+    if (this.state.emailConfirmation === true) {
+      pollConfirmation = (
+        <div>
+        Poll created! Your voters can check their inbox for a unique voting ID.
+        </div>
+      )
+    }
     return (
 
       <div>
         <div className="header">Create Poll</div>
-        <section style={{ display: "flex", padding: 30}}>
+        {/*<section style={{ display: "flex", padding: 30}}>*/}
           <div style={{ flex: 1, padding: 5 }}>
-          <Card style={{ padding: 30 }}>
+          <Card style={{ padding: 30, margin: 15, marginBottom: 50 }}>
           <div>
             <label>
               <TextField
@@ -266,7 +350,8 @@ class CreatePoll extends React.Component {
                 value={this.state.ballotName} 
                 onChange={this.handleInputChange} 
               />
-            </label><br/>
+            </label>
+            <br/>
 
             <label>
               {optionEntry}
@@ -274,12 +359,10 @@ class CreatePoll extends React.Component {
                 label="Add Option Entry"
                 onClick={this.handleAddOption}
                />
-            </label><br/>
-              <br/><br/>
-              <b>
-              POLL OPENING AND CLOSING TIME:
-              </b>
-              <br/><br/>
+            </label>
+            <br/><br/><br/>
+            <b>POLL OPENING AND CLOSING TIME:</b>
+            <br/><br/>
             <label>
               OPENING:
                 <DatePicker
@@ -290,8 +373,7 @@ class CreatePoll extends React.Component {
                     timeFormat="HH:mm"
                     timeIntervals={15}
                     dateFormat="LLL"
-                    timeCaption="time"
-                />
+                    timeCaption="time"/>
             </label><br/>
             <label>
               CLOSING:
@@ -303,15 +385,14 @@ class CreatePoll extends React.Component {
                     timeFormat="HH:mm"
                     timeIntervals={15}
                     dateFormat="LLL"
-                    timeCaption="time"
-                /><br/>
+                    timeCaption="time"/>
             </label>
             {/* <label>
               voter access:
               <input type="text" name="voterAccess" value={this.state.voterAccess} onChange={this.handleInputChange}/>
             </label><br/> */}
 
-            <label><br/>
+            {/*<label><br/>
             <b>UNIQUE CODES:</b> <br/>
               <TextField
                 id="Unique"
@@ -326,17 +407,41 @@ class CreatePoll extends React.Component {
               type="submit"
               label="Get Unique Codes"
               onClick={this.handleVoterNumberSubmit}
-            /><br/>
-            <RaisedButton
-              label="Send Codes"
-              onClick={this.sendEmailCodes}
+            />*/}
+            <br/>
+            <CSVReader
+              cssClass="csv-input"
+              label="Upload a CSV file with voter emails."
+              onFileLoaded={this.handleUploadCSV}
+              onError={this.handleErrorCSV}
             />
             <br/>
+            {csvInfo}
+            <br/>
+
+            <Dialog
+              contentStyle={{width: 500, color: '#2284d1'}}
+              title="Poll Participants"
+              actions={dialogActions}
+              modal={false}
+              open={this.state.voterDialogOpen}
+              onRequestClose={this.handleClose}>
+              
+              <div>{emailList}</div>
+              <br/>
+            </Dialog>
+
             {submitButton}
           </div>
+          <br />
+          <BarLoader
+            color={'#2284d1'} 
+            loading={this.state.loading}
+            width={250} 
+          />
+          {pollConfirmation}
           </Card>
         </div>
-
         <div style={{ flex: 1, padding: 5, lineHeight: "1.7em" }}>
           <Card style={{ padding: 30, minHeight: "627px", fontSize: "14px"}}>
             <div style={{ textAlign: "center", marginBottom: "30px"}}>
@@ -351,15 +456,18 @@ class CreatePoll extends React.Component {
                 {time}
               </div>
               <div>
-                {uniqueId}
+                <div>
+                  {time}
+                </div>
+                <div>
+                  {uniqueId}
+                </div>
               </div>
-            </div>
-
-            <br/>
-          </Card>
-        </div>
+              <br/>
+            </Card>
+          </div>
         </section>
-    </div>
+      </div>
     )
   }
 }
