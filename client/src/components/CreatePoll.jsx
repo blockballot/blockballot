@@ -186,6 +186,8 @@ class CreatePoll extends React.Component {
       error: (err) => {
         console.log('error');
       }
+    });
+  }
 
   openVoterDialog() {
     this.setState({
@@ -464,9 +466,10 @@ class CreatePoll extends React.Component {
                 </div>
               </div>
               <br/>
+            </div>
             </Card>
           </div>
-        </section>
+        {/*</section>*/}
       </div>
     )
   }
