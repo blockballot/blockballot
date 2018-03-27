@@ -2,7 +2,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Card, TextField, Divider, RaisedButton } from 'material-ui';
+import { Card, TextField, Divider, RaisedButton, Dialog, FlatButton } from 'material-ui';
 import '../style/voter.css';
 import { Redirect, Link } from 'react-router-dom';
 import cookie from 'react-cookie';
@@ -26,7 +26,9 @@ class CreatePoll extends React.Component {
       isDemoClicked: false,
       demoAccessId: ["123-45-678", "453-67-908", "923-65-358", "093-89-435"],
       emails: [],
-      emailConfirmation: false
+      emailConfirmation: false,
+      open: false
+
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
@@ -37,6 +39,7 @@ class CreatePoll extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.sendEmailCodes = this.sendEmailCodes.bind(this);
     this.handleVoterNumberSubmit = this.handleVoterNumberSubmit.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   handleInputChange(event) {
@@ -92,37 +95,56 @@ class CreatePoll extends React.Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
-    let options = [];
-    for (var i = 0; i < this.state.ballotOption.length; i++) {
-      var optName = this.state.ballotOption[i].optionName;
-      if (optName !== "") {
-        options.push(optName);
-      }
-    }
-    console.log('Sending contract to get mined');
-    axios.post('/contract', {
-      options: options
-    })
-    .then(contractRes => {
-      console.log(contractRes);
-      console.log('Contract mined, updating database');
-      let contractInfo = {
-        pollName: this.state.ballotName,
-        pollStart: this.state.start,
-        pollEnd: this.state.end,
-        pollOptions: options,
-        pollAddress: contractRes.data.address
-      }
-      return axios.post('/poll', contractInfo);
-    })
-    .then(pollRes => {
-      console.log(pollRes)
-    })
-    .catch(err =>  {
-      console.log(err);
-    })
+    console.log(this.state.start)
+    console.log(this.state.end)
+    if (this.state.ballotName === '' || Object.keys(this.state.start).length === 0 || Object.keys(this.state.end).length === 0) {
+      this.setState({
+        open: true
+      });
+    } 
+
+   
+ 
+  
+    
+    
+    // event.preventDefault();
+    // let options = [];
+    // for (var i = 0; i < this.state.ballotOption.length; i++) {
+    //   var optName = this.state.ballotOption[i].optionName;
+    //   if (optName !== "") {
+    //     options.push(optName);
+    //   }
+    // }
+    // console.log('Sending contract to get mined');
+    // axios.post('/contract', {
+    //   options: options
+    // })
+    // .then(contractRes => {
+    //   console.log(contractRes);
+    //   console.log('Contract mined, updating database');
+    //   let contractInfo = {
+    //     pollName: this.state.ballotName,
+    //     pollStart: this.state.start,
+    //     pollEnd: this.state.end,
+    //     pollOptions: options,
+    //     pollAddress: contractRes.data.address
+    //   }
+    //   return axios.post('/poll', contractInfo);
+    // })
+    // .then(pollRes => {
+    //   console.log(pollRes)
+    // })
+    // .catch(err =>  {
+    //   console.log(err);
+    // })
   }
+
+  handleClose() {
+    this.setState({
+      open: false
+    });
+  };
 
   sendEmailCodes() {
     // this.setState({
@@ -146,14 +168,32 @@ class CreatePoll extends React.Component {
   }
 
   render() {
+    const actions = [
+      <FlatButton
+        label="Close"
+        primary={true}
+        onClick={this.handleClose}
+      />
+    ];
+
     let submitButton = null;
     if (cookie.load('loggedIn') === 'true') {
       submitButton = (
-        <RaisedButton 
-          style={{ backgroundColor: "navy" }}
-          type="submit" 
-          label="Create Poll" 
-          onClick={this.handleSubmit}/>
+        <div>
+          <RaisedButton 
+            style={{ backgroundColor: "navy" }}
+            type="submit" 
+            label="Create Poll" 
+            onClick={this.handleSubmit}/>
+          <Dialog
+            actions={actions}
+            modal={false}
+            open={this.state.open}
+            onRequestClose={this.handleClose}
+          >
+          Please fill out all required fields
+          </Dialog>
+        </div>
       )
     } else {
       submitButton = (
@@ -171,7 +211,7 @@ class CreatePoll extends React.Component {
         <TextField
           id="option"
           type="text"
-          placeholder="Enter your options"
+          floatingLabelText="Enter poll options"
           name={index}
           value={option.optionName}
           onChange={this.handleOptionChange}
@@ -225,19 +265,17 @@ class CreatePoll extends React.Component {
           <Card style={{ padding: 30 }}>
           <div>
             <label>
-              <b>TITLE:</b> <br/>
               <TextField
                 id="title"
                 type="text" 
                 name="ballotName" 
-                placeholder="Enter title"
+                floatingLabelText="Enter poll title"
                 value={this.state.ballotName} 
                 onChange={this.handleInputChange} 
               />
             </label><br/>
 
             <label>
-              <b>OPTIONS:</b> <br/>
               {optionEntry}
               <RaisedButton
                 label="Add Option Entry"
@@ -311,8 +349,6 @@ class CreatePoll extends React.Component {
             <div style={{ textAlign: "center", marginBottom: "30px"}}>
               <b>{this.state.ballotName}</b>
             </div>  
-
-
             <div style={{ marginBottom: "30px"}}>
               {option}
             </div>
@@ -321,7 +357,6 @@ class CreatePoll extends React.Component {
               <div>
                 {time}
               </div>
-
               <div>
                 {uniqueId}
               </div>
