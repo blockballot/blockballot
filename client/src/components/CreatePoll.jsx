@@ -111,24 +111,6 @@ class CreatePoll extends React.Component {
       loading: true
     })
 
-    $.ajax({
-      type: 'POST',
-      url: '/emailcodes',
-      data: {emails: JSON.stringify(this.state.emails)},
-      success: (res) => {
-        this.setState({
-          emailConfirmation: true,
-          loading: false
-        });
-        console.log('emails successful')
-      },
-      error: (err) => {
-        this.setState({
-          loading: false
-        });
-        console.log('error sending emails');
-      }
-    })
 
     let options = [];
     for (var i = 0; i < this.state.ballotOption.length; i++) {
@@ -142,7 +124,7 @@ class CreatePoll extends React.Component {
       options: options
     })
     .then(contractRes => {
-      console.log(contractRes);
+      // console.log(contractRes);
       console.log('Contract mined, updating database');
       let contractInfo = {
         pollName: this.state.ballotName,
@@ -154,10 +136,34 @@ class CreatePoll extends React.Component {
       return axios.post('/poll', contractInfo);
     })
     .then(pollRes => {
-      console.log(pollRes)
+      console.log('poll result', pollRes) // we need to get the ballot id
     })
     .catch(err =>  {
       console.log(err);
+    })
+
+
+    $.ajax({
+      type: 'POST',
+      url: '/emailcodes',
+      data: {emails: JSON.stringify(this.state.emails)},
+      success: (res) => {
+        this.setState({
+          emailConfirmation: true,
+          loading: false
+        });
+        console.log('emails successful')
+
+        axios.post('/poll', {uniqueId: res.id, })
+
+
+      },
+      error: (err) => {
+        this.setState({
+          loading: false
+        });
+        console.log('error sending emails');
+      }
     })
 
   }
@@ -279,8 +285,8 @@ class CreatePoll extends React.Component {
     ]
 
     let emails = this.state.emails;
-    let emailList = emails.map((email) =>
-      <ul>{email}</ul>
+    let emailList = emails.map((email, index) =>
+      <ul key={index}>{email}</ul>
     );
 
     let pollConfirmation = null;

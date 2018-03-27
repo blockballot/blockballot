@@ -132,10 +132,11 @@ app.post('/contract', (req, res) => {
 app.post('/poll', (req, res) => {
   dbHelper.createPoll(req.session.orgId, req.body)
     .then(newPoll => {
+      console.log('newPoll', newPoll)
       let optionArray = [];
       const pollOpts = req.body.pollOptions;
       for (var i = 0; i < pollOpts.length; i++) {
-        optionArray.push(dbHelper.createOption(newPoll.dataValues.orgId, pollOpts[i]));
+        optionArray.push(dbHelper.createOption(newPoll.dataValues.id, pollOpts[i])); 
       }
       Promise.all(optionArray)
         .then(results => {
@@ -169,7 +170,8 @@ app.post('/emailcodes', (req, res) => {
       res.status(500).send();
     } else {
       console.log('sending success status')
-      res.status(201).send();
+      console.log(result)
+      res.status(201).send(result);
     }
   });
 });
