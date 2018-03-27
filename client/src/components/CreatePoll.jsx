@@ -168,27 +168,6 @@ class CreatePoll extends React.Component {
     });
   };
 
-  sendEmailCodes() {
-    // this.setState({
-    //   loading: true
-    // })
-    $.ajax({
-      type: 'POST',
-      url: '/emailcodes',
-      data: {emails: this.state.emails},
-      success: (res) => {
-        // this.setState({
-        //   emailConfirmation: true,
-        //   loading: false
-        // });
-        console.log('emails successful')
-      },
-      error: (err) => {
-        console.log('error');
-      }
-    });
-  }
-
   openVoterDialog() {
     this.setState({
       voterDialogOpen: true
