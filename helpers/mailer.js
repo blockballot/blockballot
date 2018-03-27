@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const env = require('dotenv').config();
 const helpers = require('../helpers/helpers.js');
+const dbHelpers = require('../database/dbHelpers.js');
 
 var sendPasswordReset = function(email, callback) {
   let transporter = nodemailer.createTransport({
@@ -43,7 +44,7 @@ var sendEmailCodes = function(emails, callback) {
 
   emails.forEach((recipient) => {
     var code = helpers.createUniqueId();
-    //need to save code for user to db
+    dbHelpers.saveVoterId(code);
     let mailOptions = {
       from: '"BlockBallot" <blockballot@gmail.com>', 
       to: `${recipient}`, 
