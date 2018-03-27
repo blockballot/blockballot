@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const env = require('dotenv').config();
+const helpers = require('../helpers/helpers.js');
 
 var sendPasswordReset = function(email, callback) {
   let transporter = nodemailer.createTransport({
@@ -30,8 +31,6 @@ var sendPasswordReset = function(email, callback) {
 }
 
 var sendEmailCodes = function(emails, callback) {
-  console.log('inside sendemailcodes')
-  console.log(emails);
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     port: 588,
@@ -42,21 +41,25 @@ var sendEmailCodes = function(emails, callback) {
     }
   });
 
-  let mailOptions = {
+  emails.forEach((recipient) => {
+    var code = helpers.createUniqueId();
+    //need to save code for user to db
+    let mailOptions = {
       from: '"BlockBallot" <blockballot@gmail.com>', 
-      to: emails, 
+      to: `${recipient}`, 
       subject: 'Your voting code', 
-      html: '<b>Visit blockballot.com/voters and enter the code below to submit your vote.</b>' 
-  };
+      html: '<p>Visit localhost:3000/voter and enter the code below to submit your vote.</p><p>Your unique code is <b>' + `${code}` + '</b></p>' 
+    };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      callback(error);
-    } else {
-      console.log('no error');
-      callback(null, info);
-    }
-  });
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        callback(error);
+      } else {
+        callback(null, info);
+      }
+    });
+
+  })
 }
 
 

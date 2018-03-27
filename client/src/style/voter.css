@@ -44,3 +44,10 @@
 .voteHash {
     padding-top: 20px;
 }
+
+.csv-input {
+    width: 400px;
+    display: inline-block;
+    margin: 15px auto;
+    text-align: left;
+}
