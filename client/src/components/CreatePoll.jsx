@@ -99,7 +99,7 @@ class CreatePoll extends React.Component {
   }
 
   handleSubmit(event) {
-    if (this.state.ballotName === '' || Object.keys(this.state.start).length === 0 || Object.keys(this.state.end).length === 0) {
+    if (this.state.ballotName === '' || this.state.start === null || this.state.end === null) {
       this.setState({
         open: true
       });
@@ -111,24 +111,6 @@ class CreatePoll extends React.Component {
       loading: true
     })
 
-    $.ajax({
-      type: 'POST',
-      url: '/emailcodes',
-      data: {emails: JSON.stringify(this.state.emails)},
-      success: (res) => {
-        this.setState({
-          emailConfirmation: true,
-          loading: false
-        });
-        console.log('emails successful')
-      },
-      error: (err) => {
-        this.setState({
-          loading: false
-        });
-        console.log('error sending emails');
-      }
-    })
 
     let options = [];
     for (var i = 0; i < this.state.ballotOption.length; i++) {
@@ -142,7 +124,7 @@ class CreatePoll extends React.Component {
       options: options
     })
     .then(contractRes => {
-      console.log(contractRes);
+      // console.log(contractRes);
       console.log('Contract mined, updating database');
       let contractInfo = {
         pollName: this.state.ballotName,
@@ -154,10 +136,34 @@ class CreatePoll extends React.Component {
       return axios.post('/poll', contractInfo);
     })
     .then(pollRes => {
-      console.log(pollRes)
+      console.log('poll result', pollRes) // we need to get the ballot id
     })
     .catch(err =>  {
       console.log(err);
+    })
+
+
+    $.ajax({
+      type: 'POST',
+      url: '/emailcodes',
+      data: {emails: JSON.stringify(this.state.emails)},
+      success: (res) => {
+        this.setState({
+          emailConfirmation: true,
+          loading: false
+        });
+        console.log('emails successful')
+
+        axios.post('/poll', {uniqueId: res.id, })
+
+
+      },
+      error: (err) => {
+        this.setState({
+          loading: false
+        });
+        console.log('error sending emails');
+      }
     })
 
   }
@@ -167,27 +173,6 @@ class CreatePoll extends React.Component {
       open: false
     });
   };
-
-  sendEmailCodes() {
-    // this.setState({
-    //   loading: true
-    // })
-    $.ajax({
-      type: 'POST',
-      url: '/emailcodes',
-      data: {emails: this.state.emails},
-      success: (res) => {
-        // this.setState({
-        //   emailConfirmation: true,
-        //   loading: false
-        // });
-        console.log('emails successful')
-      },
-      error: (err) => {
-        console.log('error');
-      }
-    });
-  }
 
   openVoterDialog() {
     this.setState({
@@ -300,8 +285,8 @@ class CreatePoll extends React.Component {
     ]
 
     let emails = this.state.emails;
-    let emailList = emails.map((email) =>
-      <ul>{email}</ul>
+    let emailList = emails.map((email, index) =>
+      <ul key={index}>{email}</ul>
     );
 
     let pollConfirmation = null;
@@ -342,7 +327,6 @@ class CreatePoll extends React.Component {
             <br/><br/><br/>
             <b>POLL OPENING AND CLOSING TIME:</b>
             <br/>
-
                 <DateTimePicker 
                   onChange={this.handleStartDateChange}
                   floatingLabelText="Enter poll opening time"
