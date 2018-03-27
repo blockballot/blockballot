@@ -2,15 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Segment, Button } from 'semantic-ui-react';
 import cookie from 'react-cookie';
+import LoginModal from './LoginModal';
 
 class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.handleNavClick = this.handleNavClick.bind(this);
-  }
-
-  handleNavClick() {
-    this.classList.toggle("change");
   }
 
   render() {
@@ -29,20 +25,36 @@ class Nav extends React.Component {
           </Link>
           <Link to='/dashboard'>
             <Menu.Item>
-              <h3 style={{
-                marginTop: '0.4em'
-              }}>Dashboard</h3>
+              <h3
+                style={{
+                  marginTop: '0.4em',
+                  fontFamily: 'Roboto, sans-serif'
+                }}
+              >
+                Dashboard
+              </h3>
             </Menu.Item>
           </Link>
           <Link to='createpoll'>
             <Menu.Item>
-              <h3 style={{
-                marginTop: '0.4em'
-              }}>Create Poll</h3>
+              <h3
+                style={{
+                  marginTop: '0.4em',
+                  fontFamily: 'Roboto, sans-serif'
+                }}
+              >
+                Create Ballot
+              </h3>
             </Menu.Item>
           </Link>
           <Menu.Item position='right'>
-            <Button basic color='black' href='/logout' content='Log Out' />
+            <Button
+              basic
+              color='black'
+              href='/logout'
+              content='Log Out'
+              style={{ fontFamily: 'Roboto, sans-serif'}}
+            />
           </Menu.Item>
         </Menu>
       )
@@ -58,11 +70,24 @@ class Nav extends React.Component {
             </Menu.Item>
           </Link>
           <Menu.Item position='right'>
-            <Link to='/login'>
-              <Button basic color='black' content='Log In'/>
-            </Link>
+            <LoginModal
+              handleOpen={this.props.handleOpen}
+              handleClose={this.props.handleClose}
+              modalOpen={this.props.modalOpen}
+              loginSubmit={this.props.loginSubmit}
+              loginEmailError={this.props.loginEmailError}
+              loginPasswordError={this.props.loginPasswordError}
+            />
             <Link to='signup'>
-              <Button basic color='black' content='Sign Up' style={{'marginLeft': '0.5em'}}/>
+              <Button
+                basic
+                color='black'
+                content='Sign Up'
+                style={{
+                  'marginLeft': '0.5em',
+                  'fontFamily': 'Roboto, sans-serif'
+                  }}
+              />
             </Link>
           </Menu.Item>
         </Menu>

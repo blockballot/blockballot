@@ -1,7 +1,6 @@
 import React from 'react';
-import Landing from './Landing.jsx';
-import Signup from './Signup.jsx';
-import Login from './Login.jsx';
+import Landing from './Landing';
+import Signup from './Signup';
 import Dashboard from './Dashboard';
 import CreatePoll from './CreatePoll';
 import VoterResults from './VoterResults';
@@ -22,7 +21,6 @@ import {
   Redirect
 } from 'react-router-dom';
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -33,12 +31,14 @@ class App extends React.Component {
       loginEmailError: '',
       loginPasswordError: '',
       currentPoll: {},
-      activeItem: ''
+      activeItem: '',
+      modalOpen: false
     }
     this.loginSubmit = this.loginSubmit.bind(this);
     this.signupSubmit = this.signupSubmit.bind(this);
     this.handlePollClick = this.handlePollClick.bind(this);
-    this.handleNavClick = this.handleNavClick.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   componentDidMount() {
@@ -63,7 +63,10 @@ class App extends React.Component {
       data: user,
       success: (res, textStatus, jqXHR) => {
         if (jqXHR.status === 200) {
-          this.props.history.push(`/login`);
+          this.setState({
+            modalOpen: true
+          })
+          this.props.history.push('/');
         }
       },
       error: (err) => {
@@ -122,21 +125,32 @@ class App extends React.Component {
     this.props.history.push(`/pollresults`);
   }
 
-  handleNavClick(item) {
+  handleOpen() {
     this.setState({
-      activeItem: item
-    })
+      modalOpen: true
+    });
+  }
+
+  handleClose() {
+    this.setState({
+      modalOpen: false
+    });
   }
 
   render () {
     return (
 
       <div>
-
         <Nav 
-          loggedIn = {this.state.loggedIn}
-          pathname = {this.props.location.pathname}
-          activeItem = {this.state.activeItem}
+          pathname={this.props.location.pathname}
+          activeItem={this.state.activeItem}
+          handleOpen={this.handleOpen}
+          handleClose={this.handleClose}
+          modalOpen={this.state.modalOpen}
+          loggedIn={this.state.loggedIn}
+          loginSubmit={this.loginSubmit}
+          loginEmailError={this.state.loginEmailError}
+          loginPasswordError={this.state.loginPasswordError}
         />
 
         <Route exact path='/'
@@ -157,17 +171,6 @@ class App extends React.Component {
             <Signup
             signupSubmit={this.signupSubmit}
             signupError={this.state.signupError}
-            />
-          }
-        />
-
-        <Route
-          exact path='/login'
-          render={ () =>
-            <Login
-            loginSubmit={this.loginSubmit}
-            loginEmailError={this.state.loginEmailError}
-            loginPasswordError={this.state.loginPasswordError}
             />
           }
         />
@@ -212,4 +215,4 @@ class App extends React.Component {
 }
 
 const AppWithRouter = withRouter(App);
-module.exports = AppWithRouter;
+export default AppWithRouter;
