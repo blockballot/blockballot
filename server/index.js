@@ -150,7 +150,25 @@ app.post('/poll', (req, res) => {
       console.log(err);
       res.status(500).send('There was an error in creating a new poll');
     })
-})
+});
+
+app.get('/poll', (req, res) => {
+  dbHelper.retrievePolls(req.session.orgId)
+  .then(polls => {
+    const promiseArr = [];
+    for (var i = 0; i < polls.length; i++) {
+      promiseArr.push(dbHelper.bundlePollVotes(polls[i]));
+    }
+    return Promise.all(promiseArr);
+  })
+  .then(bundledPolls => {
+    res.status(200).send(bundledPolls);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).send('Error retrieving polls from server');
+  })
+});
 
 app.post('/email', (req, res) => {
   mailer.sendPasswordReset(req.body.email, (err, result) => {

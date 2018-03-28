@@ -1,5 +1,6 @@
 import React from 'react';
 import Poll from './Poll.jsx';
+import axios from 'axios';
 import {Link, Route, Redirect} from 'react-router-dom';
 import {
   Card,
@@ -23,20 +24,17 @@ class Dashboard extends React.Component {
     }
   }
 
-  // componentDidMount() {
-  //   $.ajax({
-  //     type: 'GET',
-  //     url: '/pollList',
-  //     success: (data) => {
-  //       this.setState({
-  //         polls: data
-  //       })
-  //     },
-  //     error: () => {
-  //       //handle error
-  //     }
-  //   });
-  // }
+  componentDidMount() {
+    axios.get('/poll')
+    .then(res => {
+      this.setState({
+        polls: res.data
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
 
   render() {
     let polls = this.state.polls;
