@@ -50,4 +50,26 @@
   margin-bottom: 20px !important;
 }
 
+/* Dialog Modal */
+
+.dialogDiv {
+  margin: 0 auto;
+  font-family: 'Roboto', sans-serif;
+}
+
+.dialog {
+  width: 450px !important;
+  margin-left: 30% !important;
+}
+
+.forgotPassword {
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.barLoader {
+  margin-bottom: 20px !important;
+}
+
 /* Signup Page */
