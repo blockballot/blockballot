@@ -17,5 +17,13 @@ const createOption = (pollId, optionName) => {
   });
 }
 
+const saveVoterID = (voteID, pollId) => {
+  return db.VoteKey.create({
+    voterUniqueId: voteID,
+    pollId: pollId
+  })
+}
+
 exports.createPoll = createPoll;
 exports.createOption = createOption;
+exports.saveVoterID = saveVoterID;

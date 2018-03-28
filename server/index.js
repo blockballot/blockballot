@@ -153,10 +153,9 @@ app.post('/poll', (req, res) => {
 })
 
 app.post('/email', (req, res) => {
-  mailer.sendPasswordReset(req.body.email, function(err, result) {
-    if (err) {
-      res.status(500).send();
-    } else {
+  mailer.sendPasswordReset(req.body.email, (err, result) => {
+    if (err) { res.status(500).send() }
+    else {
       console.log('sending success status')
       res.status(201).send();
     }
@@ -165,12 +164,11 @@ app.post('/email', (req, res) => {
 
 app.post('/emailcodes', (req, res) => {
   let emails = JSON.parse(req.body.emails);
-  mailer.sendEmailCodes(emails, function(err, result) {
+  let pollId = req.body.pollId;
+  mailer.sendEmailCodes(emails, pollId, function(err, result) {
     if (err) {
       res.status(500).send();
     } else {
-      console.log('sending success status')
-      console.log(result)
       res.status(201).send(result);
     }
   });

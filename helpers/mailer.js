@@ -1,26 +1,27 @@
 const nodemailer = require('nodemailer');
 const env = require('dotenv').config();
 const helpers = require('../helpers/helpers.js');
+const dbHelper = require('../database/dbHelpers.js');
 
-var sendPasswordReset = function(email, callback) {
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    port: 587,
-    secure: false, 
-    auth: {
-        user: 'blockballot@gmail.com', 
-        pass: process.env.PASSWORD 
-    }
-  });
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  port: 587,
+  secure: false, 
+  auth: {
+      user: 'blockballot@gmail.com', 
+      pass: process.env.PASSWORD 
+  }
+});
 
-  let mailOptions = {
+const sendPasswordReset = function(email, callback) {
+  let mailPasswordOptions = {
       from: '"BlockBallot" <blockballot@gmail.com>', 
       to: `${email}`, 
       subject: 'Link to reset your password', 
       html: '<b>Click the link below to reset your password.</b>' 
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
+  transporter.sendMail(mailPasswordOptions, (error, info) => {
     if (error) {
       callback(error);
     } else {
@@ -30,42 +31,27 @@ var sendPasswordReset = function(email, callback) {
   });
 }
 
-var sendEmailCodes = function(emails, callback) {
-  let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    port: 588,
-    secure: false, 
-    auth: {
-        user: 'blockballot@gmail.com', 
-        pass: process.env.PASSWORD 
-    }
-  });
-
+const sendEmailCodes = (emails, pollId, callback) => {
   emails.forEach((recipient) => {
-    var code = helpers.createUniqueId();
-    //need to save code for user to db
-    let mailOptions = {
+    let code = helpers.createUniqueId();
+
+    let emailCodeOptions = {
       from: '"BlockBallot" <blockballot@gmail.com>', 
       to: `${recipient}`, 
       subject: 'Your voting code', 
       html: '<p>Visit localhost:3000/voter and enter the code below to submit your vote.</p><p>Your unique code is <b>' + `${code}` + '</b></p>' 
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
+    dbHelper.saveVoterID(code, pollId);
+    transporter.sendMail(emailCodeOptions, (error, info) => {
       if (error) {
         callback(error);
       } else {
-        let newinfo = {
-          result: info,
-          id: code
-        } 
-        callback(null, newinfo);
+        callback(null);
       }
     });
-
   })
 }
 
-
-  exports.sendPasswordReset = sendPasswordReset;
-  exports.sendEmailCodes = sendEmailCodes;
+exports.sendPasswordReset = sendPasswordReset;
+exports.sendEmailCodes = sendEmailCodes;
