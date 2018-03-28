@@ -1,9 +1,6 @@
 import React from 'react';
-import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import 'react-datepicker/dist/react-datepicker.css';
 import { Card, TextField, Divider, RaisedButton, Dialog, FlatButton } from 'material-ui';
-import '../style/voter.css';
 import { Redirect, Link } from 'react-router-dom';
 import cookie from 'react-cookie';
 import $ from 'jquery';
@@ -13,6 +10,7 @@ import { BarLoader } from 'react-spinners';
 import DateTimePicker from 'material-ui-datetimepicker';
 import DatePickerDialog from 'material-ui/DatePicker/DatePickerDialog';
 import TimePickerDialog from 'material-ui/TimePicker/TimePickerDialog';
+import '../style/voter.css';
 
 class CreatePoll extends React.Component {
   constructor() {
