@@ -11,6 +11,7 @@ import DateTimePicker from 'material-ui-datetimepicker';
 import DatePickerDialog from 'material-ui/DatePicker/DatePickerDialog';
 import TimePickerDialog from 'material-ui/TimePicker/TimePickerDialog';
 import '../style/voter.css';
+import Loadable from 'react-loading-overlay';
 
 class CreatePoll extends React.Component {
   constructor() {
@@ -30,7 +31,9 @@ class CreatePoll extends React.Component {
       voterDialogOpen: false,
       loading: false,
       isSubmitted: false,
-      pollId: 0
+      pollId: 0,
+      loaderActive: true,
+      sendVotesDisabled: true
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -129,7 +132,9 @@ class CreatePoll extends React.Component {
     .then(pollRes => {
       console.log('poll result', pollRes)
       this.setState({
-        pollId: pollRes.data[0].pollId
+        pollId: pollRes.data[0].pollId,
+        loaderActive: false,
+        sendVotesDisabled: false
       })
     })
     .catch(err =>  {
@@ -303,7 +308,28 @@ class CreatePoll extends React.Component {
           <div className="header">Confirm and Send</div>
           <section style={{ display: 'flex', padding: 30 }}>
             <div style={{ flex: 1, padding: 5 }}>
-              <Card style={{ padding: 30, margin: 15, marginBottom: 50 }} />
+              <Loadable
+                active={this.state.loaderActive}
+                spinner
+                text="We're creating your ballot"
+                >
+                <Card style={{ padding: 30, margin: 15, marginBottom: 50 }} >
+                  <p>Text</p>
+                  <p>Text</p>
+                  <p>Text</p>
+                  <p>Text</p>
+                  <p>Text</p>
+                  <p>Text</p>
+                  <p>Text</p>
+                  <p>Text</p>
+                  <p>Text</p>
+                  <p>Text</p>
+                  <p>Text</p>
+                  <p>Text</p>
+                  <p>Text</p>
+                  <p>Text</p>
+                </Card>
+              </Loadable>
             </div>
             <div style={{ flex: 1, padding: 5, lineHeight: '1.7em' }}>
               <Card style={{ padding: 30, margin: 15, minHeight: '627px', fontSize: '14px' }}>
@@ -330,6 +356,7 @@ class CreatePoll extends React.Component {
                 <RaisedButton
                   label="Send Voter Codes"
                   onClick={this.handleSendEmail}
+                  disabled={this.state.sendVotesDisabled}
                 />
                 <br /><br />
                 <BarLoader
