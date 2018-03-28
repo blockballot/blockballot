@@ -1,11 +1,39 @@
+/* Login Modal */
+
 .loginModal {
+  margin: 0 auto !important;
   margin-top: 10% !important;
 }
 
 .loginHeader {
   font-family: 'Roboto', sans-serif;
   font-weight: normal;
-  font-size: 28px;
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.cardContent {
+  max-width: 450px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  text-align: center;
+}
+
+.cardText {
+  margin-top: 20px !important;
+}
+
+.signupRedirect {
+  margin-top: 10px !important;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
+
+.signupLink {
+  margin-left: 5px;
 }
 
 .buttonStyle {
@@ -16,3 +44,32 @@
 .blueMatch {
   background-color: #4183D9 !important;
 }
+
+.modalButtons {
+  text-align: center !important;
+  margin-bottom: 20px !important;
+}
+
+/* Dialog Modal */
+
+.dialogDiv {
+  margin: 0 auto;
+  font-family: 'Roboto', sans-serif;
+}
+
+.dialog {
+  width: 450px !important;
+  margin-left: 30% !important;
+}
+
+.forgotPassword {
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.barLoader {
+  margin-bottom: 20px !important;
+}
+
+/* Signup Page */

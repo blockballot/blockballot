@@ -88,112 +88,122 @@ class LoginModal extends React.Component {
         </div>
       )
     }
-    const dialogActions = [
-      <FlatButton
-        label="Close"
-        onClick={this.handleCloseDialog}
-      />
-    ]
 
     return (
-      <Modal
-        className='loginModal'
-        trigger={
-          <Button
-            basic
-            color='black'
-            className='buttonStyle'
-            onClick={this.props.handleOpen}
-          >
-            Log In
-          </Button>
-        }
-        open={this.props.modalOpen}
-        onClose={this.props.handleClose}
-        basic
-        size='small'
-      >
-        <Modal.Content>
-          <h3 className='loginHeader'>Log Into Your BlockBallot Account</h3>
+      <div>
+        <Modal
+          className='loginModal'
+          trigger={
+            <Button
+              basic
+              color='black'
+              className='buttonStyle'
+              onClick={this.props.handleOpen}
+            >
+              Log In
+            </Button>
+          }
+          open={this.props.modalOpen}
+          onClose={this.props.handleClose}
+          basic
+          size='small'
+        >
+          <Modal.Content>
+            <h3 className='loginHeader'>Log Into Your BlockBallot Account</h3>
+            <Card className='cardContent'>
 
-          <Card>
-            <CardText>
-              <TextField
-                hintText='Email'
-                errorText={this.props.loginEmailError}
-                name='email'
-                value={this.state.email}
-                onChange={this.onChange}
-                underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
-              />
-              <br/>
-              <TextField
-                hintText="Password"
-                type="password"
-                errorText={this.props.loginPasswordError}
-                name='password'
-                value={this.state.password}
-                onChange={this.onChange}
-                underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
-              />
-              <br/>
-
-              <Dialog
-                contentStyle={{ color: '#4183D9' }}
-                title="Forgot Password?"
-                actions={dialogActions}
-                modal={false}
-                open={this.state.dialogOpen}
-                onRequestClose={this.handleCloseDialog}>
-                <div>
-                  Enter your account email to reset your password.
-              </div>
-                <br />
+              <CardText className='cardText'>
                 <TextField
-                  hintText="Email"
-                  name='forgotPasswordEmail'
-                  value={this.state.forgotPasswordEmail}
+                  fullWidth
+                  hintText='Email'
+                  errorText={this.props.loginEmailError}
+                  name='email'
+                  value={this.state.email}
                   onChange={this.onChange}
                   underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
                 />
-                <RaisedButton
-                  style={{ textColor: '#4183D9' }}
-                  onClick={this.handlePasswordReset}>
-                  Send
-                </RaisedButton>
-                <br />
-                <BarLoader
-                  color={'#4183D9'}
-                  loading={this.state.loading}
-                  width={250}
+                <br/>
+                <TextField
+                  fullWidth
+                  hintText="Password"
+                  type="password"
+                  errorText={this.props.loginPasswordError}
+                  name='password'
+                  value={this.state.password}
+                  onChange={this.onChange}
+                  underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
                 />
-                {sendConfirmation}
-              </Dialog>
-
-            </CardText>
-          </Card>
-
-        </Modal.Content>
-        <Modal.Actions>
-          <Button
-            primary
-            className='buttonStyle'
-            className='blueMatch'
-            onClick={this.loginClick}
+                <br/>
+              </CardText>
+              <Modal.Actions className='modalButtons'>
+                <Button
+                  primary
+                  className='buttonStyle'
+                  className='blueMatch'
+                  onClick={this.loginClick}
+                >
+                  Submit
+                </Button>
+                <Button
+                  basic
+                  color="black"
+                  className='buttonStyle'
+                  onClick={this.handleOpenDialog}
+                >
+                  Forgot Your Password?
+                </Button>
+              </Modal.Actions>
+            </Card>
+            <div className='signupRedirect'>
+              Don't have an account? <Link className='sigupLink' to='/signup'> Sign up </Link>
+            </div>
+          </Modal.Content>
+        </Modal>
+        <div className='dialogDiv'>
+          <Dialog
+            className='dialog'
+            actions={
+              <FlatButton
+                label="Close"
+                onClick={this.handleCloseDialog}
+              />
+            }
+            modal={false}
+            open={this.state.dialogOpen}
+            onRequestClose={this.handleCloseDialog}
           >
-            Submit
-          </Button>
-          <Button
-            basic
-            inverted
-            className='buttonStyle'
-            onClick={this.handleOpenDialog}
-          >
-            Forgot Password?
-          </Button>
-        </Modal.Actions>
-        Don't have an account? <Link style={{ marginLeft: 5 }} to='/signup'> Sign up </Link>
-      </Modal>
+            <h2 className='forgotPassword'>Forgot Your Password?</h2>
+            <div>
+              Enter your account email to reset your password.
+              </div>
+            <br />
+            <TextField
+              fullwidth
+              hintText='Email'
+              name='forgotPasswordEmail'
+              value={this.state.forgotPasswordEmail}
+              onChange={this.onChange}
+              underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
+            />
+            <br />
+            <BarLoader
+              className='barLoader'
+              color={'#4183D9'}
+              loading={this.state.loading}
+              width={250}
+            />
+            <br />
+            <Button
+              primary
+              className='buttonStyle'
+              className='blueMatch'
+              onClick={this.handlePasswordReset}>
+              Send
+            </Button>
+            {sendConfirmation}
+          </Dialog>
+        </div>
+      </div>
     );
   }
 }

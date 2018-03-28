@@ -116,12 +116,6 @@ app.post('/api/voteresult', (req, res) => {
     )
 });
 
-/*for Test*/
-app.post('/api/Voter', (req, res) => {
-  console.log('server', db.checkVoter(req.body.uniqueId))
-  res.send('Hello World')
-});
-
 app.post('/contract', (req, res) => {
   const options = req.body.options;
   blockchain.createContract(options, (contract) => {
