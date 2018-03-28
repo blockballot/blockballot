@@ -30,6 +30,7 @@ class CreatePoll extends React.Component {
       voterDialogOpen: false,
       loading: false,
       isSubmitted: false,
+      pollId: 0
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -101,9 +102,6 @@ class CreatePoll extends React.Component {
     }
 
     event.preventDefault();
-    this.setState({
-      loading: true,
-    });
 
     const options = [];
     for (let i = 0; i < this.state.ballotOption.length; i++) {
@@ -116,50 +114,54 @@ class CreatePoll extends React.Component {
     axios.post('/contract', {
       options,
     })
-      .then((contractRes) => {
-      // console.log(contractRes);
-        console.log('Contract mined, updating database');
-        const contractInfo = {
-          pollName: this.state.ballotName,
-          pollStart: this.state.start,
-          pollEnd: this.state.end,
-          pollOptions: options,
-          pollAddress: contractRes.data.address,
-        };
-        return axios.post('/poll', contractInfo);
+    .then(contractRes => {
+      console.log(contractRes);
+      console.log('Contract mined, updating database');
+      let contractInfo = {
+        pollName: this.state.ballotName,
+        pollStart: this.state.start,
+        pollEnd: this.state.end,
+        pollOptions: options,
+        pollAddress: contractRes.data.address
+      }
+      return axios.post('/poll', contractInfo);
+    })
+    .then(pollRes => {
+      console.log('poll result', pollRes)
+      this.setState({
+        pollId: pollRes.data[0].pollId
       })
-      .then((pollRes) => {
-        console.log('poll result', pollRes); // we need to get the ballot id
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
+    })
+    .catch(err =>  {
+      console.log(err);
+    })
     this.setState({
-      isSubmitted: true,
-    });
+      isSubmitted: true
+    })
   }
 
   handleSendEmail() {
-    $.ajax({
-      type: 'POST',
-      url: '/emailcodes',
-      data: { emails: JSON.stringify(this.state.emails) },
-      success: (res) => {
+    this.setState({
+      loading: true,
+    });
+    axios.post('/emailcodes', {
+      emails: JSON.stringify(this.state.emails),
+      pollId: this.state.pollId
+    }).then((res) => {
+      console.log('RES', res);
+      if (res.status === 201) {
         this.setState({
           emailConfirmation: true,
           loading: false,
         });
-        console.log('emails successful');
-        axios.post('/poll', { uniqueId: res.id });
-      },
-      error: (err) => {
-        this.setState({
-          loading: false,
-        });
-        console.log('error sending emails');
-      },
-    });
+        console.log('emails successful')
+      }
+    }).catch((err) => {
+      this.setState({
+        loading: false
+      });
+      console.log('error sending emails')
+    })
   }
 
   handleClose() {
@@ -206,6 +208,12 @@ class CreatePoll extends React.Component {
             type="submit"
             label="Create Ballot"
             onClick={this.handleSubmit}
+          />
+          <br/>
+          <BarLoader
+            color="#2284d1"
+            loading={this.state.loading}
+            width={250}
           />
           <Dialog
             actions={actions}
@@ -319,17 +327,17 @@ class CreatePoll extends React.Component {
                   <div>{emailList}</div>
                   <br />
                 </Dialog>
-                <br />
+                <RaisedButton
+                  label="Send Voter Codes"
+                  onClick={this.handleSendEmail}
+                />
+                <br /><br />
                 <BarLoader
                   color="#2284d1"
                   loading={this.state.loading}
                   width={250}
                 />
                 {pollConfirmation}
-                <RaisedButton
-                  label="Send Voter Codes"
-                  onClick={this.handleSendEmail}
-                />
               </Card>
             </div>
           </section>
