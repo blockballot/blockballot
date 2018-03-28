@@ -78,6 +78,10 @@ class App extends React.Component {
   }
 
   loginSubmit(login) {
+    this.setState({
+      loginEmailError: '',
+      loginPasswordError: ''
+    })
     let user = {
       email: `${login.email}`,
       password: `${login.password}`
