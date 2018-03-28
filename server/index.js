@@ -127,14 +127,14 @@ app.post('/contract', (req, res) => {
   blockchain.createContract(options, (contract) => {
     res.status(201).send(contract);
   });
-});
-
+}); 
 app.post('/poll', (req, res) => {
   dbHelper.createPoll(req.session.orgId, req.body)
     .then(newPoll => {
       console.log('newPoll', newPoll)
       let optionArray = [];
       const pollOpts = req.body.pollOptions;
+      console.log('xxxx',pollOpts)
       for (var i = 0; i < pollOpts.length; i++) {
         optionArray.push(dbHelper.createOption(newPoll.dataValues.id, pollOpts[i])); 
       }

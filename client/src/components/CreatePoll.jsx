@@ -11,211 +11,204 @@ import axios from 'axios';
 import CSVReader from 'react-csv-reader';
 import { BarLoader } from 'react-spinners';
 import DateTimePicker from 'material-ui-datetimepicker';
-import DatePickerDialog from 'material-ui/DatePicker/DatePickerDialog'
-import TimePickerDialog from 'material-ui/TimePicker/TimePickerDialog'
+import DatePickerDialog from 'material-ui/DatePicker/DatePickerDialog';
+import TimePickerDialog from 'material-ui/TimePicker/TimePickerDialog';
 
 class CreatePoll extends React.Component {
   constructor() {
     super();
     this.state = {
       ballotName: '',
-      ballotOption: [{optionName:''}],
-      calendar: false,
+      ballotOption: [{ optionName: '' }],
       start: null,
       end: null,
       dateTime: null,
-      voterNumber: "4",
+      voterNumber: '4',
       emails: [],
       emailConfirmation: false,
       open: false,
       numVoters: 0,
       displayInfoCSV: false,
       voterDialogOpen: false,
-      loading: false
+      loading: false,
+      isSubmitted: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
-  
     this.handleAddOption = this.handleAddOption.bind(this);
     this.handleRemoveOption = this.handleRemoveOption.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSendEmail = this.handleSendEmail.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleErrorCSV = this.handleErrorCSV.bind(this);
     this.handleUploadCSV = this.handleUploadCSV.bind(this);
     this.openVoterDialog = this.openVoterDialog.bind(this);
     this.closeVoterDialog = this.closeVoterDialog.bind(this);
-
   }
 
   handleInputChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   }
 
-
   handleStartDateChange(event) {
-    console.log(event)
+    console.log(event);
     this.setState({
       start: event,
-      calendar: true
     });
   }
 
   handleEndDateChange(event) {
-    console.log(event)
+    console.log(event);
     this.setState({
       end: event,
-      calendar: true
     });
   }
 
   handleOptionChange(event) {
-    let matchIndex = Number(event.target.name)
-    let newballotOption = this.state.ballotOption.map((option, index) => {
-      if(matchIndex === index) {
+    const matchIndex = Number(event.target.name);
+    const newballotOption = this.state.ballotOption.map((option, index) => {
+      if (matchIndex === index) {
         option.optionName = event.target.value;
       }
     });
     this.setState({
-      balletOption: newballotOption
+      balletOption: newballotOption,
     });
   }
 
   handleAddOption() {
     this.setState({
-      ballotOption: this.state.ballotOption.concat([{ optionName: ''}])
+      ballotOption: this.state.ballotOption.concat([{ optionName: '' }]),
     });
   }
 
   handleRemoveOption(event) {
-    let removeIndex = Number(event.target.name);
+    const removeIndex = Number(event.target.name);
     this.setState({
-      ballotOption: this.state.ballotOption.filter((option, i) => removeIndex !== i)
+      ballotOption: this.state.ballotOption.filter((option, i) => removeIndex !== i),
     });
   }
 
   handleSubmit(event) {
     if (this.state.ballotName === '' || this.state.start === null || this.state.end === null) {
       this.setState({
-        open: true
+        open: true,
       });
       return;
     }
 
     event.preventDefault();
     this.setState({
-      loading: true
-    })
+      loading: true,
+    });
 
-
-    let options = [];
-    for (var i = 0; i < this.state.ballotOption.length; i++) {
-      var optName = this.state.ballotOption[i].optionName;
-      if (optName !== "") {
+    const options = [];
+    for (let i = 0; i < this.state.ballotOption.length; i++) {
+      const optName = this.state.ballotOption[i].optionName;
+      if (optName !== '') {
         options.push(optName);
       }
     }
     console.log('Sending contract to get mined');
     axios.post('/contract', {
-      options: options
+      options,
     })
-    .then(contractRes => {
+      .then((contractRes) => {
       // console.log(contractRes);
-      console.log('Contract mined, updating database');
-      let contractInfo = {
-        pollName: this.state.ballotName,
-        pollStart: this.state.start,
-        pollEnd: this.state.end,
-        pollOptions: options,
-        pollAddress: contractRes.data.address
-      }
-      return axios.post('/poll', contractInfo);
-    })
-    .then(pollRes => {
-      console.log('poll result', pollRes) // we need to get the ballot id
-    })
-    .catch(err =>  {
-      console.log(err);
-    })
+        console.log('Contract mined, updating database');
+        const contractInfo = {
+          pollName: this.state.ballotName,
+          pollStart: this.state.start,
+          pollEnd: this.state.end,
+          pollOptions: options,
+          pollAddress: contractRes.data.address,
+        };
+        return axios.post('/poll', contractInfo);
+      })
+      .then((pollRes) => {
+        console.log('poll result', pollRes); // we need to get the ballot id
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
+    this.setState({
+      isSubmitted: true,
+    });
+  }
 
+  handleSendEmail() {
     $.ajax({
       type: 'POST',
       url: '/emailcodes',
-      data: {emails: JSON.stringify(this.state.emails)},
+      data: { emails: JSON.stringify(this.state.emails) },
       success: (res) => {
         this.setState({
           emailConfirmation: true,
-          loading: false
+          loading: false,
         });
-        console.log('emails successful')
-
-        axios.post('/poll', {uniqueId: res.id, })
-
-
+        console.log('emails successful');
+        axios.post('/poll', { uniqueId: res.id });
       },
       error: (err) => {
         this.setState({
-          loading: false
+          loading: false,
         });
         console.log('error sending emails');
-      }
-    })
-
+      },
+    });
   }
 
   handleClose() {
     this.setState({
-      open: false
+      open: false,
     });
-  };
+  }
 
   openVoterDialog() {
     this.setState({
-      voterDialogOpen: true
-    })
+      voterDialogOpen: true,
+    });
   }
 
   closeVoterDialog() {
     this.setState({
-      voterDialogOpen: false
-    })
+      voterDialogOpen: false,
+    });
   }
 
   handleErrorCSV() {
-    console.log('csv upload failed')
+    console.log('csv upload failed');
   }
 
   handleUploadCSV(data) {
     this.setState({
       emails: data,
       numVoters: data.length,
-      displayInfoCSV: true
-    })
+      displayInfoCSV: true,
+    });
   }
 
   render() {
     const actions = [
-      <FlatButton
-        label="Close"
-        primary={true}
-        onClick={this.handleClose}
-      />
+      <FlatButton label="Close" primary onClick={this.handleClose} />,
     ];
 
     let submitButton = null;
     if (cookie.load('loggedIn') === 'true') {
       submitButton = (
         <div>
-          <RaisedButton 
-            style={{ backgroundColor: "navy" }}
-            type="submit" 
-            label="Create Poll" 
-            onClick={this.handleSubmit}/>
+          <RaisedButton
+            style={{ backgroundColor: 'navy' }}
+            type="submit"
+            label="Create Ballot"
+            onClick={this.handleSubmit}
+          />
           <Dialog
             actions={actions}
             modal={false}
@@ -225,16 +218,17 @@ class CreatePoll extends React.Component {
             Please fill out all required fields
           </Dialog>
         </div>
-      )
+      );
     } else {
       submitButton = (
-        <Link to='/signup'>
-          <RaisedButton 
-            style={{ backgroundColor: "navy" }}
-            type="submit" 
-            label="Create Poll"/>
+        <Link to="/signup">
+          <RaisedButton
+            style={{ backgroundColor: 'navy' }}
+            type="submit"
+            label="Create Ballot"
+          />
         </Link>
-      )
+      );
     }
 
     let csvInfo = null;
@@ -244,162 +238,158 @@ class CreatePoll extends React.Component {
           <div>
             Total participants: {this.state.numVoters}
           </div>
-          <div onClick = {this.openVoterDialog} style={{cursor: 'pointer', color: '#2284d1'}}>
+          <div onClick={this.openVoterDialog} style={{ cursor: 'pointer', color: '#2284d1' }}>
             See Participants
           </div>
         </div>
-      )
+      );
     }
-    
-    let optionEntry = this.state.ballotOption.map((option, index) => (
+
+    const optionEntry = this.state.ballotOption.map((option, index) => (
       <div key={index}>
         <TextField
           id="option"
           type="text"
-          floatingLabelText="Enter poll options"
           name={index}
           value={option.optionName}
+          underlineStyle={{borderBottomColor: '#2284d1'}}
           onChange={this.handleOptionChange}
         />
         <input
           type="button"
-          style={{color: "red"}}
           name={index}
           value="x"
           onClick={this.handleRemoveOption}
         />
       </div>
-    ))
+    ));
 
-    let option = this.state.ballotOption.map((option, index) => (
+    const option = this.state.ballotOption.map((option, index) => (
       <div key={index}>
         {option.optionName}
       </div>
-    ))
+    ));
 
     const dialogActions = [
       <FlatButton
         label="Close"
         onClick={this.closeVoterDialog}
-        style={{color: '#2284d1'}}/>
-    ]
+        style={{ color: '#2284d1' }}
+      />,
+    ];
 
-    let emails = this.state.emails;
-    let emailList = emails.map((email, index) =>
-      <ul key={index}>{email}</ul>
-    );
+    const emails = this.state.emails;
+    const emailList = emails.map((email, index) =>
+      <ul key={index}>{email}</ul>);
 
     let pollConfirmation = null;
     if (this.state.emailConfirmation === true) {
       pollConfirmation = (
         <div>
-         Poll created! Your voters can check their inbox for a unique voting ID.
+          Poll created! Your voters can check their inbox for a unique voting ID.
         </div>
-      )
+      );
     }
 
+    if (this.state.isSubmitted) {
+      return (
+        <div>
+          <div className="header">Confirm and Send</div>
+          <section style={{ display: 'flex', padding: 30 }}>
+            <div style={{ flex: 1, padding: 5 }}>
+              <Card style={{ padding: 30, margin: 15, marginBottom: 50 }} />
+            </div>
+            <div style={{ flex: 1, padding: 5, lineHeight: '1.7em' }}>
+              <Card style={{ padding: 30, margin: 15, minHeight: '627px', fontSize: '14px' }}>
+                <CSVReader
+                  cssClass="csv-input"
+                  label="Upload a CSV file with voter emails."
+                  onFileLoaded={this.handleUploadCSV}
+                  onError={this.handleErrorCSV}
+                />
+                <br />
+                {csvInfo}
+                <br />
+                <Dialog
+                  contentStyle={{ width: 500, color: '#2284d1' }}
+                  title="Poll Participants"
+                  actions={dialogActions}
+                  modal={false}
+                  open={this.state.voterDialogOpen}
+                  onRequestClose={this.handleClose}
+                >
+                  <div>{emailList}</div>
+                  <br />
+                </Dialog>
+                <br />
+                <BarLoader
+                  color="#2284d1"
+                  loading={this.state.loading}
+                  width={250}
+                />
+                {pollConfirmation}
+                <RaisedButton
+                  label="Send Voter Codes"
+                  onClick={this.handleSendEmail}
+                />
+              </Card>
+            </div>
+          </section>
+        </div>
+      );
+    }
     return (
       <div>
-        <div className="header">Create Poll</div>
-        {/*<section style={{ display: "flex", padding: 30}}>*/}
+        <div className="header">Create Your Ballot</div>
+        <section style={{ display: 'flex', padding: 30 }}>
           <div style={{ flex: 1, padding: 5 }}>
-          <Card style={{ padding: 30, margin: 15, marginBottom: 50 }}>
-          <div>
-            <label>
-              <TextField
-                id="title"
-                type="text" 
-                name="ballotName" 
-                floatingLabelText="Enter poll title"
-                value={this.state.ballotName} 
-                onChange={this.handleInputChange} 
-              />
-            </label>
-            <br/>
-
-            <label>
-              {optionEntry}
-              <RaisedButton
-                label="Add Option Entry"
-                onClick={this.handleAddOption}
-               />
-            </label>
-            <br/><br/><br/>
-            <b>POLL OPENING AND CLOSING TIME:</b>
-            <br/>
-                <DateTimePicker 
-                  onChange={this.handleStartDateChange}
-                  floatingLabelText="Enter poll opening time"
-                  showCurrentDateByDefault={false}
-                  DatePicker={DatePickerDialog}
-                  TimePicker={TimePickerDialog}
-                />
-                <DateTimePicker 
-                  onChange={this.handleEndDateChange}
-                  floatingLabelText="Enter poll ending time"
-                  showCurrentDateByDefault={false}
-                  DatePicker={DatePickerDialog}
-                  TimePicker={TimePickerDialog}
-                />
-            <CSVReader
-              cssClass="csv-input"
-              label="Upload a CSV file with voter emails."
-              onFileLoaded={this.handleUploadCSV}
-              onError={this.handleErrorCSV}
-            />
-            <br/>
-            {csvInfo}
-            <br/>
-            <Dialog
-              contentStyle={{width: 500, color: '#2284d1'}}
-              title="Poll Participants"
-              actions={dialogActions}
-              modal={false}
-              open={this.state.voterDialogOpen}
-              onRequestClose={this.handleClose}>
-              <div>{emailList}</div>
-              <br/>
-            </Dialog>
-            {submitButton}
-          </div>
-          <br />
-          <BarLoader
-            color={'#2284d1'} 
-            loading={this.state.loading}
-            width={250} 
-          />
-          {pollConfirmation}
-          </Card>
-        </div>
-
-
-
-
-        <div style={{ flex: 1, padding: 5, lineHeight: "1.7em" }}>
-          <Card style={{ padding: 30, minHeight: "627px", fontSize: "14px"}}>
-            <div style={{ textAlign: "center", marginBottom: "30px"}}>
-              <b>{this.state.ballotName}</b>
-            </div>  
-            <div style={{ marginBottom: "30px"}}>
-              {option}
-            </div>
-            <Divider />
-            <div>
+            <Card style={{ padding: 30, margin: 15, marginBottom: 50 }}>
               <div>
-
+                <b>1. Ballot Title</b><br />
+                <TextField
+                  id="title"
+                  type="text"
+                  name="ballotName"
+                  value={this.state.ballotName}
+                  onChange={this.handleInputChange}
+                  underlineStyle={{borderBottomColor: '#2284d1'}}
+                /><br /><br /><br />
+                <b>2. Add Ballot Options</b><br />
+                {optionEntry}
+                <RaisedButton
+                  label="Add Ballot Options"
+                  onClick={this.handleAddOption}
+                />
               </div>
-              <div>
-                <div>
-
-                </div>
-              </div>
-              <br/>
-            </div>
             </Card>
           </div>
-        {/*</section>*/}
+          <div style={{ flex: 1, padding: 5, lineHeight: '1.7em' }}>
+            <Card style={{ padding: 30, margin: 15, fontSize: '14px' }}>
+              <div>
+                <b>3. Define Start and End Times</b><br />
+                <DateTimePicker
+                  onChange={this.handleStartDateChange}
+                  showCurrentDateByDefault={false}
+                  DatePicker={DatePickerDialog}
+                  TimePicker={TimePickerDialog}
+                  underlineStyle={{borderBottomColor: '#2284d1'}}
+                />
+                <DateTimePicker
+                  onChange={this.handleEndDateChange}
+                  showCurrentDateByDefault={false}
+                  DatePicker={DatePickerDialog}
+                  TimePicker={TimePickerDialog}
+                  underlineStyle={{borderBottomColor: '#2284d1'}}
+                /><br /><br />
+              </div>
+              <b>4. Create Your Ballot</b><br />
+              
+              {submitButton}
+            </Card>
+          </div>
+        </section>
       </div>
-    )
+    );
   }
 }
 

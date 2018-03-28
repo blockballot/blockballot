@@ -46,19 +46,3 @@
 }
 
 
-.container {
-  display: grid;
-  grid-gap: 20px;
-  border: 10px solid var(--yellow);
-  grid-template-columns: repeat(auto-fill, 150px)
-}
-
-
-.item {
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    border: 5px solid rgba(0, 0, 0, 0.03);
-    border-radius: 3px;
-    font-size: 35px;
-  }
