@@ -1,10 +1,7 @@
-let chai = require('chai');
-let expect = require('chai').expect;
-let request = require('supertest');
-let server = require('../server/index.js');
-let db = require('../database/index.js');
-let Sequelize = require("sequelize");
-
+const expect = require('chai').expect;
+const request = require('supertest');
+const server = require('../server/index.js');
+const db = require('../database/index.js');
 
 describe('Server Functionality', function() {
 
