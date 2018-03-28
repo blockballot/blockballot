@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import cookie from 'react-cookie';
-import { Button, Header, Icon, Modal } from 'semantic-ui-react';
-import { Card, CardText, CardHeader, TextField, RaisedButton, FlatButton, Dialog } from 'material-ui';
+import { Button, Header, Modal } from 'semantic-ui-react';
+import { Card, CardText, CardHeader, TextField, FlatButton, Dialog } from 'material-ui';
 import { BarLoader } from 'react-spinners';
 import $ from 'jquery';
 import '../style/forms.css';
@@ -110,9 +110,9 @@ class LoginModal extends React.Component {
         >
           <Modal.Content>
             <h3 className='loginHeader'>Log Into Your BlockBallot Account</h3>
-            <Card className='cardContent'>
+            <Card className='loginCardContent'>
 
-              <CardText className='cardText'>
+              <CardText className='loginCardText'>
                 <TextField
                   fullWidth
                   hintText='Email'
@@ -155,7 +155,13 @@ class LoginModal extends React.Component {
               </Modal.Actions>
             </Card>
             <div className='signupRedirect'>
-              Don't have an account? <Link className='sigupLink' to='/signup'> Sign up </Link>
+              Don't have an account?  
+              <Link
+                to='/signup'
+                onClick={this.props.handleClose}
+              >
+                <span className='signupSpan'>Sign Up</span>
+              </Link>
             </div>
           </Modal.Content>
         </Modal>

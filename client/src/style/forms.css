@@ -13,7 +13,7 @@
   margin-bottom: 20px;
 }
 
-.cardContent {
+.loginCardContent {
   max-width: 450px;
   height: 100%;
   margin: 0 auto;
@@ -21,7 +21,7 @@
   text-align: center;
 }
 
-.cardText {
+.loginCardText {
   margin-top: 20px !important;
 }
 
@@ -32,8 +32,8 @@
   text-align: center;
 }
 
-.signupLink {
-  margin-left: 5px;
+.signupSpan {
+  margin-left: 5px !important;
 }
 
 .buttonStyle {
@@ -73,3 +73,19 @@
 }
 
 /* Signup Page */
+
+.signup {
+  max-height: 700px !important;
+}
+
+.signupCardTitle {
+  text-align: center;
+}
+
+.signupCardText {
+  padding: 5% 10% 5% 10% !important;
+}
+
+.createAccount {
+  margin-top: 15px !important;
+}
