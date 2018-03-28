@@ -145,5 +145,6 @@ module.exports = {
   Poll: Poll,
   Option: Option,
   Vote: Vote,
-  VoteKey: VoteKey
+  VoteKey: VoteKey,
+  sequelize: sequelize
 };

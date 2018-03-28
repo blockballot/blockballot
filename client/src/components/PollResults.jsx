@@ -11,6 +11,24 @@ const PollResults = (props) => {
     return (<Redirect to='/dashboard' />)
   }
 
+  let voteCounts = [];
+  let options = props.poll.options.split(',');
+  props.poll.optionVotes.forEach((optionVote, index) => {
+    voteCounts.push(optionVote[options[index]]);
+  });
+  let data = {
+    labels: options,
+    datasets: [
+      {
+        fillColor: "rgba(240,248,255,0.5)",
+        strokeColor: "rgba(34,132,209,0.8)",
+        highlightFill: "rgba(34,132,209,0.75)",
+        highlightStroke: "rgba(34,132,209,1)",
+        data: voteCounts
+      }
+    ]
+  };
+
   return (
     <div>
       <div className="header" style ={{marginTop: 100, marginBottom: 20}}>
@@ -33,19 +51,6 @@ const PollResults = (props) => {
     </div>
   )      
 }
-
-var data = {
-  labels: ['Mark Cuban', 'Dwayne "The Rock" Johnson', 'Oprah Winfrey', 'Lenny'],
-  datasets: [
-    {
-      fillColor: "rgba(240,248,255,0.5)",
-      strokeColor: "rgba(34,132,209,0.8)",
-      highlightFill: "rgba(34,132,209,0.75)",
-      highlightStroke: "rgba(34,132,209,1)",
-      data: [28, 48, 40, 19]
-    }
-  ]
-};
 
 var options = {
   //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
