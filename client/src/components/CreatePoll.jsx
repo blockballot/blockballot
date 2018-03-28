@@ -335,7 +335,7 @@ class CreatePoll extends React.Component {
               <Card style={{ padding: 30, margin: 15, minHeight: '627px', fontSize: '14px' }}>
                 <CSVReader
                   cssClass="csv-input"
-                  label="Upload a CSV file with voter emails."
+                  label="While we're creating your ballot, upload a CSV of voter emails. You'll be able to send after the ballot is created."
                   onFileLoaded={this.handleUploadCSV}
                   onError={this.handleErrorCSV}
                 />
