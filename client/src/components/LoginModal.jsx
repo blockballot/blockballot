@@ -115,10 +115,11 @@ class LoginModal extends React.Component {
       >
         <Modal.Content>
           <h3 className='loginHeader'>Log Into Your BlockBallot Account</h3>
+          <Card className='cardContent'>
 
-          <Card>
-            <CardText>
+            <CardText className='cardText'>
               <TextField
+                fullWidth
                 hintText='Email'
                 errorText={this.props.loginEmailError}
                 name='email'
@@ -128,6 +129,7 @@ class LoginModal extends React.Component {
               />
               <br/>
               <TextField
+                fullWidth
                 hintText="Password"
                 type="password"
                 errorText={this.props.loginPasswordError}
@@ -156,11 +158,13 @@ class LoginModal extends React.Component {
                   onChange={this.onChange}
                   underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
                 />
-                <RaisedButton
-                  style={{ textColor: '#4183D9' }}
+                <Button
+                  primary
+                  className='buttonStyle'
+                  className='blueMatch'
                   onClick={this.handlePasswordReset}>
                   Send
-                </RaisedButton>
+                </Button>
                 <br />
                 <BarLoader
                   color={'#4183D9'}
@@ -169,30 +173,31 @@ class LoginModal extends React.Component {
                 />
                 {sendConfirmation}
               </Dialog>
-
             </CardText>
-          </Card>
 
+            <Modal.Actions className='modalButtons'>
+              <Button
+                primary
+                className='buttonStyle'
+                className='blueMatch'
+                onClick={this.loginClick}
+              >
+                Submit
+              </Button>
+              <Button
+                basic
+                color="black"
+                className='buttonStyle'
+                onClick={this.handleOpenDialog}
+              >
+                Forgot Password?
+              </Button>
+            </Modal.Actions>
+          </Card>
+          <div className='signupRedirect'>
+            Don't have an account? <Link className='sigupLink' to='/signup'> Sign up </Link>
+          </div>
         </Modal.Content>
-        <Modal.Actions>
-          <Button
-            primary
-            className='buttonStyle'
-            className='blueMatch'
-            onClick={this.loginClick}
-          >
-            Submit
-          </Button>
-          <Button
-            basic
-            inverted
-            className='buttonStyle'
-            onClick={this.handleOpenDialog}
-          >
-            Forgot Password?
-          </Button>
-        </Modal.Actions>
-        Don't have an account? <Link style={{ marginLeft: 5 }} to='/signup'> Sign up </Link>
       </Modal>
     );
   }
