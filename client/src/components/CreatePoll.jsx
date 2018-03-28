@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Card, TextField, Divider, RaisedButton, Dialog, FlatButton } from 'material-ui';
+import { Card, TextField, Divider, RaisedButton, Dialog, FlatButton, RadioButtonGroup, RadioButton} from 'material-ui';
 import { Redirect, Link } from 'react-router-dom';
 import cookie from 'react-cookie';
 import $ from 'jquery';
@@ -33,7 +33,7 @@ class CreatePoll extends React.Component {
       isSubmitted: false,
       pollId: 0,
       loaderActive: true,
-      sendVotesDisabled: true
+      sendVotesDisabled: true,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -117,32 +117,32 @@ class CreatePoll extends React.Component {
     axios.post('/contract', {
       options,
     })
-    .then(contractRes => {
-      console.log(contractRes);
-      console.log('Contract mined, updating database');
-      let contractInfo = {
-        pollName: this.state.ballotName,
-        pollStart: this.state.start,
-        pollEnd: this.state.end,
-        pollOptions: options,
-        pollAddress: contractRes.data.address
-      }
-      return axios.post('/poll', contractInfo);
-    })
-    .then(pollRes => {
-      console.log('poll result', pollRes)
-      this.setState({
-        pollId: pollRes.data[0].pollId,
-        loaderActive: false,
-        sendVotesDisabled: false
+      .then((contractRes) => {
+        console.log(contractRes);
+        console.log('Contract mined, updating database');
+        const contractInfo = {
+          pollName: this.state.ballotName,
+          pollStart: this.state.start,
+          pollEnd: this.state.end,
+          pollOptions: options,
+          pollAddress: contractRes.data.address,
+        };
+        return axios.post('/poll', contractInfo);
       })
-    })
-    .catch(err =>  {
-      console.log(err);
-    })
+      .then((pollRes) => {
+        console.log('poll result', pollRes);
+        this.setState({
+          pollId: pollRes.data[0].pollId,
+          loaderActive: false,
+          sendVotesDisabled: false,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     this.setState({
-      isSubmitted: true
-    })
+      isSubmitted: true,
+    });
   }
 
   handleSendEmail() {
@@ -151,7 +151,7 @@ class CreatePoll extends React.Component {
     });
     axios.post('/emailcodes', {
       emails: JSON.stringify(this.state.emails),
-      pollId: this.state.pollId
+      pollId: this.state.pollId,
     }).then((res) => {
       console.log('RES', res);
       if (res.status === 201) {
@@ -159,14 +159,14 @@ class CreatePoll extends React.Component {
           emailConfirmation: true,
           loading: false,
         });
-        console.log('emails successful')
+        console.log('emails successful');
       }
     }).catch((err) => {
       this.setState({
-        loading: false
+        loading: false,
       });
-      console.log('error sending emails')
-    })
+      console.log('error sending emails');
+    });
   }
 
   handleClose() {
@@ -214,7 +214,7 @@ class CreatePoll extends React.Component {
             label="Create Ballot"
             onClick={this.handleSubmit}
           />
-          <br/>
+          <br />
           <BarLoader
             color="#2284d1"
             loading={this.state.loading}
@@ -263,7 +263,7 @@ class CreatePoll extends React.Component {
           type="text"
           name={index}
           value={option.optionName}
-          underlineStyle={{borderBottomColor: '#2284d1'}}
+          underlineStyle={{ borderBottomColor: '#2284d1' }}
           onChange={this.handleOptionChange}
         />
         <input
@@ -312,27 +312,35 @@ class CreatePoll extends React.Component {
                 active={this.state.loaderActive}
                 spinner
                 text="We're creating your ballot"
-                >
+              >
                 <Card style={{ padding: 30, margin: 15, marginBottom: 50 }} >
-                  <p>Text</p>
-                  <p>Text</p>
-                  <p>Text</p>
-                  <p>Text</p>
-                  <p>Text</p>
-                  <p>Text</p>
-                  <p>Text</p>
-                  <p>Text</p>
-                  <p>Text</p>
-                  <p>Text</p>
-                  <p>Text</p>
-                  <p>Text</p>
-                  <p>Text</p>
-                  <p>Text</p>
+                  <div>
+                    <div className="header">{this.state.ballotName}</div>
+                    <br /><br /><br /><br />
+                    <form>
+                      <div style={{ fontSize: 16, minWidth: 400 }}>
+                        <RadioButtonGroup name="voteoptions" labelPosition="left">
+                          {this.state.ballotOption.map((option, index) => (
+                            <RadioButton
+                              style={{ marginButton: 16, width: 300 }}
+                              key={index}
+                              label={`${option.optionName}`}
+                            />
+                                ))
+                              }
+                        </RadioButtonGroup>
+                      </div>
+                      <br />
+                      <RaisedButton label="Submit" disabled />
+
+                    </form>
+                  </div>
                 </Card>
               </Loadable>
             </div>
             <div style={{ flex: 1, padding: 5, lineHeight: '1.7em' }}>
-              <Card style={{ padding: 30, margin: 15, minHeight: '627px', fontSize: '14px' }}>
+              <Card style={{ padding: 30, margin: 15, minHeight: '627px', fontSize: '14px' }}
+              >
                 <CSVReader
                   cssClass="csv-input"
                   label="While we're creating your ballot, upload a CSV of voter emails. You'll be able to send after the ballot is created."
@@ -385,7 +393,7 @@ class CreatePoll extends React.Component {
                   name="ballotName"
                   value={this.state.ballotName}
                   onChange={this.handleInputChange}
-                  underlineStyle={{borderBottomColor: '#2284d1'}}
+                  underlineStyle={{ borderBottomColor: '#2284d1' }}
                 /><br /><br /><br />
                 <b>2. Add Ballot Options</b><br />
                 {optionEntry}
@@ -405,18 +413,18 @@ class CreatePoll extends React.Component {
                   showCurrentDateByDefault={false}
                   DatePicker={DatePickerDialog}
                   TimePicker={TimePickerDialog}
-                  underlineStyle={{borderBottomColor: '#2284d1'}}
+                  underlineStyle={{ borderBottomColor: '#2284d1' }}
                 />
                 <DateTimePicker
                   onChange={this.handleEndDateChange}
                   showCurrentDateByDefault={false}
                   DatePicker={DatePickerDialog}
                   TimePicker={TimePickerDialog}
-                  underlineStyle={{borderBottomColor: '#2284d1'}}
+                  underlineStyle={{ borderBottomColor: '#2284d1' }}
                 /><br /><br />
               </div>
               <b>4. Create Your Ballot</b><br />
-              
+
               {submitButton}
             </Card>
           </div>
