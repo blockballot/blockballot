@@ -59,7 +59,8 @@ class Vote extends React.Component {
     });
   }
 
-  submitVote(candidate) {
+  submitVote(event) {
+    event.preventDefault();
     var voted = this;
     axios.post('/blockchainvote', {
       address: voted.props.pollHash,
