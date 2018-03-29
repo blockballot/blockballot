@@ -196,6 +196,7 @@ app.post('/emailcodes', (req, res) => {
   let pollId = req.body.pollId;
   mailer.sendEmailCodes(emails, pollId, function(err, result) {
     if (err) {
+      console.log(err);
       res.status(500).send();
     } else {
       res.status(201).send(result);
