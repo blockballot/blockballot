@@ -50,7 +50,7 @@ class VoterResults extends React.Component {
           </div>
         </Card>
         <div className='subHeader'>
-          View Election Outcomes Here in: 03:20:00
+          Ballot closes at {this.props.pollEnd}
         </div>
       </div>
     )

@@ -26,7 +26,8 @@ const saveVoterID = (voteID, pollId) => {
 
 const retrievePolls = (orgId) => {
   return new Promise((resolve, reject) => {
-    db.sequelize.query(`SELECT p.pollName, p.pollTimeStart, p.pollTimeEnd, p.pollHash,
+    db.sequelize.query(`SELECT p.pollName, DATE_FORMAT(p.pollTimeStart,  '%Y-%m-%d %h:%i %p') as pollTimeStart, 
+                        DATE_FORMAT(p.pollTimeEnd,  '%Y-%m-%d %h:%i %p') as pollTimeEnd, p.pollHash,
                         p.orgId, GROUP_CONCAT(o.optionName) as options,
                         GROUP_CONCAT(o.id) as optionIds, o.pollId
                         FROM polls p

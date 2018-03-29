@@ -16,7 +16,7 @@ const Poll = (props) => {
           
           <div className="extra content">
             <span className="left floated">
-              {props.poll.pollTimeStart}
+              {props.poll.pollTimeStart} (GMT)
             </span>
             <span className="right floated">
               {props.poll.voteCount}
