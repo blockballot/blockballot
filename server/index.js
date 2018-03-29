@@ -51,11 +51,11 @@ app.post('/signup', (req, res) => {
   let name = req.body.name;
   let email = req.body.email;
   let password = req.body.password;
-  console.log('INFO', name, email, password);
 
   bcrypt.hash(password, 10).then(hash => {
-    db.Org.findOne({where: {orgName: name}}).then(org => {
-      if (!org) {
+    db.Org.findOne({where: {orgEmail: email}}).then(org => {
+      if (org === null) {
+        console.log('org not found');
         db.Org.create({orgName: name, orgEmail: email, orgPassword: hash})
           .then(newUser => {
             if (newUser) {
@@ -65,6 +65,7 @@ app.post('/signup', (req, res) => {
             }
           })
       } else {
+        console.log('org found in db');
         res.status(401).send('Account already exists');
       }
     });
