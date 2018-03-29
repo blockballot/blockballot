@@ -2,7 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import Vote from './Vote.jsx';
 import VoteResults from './VoterResults.jsx';
-import { Card, TextField, RaisedButton } from 'material-ui';
+import { Card, TextField } from 'material-ui';
+import { Button } from 'semantic-ui-react';
 import '../style/voter.css';
 
 
@@ -73,7 +74,7 @@ class Voter extends React.Component {
       return (
         <div>
           <div className="header">
-          Enter Your Unique Code
+          Enter Your Voter Code
           </div>
             <form>
               <Card className="center">
@@ -84,9 +85,18 @@ class Voter extends React.Component {
                   onChange={this.handleChange}
                   hintText="Enter Code"
                   errorText= {this.state.errorText}
-                  underlineStyle={{borderBottomColor: '#2284d1'}}
-                  /><br/>
-                <RaisedButton label="Submit" type="submit" value="Submit" onClick={this.handleSubmit} />
+                  underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
+                />
+                <br/>
+                <Button
+                  primary
+                  className='submitButton'
+                  type="submit"
+                  value="Submit"
+                  onClick={this.handleSubmit}
+                >
+                  Submit
+                </Button>
               </Card>
             </form>
         </div>

@@ -4,13 +4,13 @@
   "description": "A decentralized voting platform",
   "main": "server/index.js",
   "scripts": {
+    "start": "node server/index.js",
     "test": "npm run test-server && npm run test-client",
     "test-server": "mocha test/test-server.js --timeout 10000 --exit",
     "test-client": "jest",
-    "start": "node server/index.js",
     "server-dev": "nodemon --ignore data --inspect server/index.js",
     "react-dev": "webpack -d --watch",
-    "geth-server": "geth --datadir data --networkid 3210 --rpc --rpccorsdomain 'http://127.0.0.1:3000' --fast --rpcapi personal,eth"
+    "geth-server": "geth --datadir data --rinkeby --rpc --rpccorsdomain 'http://127.0.0.1:3000' --fast --rpcapi personal,web3,eth --cache 1024"
   },
   "repository": {
     "type": "git",
