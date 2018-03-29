@@ -12,13 +12,20 @@ import DatePickerDialog from 'material-ui/DatePicker/DatePickerDialog';
 import TimePickerDialog from 'material-ui/TimePicker/TimePickerDialog';
 import '../style/voter.css';
 import Loadable from 'react-loading-overlay';
+import {
+  Button,
+  Container,
+  Header,
+  Icon,
+  Segment,
+} from 'semantic-ui-react';
 
 class CreatePoll extends React.Component {
   constructor() {
     super();
     this.state = {
       ballotName: '',
-      ballotOption: [{ optionName: '' }],
+      ballotOption: [{ optionName: '' }, { optionName: '' }],
       start: null,
       end: null,
       dateTime: null,
@@ -97,7 +104,7 @@ class CreatePoll extends React.Component {
   }
 
   handleSubmit(event) {
-    if (this.state.ballotName === '' || this.state.start === null || this.state.end === null) {
+    if (this.state.ballotName === '' || this.state.start === null || this.state.end === null || this.state.ballotOption.length < 2) {
       this.setState({
         open: true,
       });
@@ -397,7 +404,7 @@ class CreatePoll extends React.Component {
                 /><br /><br /><br />
                 <b>2. Add Ballot Options</b><br />
                 {optionEntry}
-                <RaisedButton
+                <Button
                   label="Add Ballot Options"
                   onClick={this.handleAddOption}
                 />
