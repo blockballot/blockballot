@@ -57,7 +57,7 @@
 }
 
 .voteHash {
-  padding-top: 20px;
+  padding-top: 7%;
 }
 
 .csv-input {
@@ -65,4 +65,8 @@
   display: inline-block;
   margin: 15px auto;
   text-align: left;
+}
+
+.etherscan {
+  margin-top: 5%;
 }

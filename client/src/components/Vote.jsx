@@ -33,7 +33,7 @@ class Vote extends React.Component {
         pollId: this.props.pollId
       }
     })
-    .then(function (res) {
+    .then((res) => {
       var options = res.data.map(function(element) {
         return element
       });
@@ -44,7 +44,7 @@ class Vote extends React.Component {
         selectedOption: options[0].id
       });
     })
-    .catch(function (error) {      
+    .catch((error) => {      
       voter.setState({
         errorText: "Your unique code is incorrect. Please, try again"
       });
@@ -83,7 +83,7 @@ class Vote extends React.Component {
         isVoteSubmitted: true
       });
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.log(error)
     });
   }

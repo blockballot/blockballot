@@ -13,7 +13,7 @@ class VoterResults extends React.Component {
       isVoteSubmitted: false,
       isBallotCompleted: false,
       ballotName: props.ballotName || '',
-      ballotOption: props.ballotOption || [],
+      ballotOption: props.ballotOption || []
     };
   }
 
@@ -24,6 +24,8 @@ class VoterResults extends React.Component {
       }
       return acc;
     }, []);
+    
+    let etherscanUrl = `https://rinkeby.etherscan.io/tx/${this.props.voteHash}`;
 
     return (
       <div>
@@ -43,15 +45,16 @@ class VoterResults extends React.Component {
               {this.props.voteHash}
             </div>
           </div>
+          <div className='etherscan'>
+            <b>View a Record of Your Vote on Etherscan <a href={etherscanUrl}>Here</a></b>
+          </div>
         </Card>
-        <div className="subHeader">
+        <div className='subHeader'>
           View Election Outcomes Here in: 03:20:00
         </div>
       </div>
     )
   }
 }
-
-// https://rinkeby.etherscan.io/tx/0x7b0fe3b2f9cbdf3be1dcd405cca49ec57c1a62169eb1ca7ade0f18cbcfaa9131
 
 export default VoterResults;
