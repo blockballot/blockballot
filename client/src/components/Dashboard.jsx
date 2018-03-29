@@ -22,21 +22,12 @@ class Dashboard extends React.Component {
       loggedIn: false,
       currentUser: '',
     };
-
+    this.retrieveOrgPolls = this.retrieveOrgPolls.bind(this);
   }
 
   componentDidMount() {
-    var context = this;
-    this.timer = setInterval(
-      () => axios.get('/poll')
-        .then((res) => {
-          context.updatePoll(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        }),
-      6000,
-    );
+    this.retrieveOrgPolls();
+    this.timer = setInterval(this.retrieveOrgPolls, 15000);
   }
 
   componentWillUnmount() {
@@ -44,9 +35,18 @@ class Dashboard extends React.Component {
   }
 
   updatePoll(res) {
-    console.log('xxxxxxxxx')
     this.setState({
       polls: res.data,
+    });
+  }
+
+  retrieveOrgPolls() {
+    axios.get('/polls')
+    .then(polls => {
+      this.updatePoll(polls);
+    })
+    .catch(err => {
+      console.log(err);
     });
   }
 

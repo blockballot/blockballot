@@ -14,7 +14,8 @@ class Voter extends React.Component {
       isLogin: false,
       isVoteSubmitted: false,
       isBallotCompleted: false,
-      pollId: 0, 
+      pollId: 0,
+      pollHash: '',
       errorText: ''
     };
     this.handleChange = this.handleChange.bind(this);
@@ -39,9 +40,11 @@ class Voter extends React.Component {
     })
     .then(function (res) {
       var poll = res.data.pollId;
+      var hash = res.data.poll.pollHash;
       voter.setState({
         isLogin: true,
-        pollId: poll
+        pollId: poll,
+        pollHash: hash
       });
     })
     .catch(function (error) {
@@ -65,7 +68,10 @@ class Voter extends React.Component {
           )
         } else {
           return (
-            <Vote pollId={this.state.pollId} />
+            <Vote 
+              pollId={this.state.pollId}
+              pollHash={this.state.pollHash}
+            />
           )
         }
       }
