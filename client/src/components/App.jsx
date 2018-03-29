@@ -27,18 +27,21 @@ class App extends React.Component {
     this.state = {
       currentUser: '',
       loggedIn: false,
-      signupError: '',
+      signupNameError: '',
+      signupEmailError: '',
+      signupPasswordError: '',
       loginEmailError: '',
       loginPasswordError: '',
       currentPoll: {},
       activeItem: '',
-      modalOpen: false
+      modalOpen: false,
     }
     this.loginSubmit = this.loginSubmit.bind(this);
     this.signupSubmit = this.signupSubmit.bind(this);
     this.handlePollClick = this.handlePollClick.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.isValidEmail = this.isValidEmail.bind(this);
   }
 
   componentDidMount() {
@@ -52,32 +55,62 @@ class App extends React.Component {
   }
 
   signupSubmit(signup) {
-    let user = {
-      name: `${signup.name}`,
-      email: `${signup.email}`,
-      password: `${signup.password}`
-    };
-    $.ajax({
-      type: 'POST',
-      url: '/signup',
-      data: user,
-      success: (res, textStatus, jqXHR) => {
-        if (jqXHR.status === 200) {
-          this.setState({
-            modalOpen: true
-          })
-          this.props.history.push('/');
-        }
-      },
-      error: (err) => {
-        this.setState({
-          signupError: err.responseText
-        })
+    this.setState({
+      signupNameError: '',
+      signupEmailError: '',
+      signupPasswordError: ''
+    })
+    if (signup.name === '') {
+      this.setState({
+        signupNameError: 'This field is required'
+      })
+    } else if (signup.email === '' || !this.isValidEmail(signup.email)) {
+      this.setState({
+        signupEmailError: 'Invalid email address'
+      })
+    } else if (signup.password === '') {
+      this.setState({
+        signupPasswordError: 'This field is required'
+      })
+    } else {
+
+      let user = {
+        name: `${signup.name}`,
+        email: `${signup.email}`,
+        password: `${signup.password}`
       }
-    });
+
+      $.ajax({
+        type: 'POST',
+        url: '/signup',
+        data: user,
+        success: (res, textStatus, jqXHR) => {
+          if (jqXHR.status === 200) {
+            this.setState({
+              modalOpen: true
+            })
+            this.props.history.push('/');
+          }
+        },
+        error: (err) => {
+          this.setState({
+            signupEmailError: err.responseText
+          })
+        }
+      });
+    }
+  }
+
+  isValidEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
   }
 
   loginSubmit(login) {
+    this.setState({
+      loginEmailError: '',
+      loginPasswordError: ''
+    })
     let user = {
       email: `${login.email}`,
       password: `${login.password}`
@@ -170,7 +203,9 @@ class App extends React.Component {
           render={ () =>
             <Signup
             signupSubmit={this.signupSubmit}
-            signupError={this.state.signupError}
+            signupEmailError={this.state.signupEmailError}
+            signupNameError={this.state.signupNameError}
+            signupPasswordError={this.state.signupPasswordError}
             />
           }
         />

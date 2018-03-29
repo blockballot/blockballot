@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {Card, CardText, CardHeader, TextField, RaisedButton, Dialog, FlatButton, GridList} from 'material-ui';
+import {Card, CardText, CardHeader, CardTitle, CardMedia, TextField, RaisedButton, Dialog, FlatButton, GridList} from 'material-ui';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import $ from 'jquery';
@@ -62,63 +62,63 @@ class Signup extends React.Component {
   };
 
   render() {
-    const dialogActions = [
-      <FlatButton
-        label="Close"
-        onClick={this.handleClose}
-      />
-    ]
     const formChange = this.state.passwordGen ? (
       <div>
         <TextField
+            fullWidth
             hintText='Password'
             type='password'
-            errorText=''
+            errorText={this.props.signupPasswordError}
             name='password'
             value={this.state.password}
             onChange={this.onChange}
             underlineFocusStyle={{ borderBottomColor: '#4183D9'}}
         /> 
 
-        <RaisedButton 
-          style={{marginTop: 20}}
-          label="Create Account"
+        <Button 
+          primary
+          className='buttonStyle'
+          className='blueMatch'
           onClick={this.signupClick}
-        />
+        >
+          Create Account
+        </Button>
       </div>) 
 
       : (<div>
-          <RaisedButton 
-            style={{marginTop: 20}}
-            label="Generate Password"
+          <Button
+            primary
+            className='buttonStyle'
+            className='blueMatch'
+            className='createAccount'
             onClick={this.handleOpen}
-          />
+          >
+            Generate Password
+          </Button>
         </div>);
 
     return (
-      <div
-        style={{
-          width: 400,
-          height: 500,
-          position: 'absolute',
-          top: 200,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          margin: 'auto'
-        }}
-      >
+      <div className='signup'>
         <Card>
-          <CardHeader
-            titleStyle={{marginLeft: 20, marginTop: 10, fontSize: 25}}
-            title="Create Your Account"
-          />
-
-          <CardText style={{marginLeft: 20}}>
+          <CardMedia
+            overlay={
+            <CardTitle
+              className='signupCardTitle'
+              title='Create Your BlockBallot Account'
+              subtitle='Commit to data transparency for your collective decision-making'
+            />
+            }
+          >
+            <img src='https://images.unsplash.com/photo-1485309086598-f9d010ad3972?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=eb5b9b3fd1bcb459968f52c0794e1851&auto=format&fit=crop&w=750&q=80 alt='/>
+          </CardMedia>
+          
+          <div>
+          <CardText className='signupCardText'>
             <TextField
+              fullWidth
               hintText='Organization Name'
               name='name'
-              errorText=''
+              errorText={this.props.signupNameError}
               value={this.state.name}
               onChange={this.onChange}
               underlineFocusStyle={{ borderBottomColor: '#4183D9'}}
@@ -127,25 +127,31 @@ class Signup extends React.Component {
             <br/>
 
             <TextField
+              fullWidth
               hintText="Organization Email"
-              errorText={this.props.signupError}
+              errorText={this.props.signupEmailError}
               name='email'
               value={this.state.email}
               onChange={this.onChange}
-              underlineFocusStyle={{ borderBottomColor: '#4183D9'}}/>
+              underlineFocusStyle={{ borderBottomColor: '#4183D9'}}
+            />
 
             <Dialog
-              contentStyle={{width: 600}}
               title="Unique Password"
-              actions={dialogActions}
+              actions={
+                <FlatButton
+                  label="Close"
+                  onClick={this.handleClose}
+                />
+              }
               modal={false}
               open={this.state.dialogOpen}
               onRequestClose={this.handleClose}>
 
               <div>
                 Copy the unique password below to create your account:
-              </div>  
-                <br />
+              </div>
+              <br />
               <div style={{cursor: 'pointer'}}>
                 <CopyToClipboard text={this.state.password}>
                   <i className="copy outline icon"></i>
@@ -153,22 +159,12 @@ class Signup extends React.Component {
                 <CopyToClipboard text={this.state.password}>
                   <b>{this.state.password}</b>
                 </CopyToClipboard>
-
               </div>
             </Dialog>
             {formChange}
           </CardText>
+          </div>
         </Card>
-        <div
-          style={{
-            width: '100%',
-            marginTop: 20,
-            marginLeft: '25%',
-            fontFamily: 'Roboto, sans-serif'
-          }}
-        >
-          Already have an account? <Link style={{marginLeft: 5}} to='/login'> Log In </Link>
-        </div>
       </div>
     );
   }

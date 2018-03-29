@@ -53,8 +53,8 @@ class Dashboard extends React.Component {
   render() {
     const polls = this.state.polls;
     if (cookie.load('loggedIn') !== 'true') {
-      return (<Redirect to="/login" />);
-    }
+      return (<Redirect to='/' />)
+    } 
     return (
       <div>
 

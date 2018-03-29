@@ -6,7 +6,7 @@ import cookie from 'react-cookie';
 
 const PollResults = (props) => {
   if (cookie.load('loggedIn') !== 'true') {
-    return (<Redirect to='/login' />)
+    return (<Redirect to='/' />)
   } else if (props.poll === undefined) {
     return (<Redirect to='/dashboard' />)
   }
