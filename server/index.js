@@ -85,11 +85,11 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/api/voter', (req, res) => {
-  db.VoteKey.findOne({where: {voterUniqueId: req.body.uniqueId}}).then(voteruniqueid => {
-    if (!voteruniqueid) {
+  db.VoteKey.findOne({where: {voterUniqueId: req.body.uniqueId}, include: [db.Poll] }).then(result => {
+    if (!result) {
       res.status(500).send('Invalid unique ID. Please try again.')
     } else {
-      res.status(200).send(voteruniqueid);
+      res.status(200).send(result);
     }
   })
 });
@@ -104,17 +104,31 @@ app.post('/api/poll', (req, res) => {
   })
 })
 
+
 app.post('/api/voteresult', (req, res) => {
   db.Vote.create({voteHash: req.body.voteHash, optionId: req.body.voted })
-    .then(newUser => {
-      if (newUser) {
-        res.status(200).send(newUser);
-      } else {
-        res.status(500).send('There was an error. Please try again later.')
-      }
-    }).catch(err =>
-      console.log(err)
-    )
+  .then(newUser => {
+    if (newUser) {
+      res.status(200).send(newUser);
+    } else {
+      res.status(500).send('There was an error. Please try again later.')
+    }
+  }).catch(err =>
+    console.log(err)
+  )
+});
+
+app.post('/blockchainvote', (req, res) => {
+  // pass in candidatename and address of contract
+  console.log(req.body);
+  blockchain.castVote(req.body.candidate, req.body.address)
+  .then(hash => {
+    res.status(201).send(hash);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).send('There was an error when creating the blockchain vote');
+  })
 });
 
 app.post('/contract', (req, res) => {
@@ -123,6 +137,7 @@ app.post('/contract', (req, res) => {
     res.status(201).send(contract);
   });
 }); 
+
 app.post('/poll', (req, res) => {
   dbHelper.createPoll(req.session.orgId, req.body)
     .then(newPoll => {
@@ -147,7 +162,8 @@ app.post('/poll', (req, res) => {
     })
 });
 
-app.get('/poll', (req, res) => {
+// retrieve all polls for the logged in org
+app.get('/polls', (req, res) => {
   dbHelper.retrievePolls(req.session.orgId)
   .then(polls => {
     const promiseArr = [];
