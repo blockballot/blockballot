@@ -306,7 +306,7 @@ class CreatePoll extends React.Component {
     if (this.state.emailConfirmation === true) {
       pollConfirmation = (
         <div>
-          Poll created! Your voters can check their inbox for a unique voting ID.
+          Ballot created! Your voters can check their inbox for a unique voting ID.
         </div>
       );
     }
@@ -361,7 +361,7 @@ class CreatePoll extends React.Component {
                 <br />
                 <Dialog
                   contentStyle={{ width: 500, color: '#2284d1' }}
-                  title="Poll Participants"
+                  title="Ballot Participants"
                   actions={dialogActions}
                   modal={false}
                   open={this.state.voterDialogOpen}
