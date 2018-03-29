@@ -56,7 +56,10 @@ class Voter extends React.Component {
   render() {
     if(this.state.isLogin) {
       return (
-        <Vote pollId={this.state.pollId} />
+        <Vote 
+          pollId={this.state.pollId}
+          pollHash={this.state.pollHash}
+        />
       )
     } else {
       return (
