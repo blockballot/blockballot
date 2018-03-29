@@ -68,7 +68,7 @@ class Signup extends React.Component {
             fullWidth
             hintText='Password'
             type='password'
-            errorText=''
+            errorText={this.props.signupPasswordError}
             name='password'
             value={this.state.password}
             onChange={this.onChange}
@@ -118,7 +118,7 @@ class Signup extends React.Component {
               fullWidth
               hintText='Organization Name'
               name='name'
-              errorText=''
+              errorText={this.props.signupNameError}
               value={this.state.name}
               onChange={this.onChange}
               underlineFocusStyle={{ borderBottomColor: '#4183D9'}}
@@ -129,7 +129,7 @@ class Signup extends React.Component {
             <TextField
               fullWidth
               hintText="Organization Email"
-              errorText={this.props.signupError}
+              errorText={this.props.signupEmailError}
               name='email'
               value={this.state.email}
               onChange={this.onChange}
