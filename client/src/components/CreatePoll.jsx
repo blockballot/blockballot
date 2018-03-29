@@ -215,16 +215,18 @@ class CreatePoll extends React.Component {
     if (cookie.load('loggedIn') === 'true') {
       submitButton = (
         <div>
-          <RaisedButton
-            type='submit'
-            label='Deploy'
+          <Button
+            primary
+            attached='bottom'
+            // type='submit'
             onClick={this.handleSubmit}
-            backgroundColor={'#2284d1'}
-            labelColor={'white'}
-          />
+            backgroundColor='#2284d1'
+          >
+            Deploy
+          </Button>
           <br />
           <BarLoader
-            color="22#84d1"
+            color="#2284d1"
             loading={this.state.loading}
             width={250}
           />
@@ -241,12 +243,13 @@ class CreatePoll extends React.Component {
     } else {
       submitButton = (
         <Link to="/signup">
-          <RaisedButton
-            type="submit"
-            label="Create Ballot"
-            backgroundColor={'#2284d1'}
-            labelColor={'white'}
-          />
+          <Button
+            primary
+            attached='bottom'
+            backgroundColor='#2284d1'
+          >
+            Deploy
+          </Button>
         </Link>
       );
     }
@@ -256,11 +259,14 @@ class CreatePoll extends React.Component {
       csvInfo = (
         <div>
           <div>
-            Total participants: {this.state.numVoters}
+            Total Participants: {this.state.numVoters}
           </div>
           <div
             onClick={this.openVoterDialog}
-            style={{ cursor: 'pointer', color: '#2284d1' }}
+            style={{
+              cursor: 'pointer',
+              color: '#2284d1'
+            }}
           >
             See Participants
           </div>
@@ -283,6 +289,9 @@ class CreatePoll extends React.Component {
           name={index}
           value="x"
           onClick={this.handleRemoveOption}
+          style={{
+            marginLeft: '20px'
+          }}
         />
       </div>
     ));
@@ -317,44 +326,88 @@ class CreatePoll extends React.Component {
     if (this.state.isSubmitted) {
       return (
         <div>
-          <div className="header">Confirm and Send</div>
-          <section style={{ display: 'flex', padding: 30 }}>
-            <div style={{ flex: 1, padding: 5 }}>
+          <div className='header'>Confirm and Send</div>
+          <section
+             style={{
+              display: 'flex',
+              padding: 30
+            }}
+          >
+            <div
+              style={{
+                flex: 1,
+                padding: 5
+              }}
+            >
               <Loadable
                 active={this.state.loaderActive}
                 spinner
                 text="We're creating your ballot"
               >
-                <Card style={{ padding: 30, margin: 15, marginBottom: 50 }} >
-                  <div>
-                    <div className="header">{this.state.ballotName}</div>
-                    <br /><br /><br /><br />
-                    <form>
-                      <div style={{ fontSize: 16, minWidth: 400 }}>
-                        <RadioButtonGroup name="voteoptions" labelPosition="left">
-                          {this.state.ballotOption.map((option, index) => (
-                            <RadioButton
-                              style={{ marginButton: 16, width: 300 }}
-                              key={index}
-                              label={`${option.optionName}`}
-                            />
-                            ))
-                          }
-                        </RadioButtonGroup>
-                      </div>
-                      <br />
-                      <RaisedButton label="Submit" disabled />
-
-                    </form>
+                <Card
+                  style={{
+                    padding: 30,
+                    margin: 15,
+                    marginBottom: 50,
+                    backgroundColor: '#F0F8FF',
+                    height: '400px'
+                  }}
+                >
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      fontSize: '22px',
+                      marginBottom: '10%'
+                    }}
+                  >
+                    {this.state.ballotName}
                   </div>
+                  <br/><br/>
+                  <form
+                    style={{
+                      margin: '0 auto',
+                      width: '300px',
+                      fontSize: '18px'
+                    }}
+                  >
+                    <div>
+                      <RadioButtonGroup
+                        name="voteoptions"
+                        labelPosition="left">
+                        {this.state.ballotOption.map((option, index) => (
+                          <RadioButton
+                            // style={{ marginButton:16, width:300 }}
+                            iconStyle={{ fill: '#4183D9' }}
+                            key={index}
+                            label={`${option.optionName}`}
+                          />
+                          ))
+                        }
+                      </RadioButtonGroup>
+                    </div>
+                  </form>
                 </Card>
               </Loadable>
             </div>
-            <div style={{ flex: 1, padding: 5, lineHeight: '1.7em' }}>
-              <Card style={{ padding: 30, margin: 15, minHeight: '296px', fontSize: '14px' }}
+            <div
+              style={{
+                flex: 1,
+                padding: 5,
+                lineHeight: '1.7em'
+              }}
+            >
+              <Card
+                style={{
+                  padding: 30,
+                  margin: 15,
+                  fontSize: '14px',
+                  height: '400px'
+                }}
               >
                 <div>
-                While we're creating your ballot, upload a CSV of voter emails. <br /> You'll be able to send after the ballot is created.
+                  <h3>Send Voter Codes</h3>
+                  <p>While we're creating your ballot, please upload a CSV file containing the email of each voter who is participating in the vote. BlockBallot will generate and email a unique ID for each participant, which they can then use to securely access your ballot. 
+                  </p>
                 </div>
                 <CSVReader
                   cssClass="csv-input"
@@ -365,7 +418,10 @@ class CreatePoll extends React.Component {
                 {csvInfo}
                 <br />
                 <Dialog
-                  contentStyle={{ width: 500, color: '#2284d1' }}
+                  contentStyle={{
+                    width: 500,
+                    color: '#2284d1'
+                  }}
                   title="Ballot Participants"
                   actions={dialogActions}
                   modal={false}
@@ -375,16 +431,19 @@ class CreatePoll extends React.Component {
                   <div>{emailList}</div>
                   <br />
                 </Dialog>
-                <RaisedButton
-                  label="Send Voter Codes"
+                <Button
+                  primary
                   onClick={this.handleSendEmail}
                   disabled={this.state.sendVotesDisabled}
-                />
+                >
+                  Send Voter Codes
+                </Button>
                 <br /><br />
                 <BarLoader
                   color="#2284d1"
                   loading={this.state.loading}
                   width={250}
+                  fullWidth
                 />
                 {pollConfirmation}
               </Card>
@@ -394,123 +453,86 @@ class CreatePoll extends React.Component {
       );
     }
     return (
-      <div>
-        <div className="header" >Create Your Ballot</div>
-        <div class = "ui raised padded text container segment" style={{border: 'solid', borderColor: '#D3D3D3', borderWidth: 1, marginBottom: 200, marginTop: 50, fontSize: 'large'}}>
-        <div class="ui two column grid" >
-          <div class="column">
-            <div>
-              <b>1. Title Your Ballot</b>
-            </div>
-            <div>
-              <TextField
-                id="title"
-                type="text"
-                name="ballotName"
-                value={this.state.ballotName}
-                onChange={this.handleInputChange}
-                underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
-              />
-            </div>
+      <div
+        style={{
+          maxWidth: '800px',
+          margin: '0 auto'
+        }}
+      >
+        <div className='header'>Create Your Ballot</div>
+        <Segment
+          attached
+          raised
+          style={{
+            marginTop: 50,
+            fontSize: 'large',
+            padding: '5%'
+          }}
+        >
+          <div class="ui two column grid" >
+            <div class="column">
+              <div>
+                <b>1. Title Your Ballot</b>
+              </div>
+              <div>
+                <TextField
+                  id="title"
+                  type="text"
+                  name="ballotName"
+                  value={this.state.ballotName}
+                  onChange={this.handleInputChange}
+                  underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
+                />
+              </div>
 
-            <div style={{marginTop: 72}}>
-              <b>2. Choose Start and End Times</b><br />
-              <DateTimePicker
-                onChange={this.handleStartDateChange}
-                showCurrentDateByDefault={false}
-                DatePicker={DatePickerDialog}
-                TimePicker={TimePickerDialog}
-                underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
-                clearIcon={null}
-              />
-              <DateTimePicker
-                onChange={this.handleEndDateChange}
-                showCurrentDateByDefault={false}
-                DatePicker={DatePickerDialog}
-                TimePicker={TimePickerDialog}
-                underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
-                clearIcon={null}
+              <div style={{marginTop: 72}}>
+                <b>2. Choose Start and End Times</b><br />
+                <DateTimePicker
+                  onChange={this.handleStartDateChange}
+                  showCurrentDateByDefault={false}
+                  DatePicker={DatePickerDialog}
+                  TimePicker={TimePickerDialog}
+                  underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
+                  clearIcon={null}
+                />
+                <DateTimePicker
+                  onChange={this.handleEndDateChange}
+                  showCurrentDateByDefault={false}
+                  DatePicker={DatePickerDialog}
+                  TimePicker={TimePickerDialog}
+                  underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
+                  clearIcon={null}
+                />
+              </div>
+            </div>
+            
+            <div class="column">
+              <b>3. Add Ballot Options</b><br />
+              {optionEntry}
 
-              />
+              <Button
+                basic
+                fluid
+                style={{ marginTop: 20 }}
+                onClick={this.handleAddOption}
+              >
+                Add Option
+              </Button>
+              <br/>
+              <div>
+                <b>4. Review and Deploy</b><br />
+                <p style={{
+                    fontSize: 14,
+                    marginTop: '5px'
+                  }}
+                >
+                  If everything looks good, click 'deploy' to create a read-only contract containing your ballot. This will be saved to the Ethereum blockchain.
+                </p>
+              </div>
             </div>
           </div>
-          
-          <div class="column">
-            <b>3. Add Ballot Options</b><br />
-            {optionEntry}
-
-            <Button
-              style={{marginTop: 20}}
-              label="Add Options"
-              onClick={this.handleAddOption}
-            />
-          </div>
-
-          <div class="centered row">
-            <div style={{marginTop: 50}}>
-              {submitButton}
-            </div>
-          </div>
-
-    
-            {/*<Card style={{ padding: 30, margin: 15, marginBottom: 50 }}>
-              <CardText>
-              <Grid container spacing={8}>
-                
-                <Grid>
-                  <b>1. Ballot Title</b>
-                  <TextField
-                    id="title"
-                    type="text"
-                    name="ballotName"
-                    value={this.state.ballotName}
-                    onChange={this.handleInputChange}
-                    underlineStyle={{ borderBottomColor: '#2284d1' }}
-                  />
-                </Grid>
-
-                <Grid>
-                  <b>3. Define Start and End Times</b><br />
-                  <DateTimePicker
-                    onChange={this.handleStartDateChange}
-                    showCurrentDateByDefault={false}
-                    DatePicker={DatePickerDialog}
-                    TimePicker={TimePickerDialog}
-                    underlineStyle={{ borderBottomColor: '#2284d1' }}
-                  />
-                  <DateTimePicker
-                    onChange={this.handleEndDateChange}
-                    showCurrentDateByDefault={false}
-                    DatePicker={DatePickerDialog}
-                    TimePicker={TimePickerDialog}
-                    underlineStyle={{ borderBottomColor: '#2284d1' }}
-                  />
-                </Grid>
-                
-              </Grid>
-              <Grid className="row">
-                <div className="col-md-1">
-                  <b>2. Add Ballot Options</b><br />
-                  {optionEntry}
-                  <Button
-                    label="Add Ballot Options"
-                    onClick={this.handleAddOption}
-                  />
-                </div>
-
-                <div className="col-md-1">
-                  <b>4. Create Your Ballot</b><br />
-
-                  {submitButton}
-                </div>
-              </Grid>
-
-
-              </CardText>
-            </Card>
-          </div>*/}
-        </div>
-       </div>
+        </Segment>
+        {submitButton}
       </div>
     );
   }
