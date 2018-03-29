@@ -20,16 +20,30 @@ class Dashboard extends React.Component {
       polls: [],
       currentPoll: {},
       loggedIn: false,
-      currentUser: ''
-    }
+      currentUser: '',
+    };
+    this.retrieveOrgPolls = this.retrieveOrgPolls.bind(this);
   }
 
   componentDidMount() {
-    axios.get('/poll')
-    .then(res => {
-      this.setState({
-        polls: res.data
-      });
+    this.retrieveOrgPolls();
+    this.timer = setInterval(this.retrieveOrgPolls, 15000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  updatePoll(res) {
+    this.setState({
+      polls: res.data,
+    });
+  }
+
+  retrieveOrgPolls() {
+    axios.get('/polls')
+    .then(polls => {
+      this.updatePoll(polls);
     })
     .catch(err => {
       console.log(err);
@@ -37,7 +51,7 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    let polls = this.state.polls;
+    const polls = this.state.polls;
     if (cookie.load('loggedIn') !== 'true') {
       return (<Redirect to='/' />)
     } 
@@ -66,8 +80,9 @@ class Dashboard extends React.Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
+
 
 export default Dashboard;

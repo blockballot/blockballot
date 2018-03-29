@@ -38,9 +38,11 @@ class Voter extends React.Component {
     })
     .then((res) => {
       var poll = res.data.pollId;
+      var hash = res.data.poll.pollHash;
       voter.setState({
         isLogin: true,
-        pollId: poll
+        pollId: poll,
+        pollHash: hash
       });
     })
     .catch((error) => {

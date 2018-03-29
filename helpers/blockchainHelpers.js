@@ -36,7 +36,7 @@ const createContract = (options, cb) => {
 
 const retrieveContract = (address) => {
   try {
-    const solidityContract = fs.readFileSync('../contracts/Voting.sol').toString();
+    const solidityContract = fs.readFileSync(__dirname + '/../contracts/Voting.sol').toString();
     const compiledContract = solc.compile(solidityContract);
     const abi = JSON.parse(compiledContract.contracts[':Voting'].interface);
     const votingContract = web3.eth.contract(abi);
@@ -47,5 +47,20 @@ const retrieveContract = (address) => {
   }
 };
 
+const castVote = (candidate, address) => {
+  return new Promise((resolve, reject) => {
+    const contract = retrieveContract(address);
+    web3.personal.unlockAccount(process.env.BC_ACCOUNT, process.env.BC_PASSWORD);
+    contract.voteForCandidate(candidate, { from: process.env.BC_ACCOUNT, gas: 2800000 }, (err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(res);
+      }
+    })
+  });
+};
+
 exports.createContract = createContract;
 exports.retrieveContract = retrieveContract;
+exports.castVote = castVote;

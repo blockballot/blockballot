@@ -1,10 +1,6 @@
 import React from 'react';
-import axios from 'axios';
-import { default as Web3} from 'web3';
-import getWeb3 from '../../../helpers/getWeb3.js';
-import contract from 'truffle-contract';
+import axios from 'axios';;
 import VoterResults from './VoterResults.jsx';
-import TestVote from '../../../build/contracts/TestVote.json';
 import { Divider, Card, RaisedButton, Checkbox, RadioButton, RadioButtonGroup} from 'material-ui';
 import { Button } from 'semantic-ui-react';
 import '../style/voter.css';
@@ -14,10 +10,9 @@ class Vote extends React.Component {
     super(props);
     this.state = {
       isLoggedIn: false,
-      web3: null,
       storageValue: 0,
-      contractInstance: null,
-      voteHash: 'examplehash',
+      voteHash: '',
+      pollHash: '',
       isVoteSubmitted: false,
       isBallotCompleted: false,
       selectedOption: '',
@@ -30,18 +25,6 @@ class Vote extends React.Component {
   }
 
   componentWillMount() {
-    console.log('call getweb3')
-    getWeb3
-    .then(results => {
-      this.setState({
-        web3: results.web3
-      })
-      this.instantiateContract()
-    })
-    .catch(() => {
-      console.log('Error finding web3.')
-    })
-
     var option = this;
     axios({
       method: 'POST',
@@ -68,20 +51,6 @@ class Vote extends React.Component {
     });
   }
 
-  instantiateContract() {
-    const TestContract = contract(TestVote);  //how did we get the testvote?  did it auto compiled from the contract?
-    console.log(TestContract)
-    TestContract.setProvider(this.state.web3.currentProvider); // current provider
-  
-    this.state.web3.eth.getAccounts((error, accounts) => {
-      TestContract.deployed().then((instance) => {
-        this.setState({
-          contractInstance: instance
-        });
-      });
-    });
-  }
-
   updateCheck(event) {
     var eventValue = event.target.value.split('.')
     this.setState({
@@ -91,40 +60,22 @@ class Vote extends React.Component {
   }
 
   submitVote(candidate) {
-    // Replace state variable with candidate param onclick
-    // let candidateName = this.state.candidateName;
-    // console.log(candidateName);
-    // var TestContractInstance;
-
-    // TestContractInstance = this.state.contractInstance;
-    // TestContractInstance.voteForCandidate(candidateName, {gas: 2800000, from: this.state.web3.eth.accounts[0]})
-    // .then((result) => {
-    //   var voted = this;
-    //   this.setState({
-    //     voteHash: result.tx
-    //   }
-    // );
-    // return TestContractInstance.totalVotesFor.call(candidateName)
-    // }).then((voteCount) => {
-    //   console.log(voteCount);
-    //   this.setState({
-    //     storageValue: voteCount.c[0],
-    //     isVoteSubmitted: true
-    //   });
-    // });
-
-    //need to add to the testcontract instance
-    let voted = this;
-
-    axios({
-      method: 'POST',
-      url: '/api/voteresult',
-      data: {
-        voted: Number(voted.state.selectedOption),
-        voteHash: voted.state.voteHash
-      }
+    var voted = this;
+    axios.post('/blockchainvote', {
+      address: voted.props.pollHash,
+      candidate: voted.state.candidateName
     })
-    .then((res) => {
+    .then(res => {
+      console.log(`Vote tx hash: ${res.data}`);
+      voted.setState({
+        voteHash: res.data
+      });
+      return axios.post('/api/voteresult', {
+        voted: Number(voted.state.selectedOption),
+        voteHash: res.data
+      });
+    })
+    .then(res => {
       console.log(res)
       console.log('vote has been submitted')
       voted.setState({
@@ -137,10 +88,6 @@ class Vote extends React.Component {
   }
 
   render() {
-    console.log(this.state.web3)
-    // console.log(this.state.selectedOption)
-    // console.log(this.state.candidateName)
-    
     let ballotInfo = this.state;
     let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
       return (
