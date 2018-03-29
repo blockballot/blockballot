@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';;
 import VoterResults from './VoterResults.jsx';
-import { Divider, Card, RaisedButton, Checkbox, RadioButton, RadioButtonGroup} from 'material-ui';
+import { Divider, Card, RaisedButton, Checkbox, RadioButton, RadioButtonGroup } from 'material-ui';
 import { Button } from 'semantic-ui-react';
+import Loadable from 'react-loading-overlay';
 import '../style/voter.css';
 
 class Vote extends React.Component {
@@ -16,9 +17,10 @@ class Vote extends React.Component {
       isVoteSubmitted: false,
       isBallotCompleted: false,
       selectedOption: '',
-      candidateName: 'norbie',
+      candidateName: '',
       ballotName: '',
-      ballotOption: []
+      ballotOption: [],
+      loaderActive: false
     };
     this.updateCheck = this.updateCheck.bind(this);
     this.submitVote = this.submitVote.bind(this);
@@ -44,7 +46,7 @@ class Vote extends React.Component {
         selectedOption: options[0].id
       });
     })
-    .catch((error) => {      
+    .catch((error) => {
       voter.setState({
         errorText: "Your unique code is incorrect. Please, try again"
       });
@@ -62,6 +64,9 @@ class Vote extends React.Component {
   submitVote(event) {
     event.preventDefault();
     var voted = this;
+    voted.setState({
+      loaderActive: true
+    });
     axios.post('/blockchainvote', {
       address: voted.props.pollHash,
       candidate: voted.state.candidateName
@@ -80,11 +85,15 @@ class Vote extends React.Component {
       console.log(res)
       console.log('vote has been submitted')
       voted.setState({
+        loaderActive: false,
         isVoteSubmitted: true
       });
     })
-    .catch((error) => {
-      console.log(error)
+    .catch(error => {
+      voted.setState({
+        loaderActive: false
+      });
+      console.log(error);
     });
   }
 
@@ -107,6 +116,7 @@ class Vote extends React.Component {
           ballotOption={this.state.ballotOption}
           ballotName={this.state.ballotName}
           voteHash={this.state.voteHash}
+          pollEnd={this.props.pollEnd}
         />
       )
     } else {
@@ -114,29 +124,35 @@ class Vote extends React.Component {
         <div>
           <div className='header'>{ballotInfo.ballotName}</div>
           <form>
-            <Card className='ballotOptions'>
-              <div>
-                <RadioButtonGroup
-                  name="voteoptions"
-                  labelPosition="left"
-                  valueSelected={this.state.selectedOption + "." + this.state.candidateName}
-                  onChange={this.updateCheck}
+              <Card className='ballotOptions'>
+                <div>
+                  <RadioButtonGroup
+                    name="voteoptions"
+                    labelPosition="left"
+                    valueSelected={this.state.selectedOption + "." + this.state.candidateName}
+                    onChange={this.updateCheck}
+                  >
+                    {ballotQuestionList}
+                  </RadioButtonGroup>
+                </div>
+                <br/>
+                <Loadable
+                  active={this.state.loaderActive}
+                  spinnerSize='35px'
+                  spinner
                 >
-                  {ballotQuestionList}
-                </RadioButtonGroup>
-              </div>
-              <br/>
-              <Button
-                fluid
-                primary
-                className='blueMatch'
-                className='buttonStyle'
-                className='voteButton'
-                onClick={this.submitVote}
-              >
-                Vote
-              </Button>
-            </Card>
+                <Button
+                  fluid
+                  primary
+                  className='blueMatch'
+                  className='buttonStyle'
+                  className='voteButton'
+                  onClick={this.submitVote}
+                >
+                  Vote
+                </Button>
+                </Loadable>
+              </Card>
           </form>
         </div>
       )
