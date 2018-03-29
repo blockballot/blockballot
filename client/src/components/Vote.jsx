@@ -184,4 +184,6 @@ class Vote extends React.Component {
   }
 }
 
+// https://rinkeby.etherscan.io/tx/0x7b0fe3b2f9cbdf3be1dcd405cca49ec57c1a62169eb1ca7ade0f18cbcfaa9131
+
 export default Vote;

@@ -1,3 +1,7 @@
+.submitButton {
+    margin-top: 10px !important;
+}
+
 .center {
     padding: 60px;
     position: absolute;

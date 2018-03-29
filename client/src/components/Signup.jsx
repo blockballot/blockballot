@@ -79,6 +79,7 @@ class Signup extends React.Component {
           primary
           className='buttonStyle'
           className='blueMatch'
+          className='createAccount'
           onClick={this.signupClick}
         >
           Create Account
@@ -109,7 +110,7 @@ class Signup extends React.Component {
             />
             }
           >
-            <img src='https://images.unsplash.com/photo-1485309086598-f9d010ad3972?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=eb5b9b3fd1bcb459968f52c0794e1851&auto=format&fit=crop&w=750&q=80 alt='/>
+            <img src='https://c1.staticflickr.com/1/811/40376791054_b540b344b0_h.jpg'/>
           </CardMedia>
           
           <div>
@@ -147,9 +148,12 @@ class Signup extends React.Component {
               modal={false}
               open={this.state.dialogOpen}
               onRequestClose={this.handleClose}>
-
               <div>
-                Copy the unique password below to create your account:
+                  We have generated a unique, 64-digit password for you that will be associated with this account. You will need to enter this password when you log in. Please keep it safe by storing it in your computer keychain or electronic wallet.
+              </div>
+              <br />
+              <div>
+                Copy the password below to your clipboard:
               </div>
               <br />
               <div style={{cursor: 'pointer'}}>
