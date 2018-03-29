@@ -109,7 +109,7 @@ class Landing extends React.Component {
                     fontSize: '1.33em',
                     textAlign: 'center',
                   }}>
-                  Sign up your organization for a BlockBallot account, design custom ballots, and track results with our analytics dashboard.
+                  Sign up your organization for a BlockBallot account, design custom ballots, and track outcomes with our results dashboard.
                 </p>
                 <Header as='h3' style={{fontSize: '2em'}}>
                   Blockchain for Transparency

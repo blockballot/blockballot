@@ -6,6 +6,7 @@ import contract from 'truffle-contract';
 import VoterResults from './VoterResults.jsx';
 import TestVote from '../../../build/contracts/TestVote.json';
 import { Divider, Card, RaisedButton, Checkbox, RadioButton, RadioButtonGroup} from 'material-ui';
+import { Button } from 'semantic-ui-react';
 import '../style/voter.css';
 
 class Vote extends React.Component {
@@ -16,7 +17,7 @@ class Vote extends React.Component {
       web3: null,
       storageValue: 0,
       contractInstance: null,
-      voteHash: 'ssss',
+      voteHash: 'examplehash',
       isVoteSubmitted: false,
       isBallotCompleted: false,
       selectedOption: '',
@@ -113,7 +114,8 @@ class Vote extends React.Component {
     // });
 
     //need to add to the testcontract instance
-    var voted = this;
+    let voted = this;
+
     axios({
       method: 'POST',
       url: '/api/voteresult',
@@ -122,7 +124,7 @@ class Vote extends React.Component {
         voteHash: voted.state.voteHash
       }
     })
-    .then(function (res) {
+    .then((res) => {
       console.log(res)
       console.log('vote has been submitted')
       voted.setState({
@@ -134,23 +136,20 @@ class Vote extends React.Component {
     });
   }
 
-
-
   render() {
     console.log(this.state.web3)
     // console.log(this.state.selectedOption)
     // console.log(this.state.candidateName)
-
-
+    
     let ballotInfo = this.state;
     let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
       return (
-        <RadioButton
-          style={{ marginButton: 16 }}
-          key={index}
-          label={option.id + ": " + option.optionName}
-          value={option.id + "." + option.optionName}
-        />
+          <RadioButton
+            iconStyle={{ fill:'#4183D9' }}
+            key={index}
+            label={option.optionName}
+            value={`${option.id}.${option.optionName}`}
+          />
       )
     });
     
@@ -165,17 +164,30 @@ class Vote extends React.Component {
     } else {
       return (
         <div>
-          <div className="header">{ballotInfo.ballotName}</div>
+          <div className='header'>{ballotInfo.ballotName}</div>
           <form>
-            <Card className="center">
-              <div style={{fontSize: 16, minWidth: 400}}>
-                <RadioButtonGroup name="voteoptions" labelPosition="left" valueSelected={this.state.selectedOption + "." + this.state.candidateName} onChange={this.updateCheck}>
+            <Card className='ballotOptions'>
+              <div>
+                <RadioButtonGroup
+                  name="voteoptions"
+                  labelPosition="left"
+                  valueSelected={this.state.selectedOption + "." + this.state.candidateName}
+                  onChange={this.updateCheck}
+                >
                   {ballotQuestionList}
                 </RadioButtonGroup>
               </div>
               <br/>
-              <RaisedButton
-                label="Submit" onClick={this.submitVote}/>
+              <Button
+                fluid
+                primary
+                className='blueMatch'
+                className='buttonStyle'
+                className='voteButton'
+                onClick={this.submitVote}
+              >
+                Vote
+              </Button>
             </Card>
           </form>
         </div>
@@ -183,7 +195,5 @@ class Vote extends React.Component {
     }
   }
 }
-
-// https://rinkeby.etherscan.io/tx/0x7b0fe3b2f9cbdf3be1dcd405cca49ec57c1a62169eb1ca7ade0f18cbcfaa9131
 
 export default Vote;

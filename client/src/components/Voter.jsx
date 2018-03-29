@@ -13,8 +13,6 @@ class Voter extends React.Component {
     this.state = {
       uniqueId: '',
       isLogin: false,
-      isVoteSubmitted: false,
-      isBallotCompleted: false,
       pollId: 0, 
       errorText: ''
     };
@@ -38,52 +36,40 @@ class Voter extends React.Component {
         uniqueId: this.state.uniqueId
       }
     })
-    .then(function (res) {
+    .then((res) => {
       var poll = res.data.pollId;
       voter.setState({
         isLogin: true,
         pollId: poll
       });
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.log(error);
       voter.setState({
-        errorText: "Your unique code is incorrect. Please, try again"
+        errorText: "Your unique code is incorrect. Please try again"
       });
     });
   }
 
   render() {
     if(this.state.isLogin) {
-      if(this.state.isBallotCompleted) {
-        return (
-          <div>ballot result visual</div>
-        )
-      } else {
-        if(this.state.isVoteSubmitted) {
-          return (
-            <VoteResults  />
-          )
-        } else {
-          return (
-            <Vote pollId={this.state.pollId} />
-          )
-        }
-      }
+      return (
+        <Vote pollId={this.state.pollId} />
+      )
     } else {
       return (
         <div>
-          <div className="header">
+          <div className='header'>
           Enter Your Voter Code
           </div>
             <form>
-              <Card className="center">
+              <Card className='enterCode'>
                 <TextField
-                  type="password"
-                  name="uniqueId"
+                  type='password'
+                  name='uniqueId'
+                  hintText='Enter Code'
                   value={this.state.uniqueId}
                   onChange={this.handleChange}
-                  hintText="Enter Code"
                   errorText= {this.state.errorText}
                   underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
                 />
@@ -91,8 +77,8 @@ class Voter extends React.Component {
                 <Button
                   primary
                   className='submitButton'
-                  type="submit"
-                  value="Submit"
+                  type='submit'
+                  value='Submit'
                   onClick={this.handleSubmit}
                 >
                   Submit
