@@ -17,10 +17,6 @@ class VoterResults extends React.Component {
     };
   }
 
-  componentWillMount() {
-    // get the ballotName and ballot question to update the state
-  }
-
   render() {
     let voteResult = this.state.ballotOption.reduce((acc, cur, index) => {
       if (cur.optionAnswer === true) {
@@ -31,17 +27,17 @@ class VoterResults extends React.Component {
 
     return (
       <div>
-        <div className="header">
+        <div className='header'>
           Thank You For Voting
         </div>
         <div className="subHeader">
-          Your response has been permanently recorded for the following:
+          Your response has been permanently recorded for the following ballot:
         </div>
         <div className="ballotName">
           {this.state.ballotName}
         </div>
         <Card className="center">
-          <div style={{fontSize: 16, minWidth: 400}}>
+          <div>
             <b>Confirmation ID for Your Records:</b>
             <div className="voteHash">
               {this.props.voteHash}
@@ -55,5 +51,7 @@ class VoterResults extends React.Component {
     )
   }
 }
+
+// https://rinkeby.etherscan.io/tx/0x7b0fe3b2f9cbdf3be1dcd405cca49ec57c1a62169eb1ca7ade0f18cbcfaa9131
 
 export default VoterResults;

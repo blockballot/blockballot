@@ -1,53 +1,68 @@
-.center {
-    padding: 60px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.enterCodeBackground {
-    background-color: #2185D0;
-    background-size: cover;
-    margin: auto;
-    width: auto;
-    min-height: 700px;
-    top: 0;
-    left: 0;
-}
-
 .header{
-    padding-top: 40px;
-    text-align: center;
-    font-size: 25px;
-    line-height: 30px
+  padding-top: 40px;
+  text-align: center;
+  font-size: 25px;
 }
 
+.enterCode {
+  padding: 60px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 400px;
+}
+
+.submitButton {
+  margin-top: 10px !important;
+}
+
+.center {
+  padding: 60px;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ballotOptions {
+  padding: 60px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 400px;
+  font-size: 20px;
+}
+
+.voteButton {
+  padding-top: 50px;
+}
 
 .subHeader{
-    padding-top: 20px;
-    text-align: center;
-    font-size: 20px;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 20px;
 }
 
 .ballotName {
-    padding-top: 20px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .title {
-    text-align: center;
+  text-align: center;
 }
 
 .voteHash {
-    padding-top: 20px;
+  padding-top: 20px;
 }
 
 .csv-input {
-    width: 400px;
-    display: inline-block;
-    margin: 15px auto;
-    text-align: left;
+  width: 400px;
+  display: inline-block;
+  margin: 15px auto;
+  text-align: left;
 }

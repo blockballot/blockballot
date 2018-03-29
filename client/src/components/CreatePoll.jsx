@@ -1,7 +1,7 @@
 import React from 'react';
-import moment from 'moment';
-import { Card, TextField, Divider, RaisedButton, Dialog, FlatButton, RadioButtonGroup, RadioButton} from 'material-ui';
 import { Redirect, Link } from 'react-router-dom';
+import { Card, TextField, Divider, RaisedButton, Dialog, FlatButton, RadioButtonGroup, RadioButton} from 'material-ui';
+import moment from 'moment';
 import cookie from 'react-cookie';
 import $ from 'jquery';
 import axios from 'axios';
@@ -10,8 +10,8 @@ import { BarLoader } from 'react-spinners';
 import DateTimePicker from 'material-ui-datetimepicker';
 import DatePickerDialog from 'material-ui/DatePicker/DatePickerDialog';
 import TimePickerDialog from 'material-ui/TimePicker/TimePickerDialog';
-import '../style/voter.css';
 import Loadable from 'react-loading-overlay';
+import '../style/voter.css';
 import {
   Button,
   Container,
@@ -216,9 +216,8 @@ class CreatePoll extends React.Component {
       submitButton = (
         <div>
           <RaisedButton
-            style={{ backgroundColor: 'navy' }}
-            type="submit"
-            label="Create Ballot"
+            type='submit'
+            label='Deploy'
             onClick={this.handleSubmit}
           />
           <br />
@@ -256,7 +255,10 @@ class CreatePoll extends React.Component {
           <div>
             Total participants: {this.state.numVoters}
           </div>
-          <div onClick={this.openVoterDialog} style={{ cursor: 'pointer', color: '#2284d1' }}>
+          <div
+            onClick={this.openVoterDialog}
+            style={{ cursor: 'pointer', color: '#2284d1' }}
+          >
             See Participants
           </div>
         </div>
@@ -270,7 +272,7 @@ class CreatePoll extends React.Component {
           type="text"
           name={index}
           value={option.optionName}
-          underlineStyle={{ borderBottomColor: '#2284d1' }}
+          underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
           onChange={this.handleOptionChange}
         />
         <input
@@ -393,14 +395,14 @@ class CreatePoll extends React.Component {
           <div style={{ flex: 1, padding: 5 }}>
             <Card style={{ padding: 30, margin: 15, marginBottom: 50 }}>
               <div>
-                <b>1. Ballot Title</b><br />
+                <b>1. Title Your Ballot</b><br />
                 <TextField
                   id="title"
                   type="text"
                   name="ballotName"
                   value={this.state.ballotName}
                   onChange={this.handleInputChange}
-                  underlineStyle={{ borderBottomColor: '#2284d1' }}
+                  underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
                 /><br /><br /><br />
                 <b>2. Add Ballot Options</b><br />
                 {optionEntry}
@@ -420,14 +422,14 @@ class CreatePoll extends React.Component {
                   showCurrentDateByDefault={false}
                   DatePicker={DatePickerDialog}
                   TimePicker={TimePickerDialog}
-                  underlineStyle={{ borderBottomColor: '#2284d1' }}
+                  underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
                 />
                 <DateTimePicker
                   onChange={this.handleEndDateChange}
                   showCurrentDateByDefault={false}
                   DatePicker={DatePickerDialog}
                   TimePicker={TimePickerDialog}
-                  underlineStyle={{ borderBottomColor: '#2284d1' }}
+                  underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
                 /><br /><br />
               </div>
               <b>4. Create Your Ballot</b><br />

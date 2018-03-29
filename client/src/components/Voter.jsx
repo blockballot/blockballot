@@ -2,7 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import Vote from './Vote.jsx';
 import VoteResults from './VoterResults.jsx';
-import { Card, TextField, RaisedButton } from 'material-ui';
+import { Card, TextField } from 'material-ui';
+import { Button } from 'semantic-ui-react';
 import '../style/voter.css';
 
 
@@ -12,10 +13,7 @@ class Voter extends React.Component {
     this.state = {
       uniqueId: '',
       isLogin: false,
-      isVoteSubmitted: false,
-      isBallotCompleted: false,
-      pollId: 0,
-      pollHash: '',
+      pollId: 0, 
       errorText: ''
     };
     this.handleChange = this.handleChange.bind(this);
@@ -38,7 +36,7 @@ class Voter extends React.Component {
         uniqueId: this.state.uniqueId
       }
     })
-    .then(function (res) {
+    .then((res) => {
       var poll = res.data.pollId;
       var hash = res.data.poll.pollHash;
       voter.setState({
@@ -47,52 +45,46 @@ class Voter extends React.Component {
         pollHash: hash
       });
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.log(error);
       voter.setState({
-        errorText: "Your unique code is incorrect. Please, try again"
+        errorText: "Your unique code is incorrect. Please try again"
       });
     });
   }
 
   render() {
     if(this.state.isLogin) {
-      if(this.state.isBallotCompleted) {
-        return (
-          <div>ballot result visual</div>
-        )
-      } else {
-        if(this.state.isVoteSubmitted) {
-          return (
-            <VoteResults  />
-          )
-        } else {
-          return (
-            <Vote 
-              pollId={this.state.pollId}
-              pollHash={this.state.pollHash}
-            />
-          )
-        }
-      }
+      return (
+        <Vote pollId={this.state.pollId} />
+      )
     } else {
       return (
         <div>
-          <div className="header">
-          Enter Your Unique Code
+          <div className='header'>
+          Enter Your Voter Code
           </div>
             <form>
-              <Card className="center">
+              <Card className='enterCode'>
                 <TextField
-                  type="password"
-                  name="uniqueId"
+                  type='password'
+                  name='uniqueId'
+                  hintText='Enter Code'
                   value={this.state.uniqueId}
                   onChange={this.handleChange}
-                  hintText="Enter Code"
                   errorText= {this.state.errorText}
-                  underlineStyle={{borderBottomColor: '#2284d1'}}
-                  /><br/>
-                <RaisedButton label="Submit" type="submit" value="Submit" onClick={this.handleSubmit} />
+                  underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
+                />
+                <br/>
+                <Button
+                  primary
+                  className='submitButton'
+                  type='submit'
+                  value='Submit'
+                  onClick={this.handleSubmit}
+                >
+                  Submit
+                </Button>
               </Card>
             </form>
         </div>

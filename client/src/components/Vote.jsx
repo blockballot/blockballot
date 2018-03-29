@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';;
 import VoterResults from './VoterResults.jsx';
 import { Divider, Card, RaisedButton, Checkbox, RadioButton, RadioButtonGroup} from 'material-ui';
+import { Button } from 'semantic-ui-react';
 import '../style/voter.css';
 
 class Vote extends React.Component {
@@ -86,18 +87,16 @@ class Vote extends React.Component {
     });
   }
 
-
-
   render() {
     let ballotInfo = this.state;
     let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
       return (
-        <RadioButton
-          style={{ marginButton: 16 }}
-          key={index}
-          label={option.id + ": " + option.optionName}
-          value={option.id + "." + option.optionName}
-        />
+          <RadioButton
+            iconStyle={{ fill:'#4183D9' }}
+            key={index}
+            label={option.optionName}
+            value={`${option.id}.${option.optionName}`}
+          />
       )
     });
     
@@ -112,11 +111,11 @@ class Vote extends React.Component {
     } else {
       return (
         <div>
-          <div className="header">{ballotInfo.ballotName}</div>
+          <div className='header'>{ballotInfo.ballotName}</div>
           <form>
-            <Card className="center">
-              <div style={{fontSize: 16, minWidth: 400}}>
-                <RadioButtonGroup 
+            <Card className='ballotOptions'>
+              <div>
+                <RadioButtonGroup
                   name="voteoptions"
                   labelPosition="left"
                   valueSelected={this.state.selectedOption + "." + this.state.candidateName}
@@ -126,8 +125,16 @@ class Vote extends React.Component {
                 </RadioButtonGroup>
               </div>
               <br/>
-              <RaisedButton
-                label="Submit" onClick={this.submitVote}/>
+              <Button
+                fluid
+                primary
+                className='blueMatch'
+                className='buttonStyle'
+                className='voteButton'
+                onClick={this.submitVote}
+              >
+                Vote
+              </Button>
             </Card>
           </form>
         </div>
