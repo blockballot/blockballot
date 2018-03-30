@@ -58,6 +58,20 @@ class CreatePoll extends React.Component {
     this.closeVoterDialog = this.closeVoterDialog.bind(this);
   }
 
+
+  componentWillMount() {
+    if(localStorage.getItem('pollInfo')) {
+      let localStoragePollInfo = JSON.parse(localStorage.getItem('pollInfo'));
+      this.setState({
+        ballotName: localStoragePollInfo.title,
+        ballotOption: localStoragePollInfo.option,
+        start: localStoragePollInfo.start,
+        end: localStoragePollInfo.end
+      });
+      ocalStorage.clear();
+    }
+  }
+
   handleInputChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
@@ -110,9 +124,8 @@ class CreatePoll extends React.Component {
       });
       return;
     }
-
     event.preventDefault();
-
+    
     const options = [];
     for (let i = 0; i < this.state.ballotOption.length; i++) {
       const optName = this.state.ballotOption[i].optionName;
@@ -147,9 +160,23 @@ class CreatePoll extends React.Component {
       .catch((err) => {
         console.log(err);
       });
+
     this.setState({
       isSubmitted: true,
     });
+  }
+
+  handleVisitorSubmit() {
+    console.log('eeeeee' + cookie.load('loggedIn') )
+    let pollInfo = {
+      title: this.state.ballotName,
+      start: this.state.start,
+      end: this.state.end,
+      option: this.state.ballotOption
+    }
+    console.log('before localstorage')
+    localStorage.setItem('pollInfo', JSON.stringify(pollInfo));
+    console.log('after localstorage', pollInfo)
   }
 
   handleSendEmail() {
@@ -241,6 +268,7 @@ class CreatePoll extends React.Component {
         </div>
       );
     } else {
+      this.handleVisitorSubmit();
       submitButton = (
         <Link to="/signup">
           <Button
