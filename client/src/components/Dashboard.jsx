@@ -20,7 +20,7 @@ class Dashboard extends React.Component {
       polls: [],
       currentPoll: {},
       loggedIn: false,
-      currentUser: '',
+      currentUser: props.currentUser,
     };
     this.retrieveOrgPolls = this.retrieveOrgPolls.bind(this);
   }
@@ -58,7 +58,7 @@ class Dashboard extends React.Component {
     return (
       <div>
         <div className='headers'>
-          <h2 className='dashboardTitle'>Your Ballot Dashboard</h2>
+          <h2 className='dashboardTitle'>Your Ballot Dashboard {this.state.currentUser}</h2>
           <Link to='/createpoll'>
             <Button
               primary
