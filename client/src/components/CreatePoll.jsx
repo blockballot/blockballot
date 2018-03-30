@@ -68,7 +68,7 @@ class CreatePoll extends React.Component {
         start: localStoragePollInfo.start,
         end: localStoragePollInfo.end
       });
-      ocalStorage.clear();
+      localStorage.clear();
     }
   }
 
