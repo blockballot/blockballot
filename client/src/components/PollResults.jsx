@@ -31,7 +31,7 @@ const PollResults = (props) => {
 
   return (
     <div>
-      <div className="header" style ={{marginTop: 100, marginBottom: 20}}>
+      <div className="header">
         {props.poll.pollName}
       </div>
 
@@ -44,8 +44,8 @@ const PollResults = (props) => {
         />
       </div>
 
-      <div className="header">
-       Total votes: {props.poll.voteCount}
+      <div className="subHeader">
+       Total Votes: {props.poll.voteCount}
       </div>
 
     </div>

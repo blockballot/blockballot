@@ -1,8 +1,8 @@
 import React from 'react';
-import { Redirect, Link } from 'react-router-dom';
-import { Card, TextField, Divider, RaisedButton, Dialog, FlatButton, RadioButtonGroup, RadioButton } from 'material-ui';
+import { Link } from 'react-router-dom';
+import { Card, TextField, Dialog, FlatButton, RadioButtonGroup, RadioButton } from 'material-ui';
+import { Button, Segment } from 'semantic-ui-react';
 import cookie from 'react-cookie';
-import $ from 'jquery';
 import axios from 'axios';
 import CSVReader from 'react-csv-reader';
 import { BarLoader } from 'react-spinners';
@@ -12,12 +12,6 @@ import momentLocalizer from 'react-widgets-moment';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import 'react-widgets/dist/css/react-widgets.css';
 import '../style/voter.css';
-import {
-  Button,
-  Container,
-  Header,
-  Segment,
-} from 'semantic-ui-react';
 
 class CreatePoll extends React.Component {
   constructor() {
@@ -515,18 +509,28 @@ class CreatePoll extends React.Component {
               <div style={{ marginTop: 72 }}>
                 <b>2. Choose Start and End Times</b><br />
                 <DateTimePicker
-                  min={new Date()}
-                  onSelect={this.handleStartDateChange}
                   name="start"
                   value={this.state.start}
+                  min={new Date()}
+                  onSelect={this.handleStartDateChange}
                   onChange={this.handleInputChange}
+                  style={{
+                    marginTop: '20px',
+                    maxWidth: '300px',
+                    fontSize: '16px'
+                  }}
                 />
                 <DateTimePicker
                   min={this.state.start || new Date()}
-                  onSelect={this.handleEndDateChange}
                   name="end"
                   value={this.state.end}
+                  onSelect={this.handleEndDateChange}
                   onChange={this.handleInputChange}
+                  style={{
+                    marginTop: '15px',
+                    maxWidth: '300px',
+                    fontSize: '16px'
+                  }}
                 />
               </div>
             </div>
@@ -547,7 +551,7 @@ class CreatePoll extends React.Component {
                 <b>4. Review and Deploy</b><br />
                 <p style={{
                     fontSize: 14,
-                    marginTop: '5px',
+                    marginTop: '10px',
                   }}
                 >
                   If everything looks good, click 'deploy' to create a read-only contract containing your ballot. This will be saved to the Ethereum blockchain.

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Segment, Button } from 'semantic-ui-react';
-import cookie from 'react-cookie';
+import { Menu, Button } from 'semantic-ui-react';
 import LoginModal from './LoginModal';
 
 class Nav extends React.Component {
@@ -91,14 +90,14 @@ class Nav extends React.Component {
             </Link>
           </Menu.Item>
         </Menu>
-      )
+      );
     }
 
     return (
       <div>
       {navComponent}
       </div>
-    )
+    );
   }
 }
 

@@ -1,25 +1,16 @@
 import React from 'react';
+import { withRouter } from 'react-router';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import cookie from 'react-cookie';
+import $ from 'jquery';
 import Landing from './Landing';
 import Signup from './Signup';
 import Dashboard from './Dashboard';
 import CreatePoll from './CreatePoll';
-import VoterResults from './VoterResults';
 import Voter from './Voter';
-import Vote from './Vote';
 import PollResults from './PollResults';
-import Poll from './Poll';
 import AboutUs from './AboutUs';
-import $ from 'jquery';
 import Nav from './Nav';
-import { withRouter } from 'react-router';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Switch,
-  Redirect
-} from 'react-router-dom';
 
 class App extends React.Component {
   constructor(props) {
@@ -35,7 +26,7 @@ class App extends React.Component {
       currentPoll: {},
       activeItem: '',
       modalOpen: false,
-    }
+    };
     this.loginSubmit = this.loginSubmit.bind(this);
     this.signupSubmit = this.signupSubmit.bind(this);
     this.handlePollClick = this.handlePollClick.bind(this);
@@ -59,26 +50,25 @@ class App extends React.Component {
       signupNameError: '',
       signupEmailError: '',
       signupPasswordError: ''
-    })
+    });
     if (signup.name === '') {
       this.setState({
         signupNameError: 'This field is required'
-      })
+      });
     } else if (signup.email === '' || !this.isValidEmail(signup.email)) {
       this.setState({
         signupEmailError: 'Invalid email address'
-      })
+      });
     } else if (signup.password === '') {
       this.setState({
         signupPasswordError: 'This field is required'
-      })
+      });
     } else {
-
-      let user = {
+      const user = {
         name: `${signup.name}`,
         email: `${signup.email}`,
         password: `${signup.password}`
-      }
+      };
 
       $.ajax({
         type: 'POST',
@@ -88,14 +78,14 @@ class App extends React.Component {
           if (jqXHR.status === 200) {
             this.setState({
               modalOpen: true
-            })
+            });
             this.props.history.push('/');
           }
         },
         error: (err) => {
           this.setState({
             signupEmailError: err.responseText
-          })
+          });
         }
       });
     }
@@ -110,7 +100,7 @@ class App extends React.Component {
     this.setState({
       loginEmailError: '',
       loginPasswordError: '',
-    })
+    });
     let user = {
       email: `${login.email}`,
       password: `${login.password}`
@@ -129,16 +119,16 @@ class App extends React.Component {
         }
       },
       error: (err) => {
-        console.log('error!')
+        console.log('error!');
         if (err.status === 401) {
           this.setState({
             loginEmailError: err.responseText
-          })
+          });
         }
         if (err.status === 402) {
           this.setState({
             loginPasswordError: err.responseText
-          })
+          });
         }
       }
     });
@@ -148,7 +138,7 @@ class App extends React.Component {
     $.get('/logout');
     this.setState({
       loggedIn: false
-    })
+    });
   }
 
   handlePollClick(poll) {
@@ -170,82 +160,117 @@ class App extends React.Component {
     });
   }
 
-  render () {
+  render() {
+    const AddNav = (
+      <Nav
+        pathname={this.props.location.pathname}
+        activeItem={this.state.activeItem}
+        handleOpen={this.handleOpen}
+        handleClose={this.handleClose}
+        modalOpen={this.state.modalOpen}
+        loggedIn={this.state.loggedIn}
+        loginSubmit={this.loginSubmit}
+        loginEmailError={this.state.loginEmailError}
+        loginPasswordError={this.state.loginPasswordError}
+      />
+    );
+
     return (
 
       <div>
-        <Nav 
-          pathname={this.props.location.pathname}
-          activeItem={this.state.activeItem}
-          handleOpen={this.handleOpen}
-          handleClose={this.handleClose}
-          modalOpen={this.state.modalOpen}
-          loggedIn={this.state.loggedIn}
-          loginSubmit={this.loginSubmit}
-          loginEmailError={this.state.loginEmailError}
-          loginPasswordError={this.state.loginPasswordError}
-        />
-
-        <Route exact path='/'
-          render={ () =>
-            <Landing 
-            loggedIn={this.state.loggedIn}/>
-          }
-        />
-
-        <Route exact path='/voter'
-          render={ () =>
-            <Voter/>
-          }
-        />
-
-        <Route exact path='/signup'
-          render={ () =>
-            <Signup
-            signupSubmit={this.signupSubmit}
-            signupEmailError={this.state.signupEmailError}
-            signupNameError={this.state.signupNameError}
-            signupPasswordError={this.state.signupPasswordError}
-            />
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <div>
+              {AddNav}
+              <Landing loggedIn={this.state.loggedIn} />
+            </div>
+            )
           }
         />
 
         <Route
-          exact path='/dashboard'
-          render={ () =>
-            <Dashboard 
-            loggedIn={this.state.loggedIn}
-            handlePollClick={this.handlePollClick}/>
-          }
-        />
-        <Route
-          exact path='/createpoll'
-          render={ () =>
-            <CreatePoll 
-            loggedIn={this.state.loggedIn}
-            />
+          exact
+          path="/voter"
+          render={() =>
+            <Voter />
           }
         />
 
         <Route
-          exact path='/pollresults'
-          render={ () =>
-            <PollResults
-            poll={this.state.currentPoll}
-            loggedIn={this.state.loggedIn}
-            />
+          exact
+          path="/signup"
+          render={() => (
+            <div>
+              {AddNav}
+              <Signup
+                signupSubmit={this.signupSubmit}
+                signupEmailError={this.state.signupEmailError}
+                signupNameError={this.state.signupNameError}
+                signupPasswordError={this.state.signupPasswordError}
+              />
+            </div>
+            )
           }
         />
 
         <Route
-          exact path='/aboutus'
-          render={ () =>
-            <AboutUs/>
+          exact
+          path="/dashboard"
+          render={() => (
+            <div>
+              {AddNav}
+              <Dashboard
+                loggedIn={this.state.loggedIn}
+                handlePollClick={this.handlePollClick}
+              />
+            </div>
+            )
           }
         />
-        
+        <Route
+          exact
+          path="/createpoll"
+          render={() => (
+            <div>
+              {AddNav}
+              <CreatePoll
+                loggedIn={this.state.loggedIn}
+              />
+            </div>
+            )
+          }
+        />
+
+        <Route
+          exact
+          path="/pollresults"
+          render={() => (
+            <div>
+              {AddNav}
+              <PollResults
+                poll={this.state.currentPoll}
+                loggedIn={this.state.loggedIn}
+              />
+            </div>
+            )
+          }
+        />
+
+        <Route
+          exact
+          path="/aboutus"
+          render={() => (
+            <div>
+              {AddNav}
+              <AboutUs />
+            </div>
+            )
+          }
+        />
       </div>
-    )
+    );
   }
 }
 
