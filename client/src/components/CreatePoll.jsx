@@ -1,16 +1,16 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { Card, TextField, Divider, RaisedButton, Dialog, FlatButton, RadioButtonGroup, RadioButton} from 'material-ui';
-import moment from 'moment';
+import { Card, TextField, Divider, RaisedButton, Dialog, FlatButton, RadioButtonGroup, RadioButton } from 'material-ui';
 import cookie from 'react-cookie';
 import $ from 'jquery';
 import axios from 'axios';
 import CSVReader from 'react-csv-reader';
 import { BarLoader } from 'react-spinners';
-import DateTimePicker from 'material-ui-datetimepicker';
-import DatePickerDialog from 'material-ui/DatePicker/DatePickerDialog';
-import TimePickerDialog from 'material-ui/TimePicker/TimePickerDialog';
 import Loadable from 'react-loading-overlay';
+import Moment from 'moment';
+import momentLocalizer from 'react-widgets-moment';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+import 'react-widgets/dist/css/react-widgets.css';
 import '../style/voter.css';
 import {
   Button,
@@ -59,16 +59,18 @@ class CreatePoll extends React.Component {
 
 
   componentWillMount() {
-    if(localStorage.getItem('pollInfo')) {
-      let localStoragePollInfo = JSON.parse(localStorage.getItem('pollInfo'));
+    if (localStorage.getItem('pollInfo')) {
+      const localStoragePollInfo = JSON.parse(localStorage.getItem('pollInfo'));
       this.setState({
         ballotName: localStoragePollInfo.title,
         ballotOption: localStoragePollInfo.option,
         start: localStoragePollInfo.start,
-        end: localStoragePollInfo.end
+        end: localStoragePollInfo.end,
       });
       localStorage.clear();
     }
+    Moment.locale('en');
+    momentLocalizer();
   }
 
   handleInputChange(event) {
@@ -124,7 +126,7 @@ class CreatePoll extends React.Component {
       return;
     }
     event.preventDefault();
-    
+
     const options = [];
     for (let i = 0; i < this.state.ballotOption.length; i++) {
       const optName = this.state.ballotOption[i].optionName;
@@ -166,16 +168,13 @@ class CreatePoll extends React.Component {
   }
 
   handleVisitorSubmit() {
-    console.log('eeeeee' + cookie.load('loggedIn') )
-    let pollInfo = {
+    const pollInfo = {
       title: this.state.ballotName,
       start: this.state.start,
       end: this.state.end,
-      option: this.state.ballotOption
-    }
-    console.log('before localstorage')
+      option: this.state.ballotOption,
+    };
     localStorage.setItem('pollInfo', JSON.stringify(pollInfo));
-    console.log('after localstorage', pollInfo)
   }
 
   handleSendEmail() {
@@ -233,6 +232,9 @@ class CreatePoll extends React.Component {
   }
 
   render() {
+    console.log(this.state.start);
+    console.log(this.state.end);
+    console.log(new Date())
     const actions = [
       <FlatButton label="Close" primary onClick={this.handleClose} />,
     ];
@@ -241,12 +243,13 @@ class CreatePoll extends React.Component {
     if (cookie.load('loggedIn') === 'true') {
       submitButton = (
         <div>
+
           <Button
             primary
-            attached='bottom'
+            attached="bottom"
             // type='submit'
             onClick={this.handleSubmit}
-            backgroundColor='#2284d1'
+            backgroundColor="#2284d1"
           >
             Deploy
           </Button>
@@ -272,8 +275,8 @@ class CreatePoll extends React.Component {
         <Link to="/signup">
           <Button
             primary
-            attached='bottom'
-            backgroundColor='#2284d1'
+            attached="bottom"
+            backgroundColor="#2284d1"
           >
             Deploy
           </Button>
@@ -292,7 +295,7 @@ class CreatePoll extends React.Component {
             onClick={this.openVoterDialog}
             style={{
               cursor: 'pointer',
-              color: '#2284d1'
+              color: '#2284d1',
             }}
           >
             See Participants
@@ -311,15 +314,14 @@ class CreatePoll extends React.Component {
           underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
           onChange={this.handleOptionChange}
         />
-        <input
-          type="button"
+        <Button
           name={index}
-          value="x"
           onClick={this.handleRemoveOption}
           style={{
-            marginLeft: '20px'
+            marginLeft: '30px',
           }}
-        />
+        >x
+        </Button>
       </div>
     ));
 
@@ -353,17 +355,17 @@ class CreatePoll extends React.Component {
     if (this.state.isSubmitted) {
       return (
         <div>
-          <div className='header'>Confirm and Send</div>
+          <div className="header">Confirm and Send</div>
           <section
-             style={{
+            style={{
               display: 'flex',
-              padding: 30
+              padding: 30,
             }}
           >
             <div
               style={{
                 flex: 1,
-                padding: 5
+                padding: 5,
               }}
             >
               <Loadable
@@ -377,30 +379,31 @@ class CreatePoll extends React.Component {
                     margin: 15,
                     marginBottom: 50,
                     backgroundColor: '#F0F8FF',
-                    height: '425px'
+                    height: '425px',
                   }}
                 >
                   <div
                     style={{
                       textAlign: 'center',
                       fontSize: '22px',
-                      marginBottom: '10%'
+                      marginBottom: '10%',
                     }}
                   >
                     {this.state.ballotName}
                   </div>
-                  <br/><br/>
+                  <br /><br />
                   <form
                     style={{
                       margin: '0 auto',
                       width: '300px',
-                      fontSize: '18px'
+                      fontSize: '18px',
                     }}
                   >
                     <div>
                       <RadioButtonGroup
                         name="voteoptions"
-                        labelPosition="left">
+                        labelPosition="left"
+                      >
                         {this.state.ballotOption.map((option, index) => (
                           <RadioButton
                             // style={{ marginButton:16, width:300 }}
@@ -420,7 +423,7 @@ class CreatePoll extends React.Component {
               style={{
                 flex: 1,
                 padding: 5,
-                lineHeight: '1.7em'
+                lineHeight: '1.7em',
               }}
             >
               <Card
@@ -483,10 +486,10 @@ class CreatePoll extends React.Component {
       <div
         style={{
           maxWidth: '800px',
-          margin: '0 auto'
+          margin: '0 auto',
         }}
       >
-        <div className='header'>Create Your Ballot</div>
+        <div className="header">Create Your Ballot</div>
         <Segment
           attached
           raised
@@ -515,20 +518,16 @@ class CreatePoll extends React.Component {
               <div style={{ marginTop: 72 }}>
                 <b>2. Choose Start and End Times</b><br />
                 <DateTimePicker
-                  onChange={this.handleStartDateChange}
-                  showCurrentDateByDefault={false}
-                  DatePicker={DatePickerDialog}
-                  TimePicker={TimePickerDialog}
-                  underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
-                  clearIcon={null}
+                  onSelect={this.handleStartDateChange}
+                  name="start"
+                  value={this.state.start}
+                  onChange={this.handleInputChange}
                 />
                 <DateTimePicker
-                  onChange={this.handleEndDateChange}
-                  showCurrentDateByDefault={false}
-                  DatePicker={DatePickerDialog}
-                  TimePicker={TimePickerDialog}
-                  underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
-                  clearIcon={null}
+                  onSelect={this.handleEndDateChange}
+                  name="end"
+                  value={this.state.end}
+                  onChange={this.handleInputChange}
                 />
               </div>
             </div>
