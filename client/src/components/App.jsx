@@ -38,7 +38,7 @@ class App extends React.Component {
 
   componentWillMount() {
     if (cookie.load('loggedIn') === 'true') {
-      let currentUser = cookie.load('username');
+      const currentUser = cookie.load('username');
       this.setState({
         loggedIn: true,
         currentUser: currentUser
@@ -105,7 +105,7 @@ class App extends React.Component {
         if (res.status === 200) {
           this.setState({
             loggedIn: true,
-            currentUser: login.email
+            currentUser: cookie.load('username')
           });
           this.props.history.push('/dashboard');
         }
@@ -214,6 +214,7 @@ class App extends React.Component {
               <Dashboard
                 loggedIn={this.state.loggedIn}
                 handlePollClick={this.handlePollClick}
+                currentUser={this.state.currentUser}
               />
             </div>
             )
