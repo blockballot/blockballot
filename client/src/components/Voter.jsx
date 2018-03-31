@@ -82,50 +82,48 @@ class Voter extends React.Component {
             voteHash={this.state.voteHash}
             pollEnd={this.props.pollEnd}
           />
-        )
-      } else {
-        return (
-          <Vote
-            pollId={this.state.pollId}
-            pollHash={this.state.pollHash}
-            pollEnd={this.state.pollEnd}
-            uniqueId={this.state.uniqueId}
-            keyId={this.state.keyId}
-          />
-        )
+        );
       }
-    } else {
       return (
-        <div>
-          <div className="header">
-          Enter Your Voter Code
-          </div>
-            <form>
-              <Card className='enterCode'>
-                <TextField
-                  type="password"
-                  name="uniqueId"
-                  hintText="Enter Code"
-                  value={this.state.uniqueId}
-                  onChange={this.handleChange}
-                  errorText={this.state.errorText}
-                  underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
-                />
-                <br/>
-                <Button
-                  primary
-                  className="submitButton"
-                  type="submit"
-                  value="Submit"
-                  onClick={this.handleSubmit}
-                >
-                  Submit
-                </Button>
-              </Card>
-            </form>
-        </div>
-      )
+        <Vote
+          pollId={this.state.pollId}
+          pollHash={this.state.pollHash}
+          pollEnd={this.state.pollEnd}
+          uniqueId={this.state.uniqueId}
+          keyId={this.state.keyId}
+        />
+      );
     }
+    return (
+      <div>
+        <div className="header">
+        Enter Your Voter Code
+        </div>
+        <form>
+          <Card className="enterCode">
+            <TextField
+              type="password"
+              name="uniqueId"
+              hintText="Enter Code"
+              value={this.state.uniqueId}
+              onChange={this.handleChange}
+              errorText={this.state.errorText}
+              underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
+            />
+            <br/>
+            <Button
+              primary
+              className="submitButton"
+              type="submit"
+              value="Submit"
+              onClick={this.handleSubmit}
+            >
+              Submit
+            </Button>
+          </Card>
+        </form>
+      </div>
+    );
   }
 }
 
