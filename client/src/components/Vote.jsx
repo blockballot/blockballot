@@ -1,9 +1,9 @@
 import React from 'react';
-import axios from 'axios';;
-import VoterResults from './VoterResults.jsx';
-import { Divider, Card, RaisedButton, Checkbox, RadioButton, RadioButtonGroup } from 'material-ui';
+import VoterResults from './VoterResults';
+import { Card, RadioButton, RadioButtonGroup } from 'material-ui';
 import { Button } from 'semantic-ui-react';
 import Loadable from 'react-loading-overlay';
+import axios from 'axios';
 import '../style/voter.css';
 
 class Vote extends React.Component {
@@ -27,30 +27,30 @@ class Vote extends React.Component {
   }
 
   componentWillMount() {
-    var option = this;
+    const option = this;
     axios({
       method: 'POST',
       url: '/api/poll',
-      data: { 
+      data: {
         pollId: this.props.pollId
-      }
+      },
     })
-    .then((res) => {
-      var options = res.data.map(function(element) {
-        return element
+      .then((res) => {
+        const options = res.data.map((element) => {
+          return element;
+        });
+        var name = res.data[0].poll.pollName;
+        option.setState({
+          ballotName: name,
+          ballotOption: options,
+          selectedOption: options[0].id
+        });
+      })
+      .catch((error) => {
+        voter.setState({
+          errorText: "Your unique code is incorrect. Please, try again"
+        });
       });
-      var name = res.data[0].poll.pollName;
-      option.setState({
-        ballotName: name,
-        ballotOption: options,
-        selectedOption: options[0].id
-      });
-    })
-    .catch((error) => {
-      voter.setState({
-        errorText: "Your unique code is incorrect. Please, try again"
-      });
-    });
   }
 
   updateCheck(event) {

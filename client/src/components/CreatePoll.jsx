@@ -16,7 +16,6 @@ import {
   Button,
   Container,
   Header,
-  Icon,
   Segment,
 } from 'semantic-ui-react';
 
@@ -378,7 +377,7 @@ class CreatePoll extends React.Component {
                     margin: 15,
                     marginBottom: 50,
                     backgroundColor: '#F0F8FF',
-                    height: '400px'
+                    height: '425px'
                   }}
                 >
                   <div
@@ -429,12 +428,12 @@ class CreatePoll extends React.Component {
                   padding: 30,
                   margin: 15,
                   fontSize: '14px',
-                  height: '400px'
+                  height: '425px',
                 }}
               >
                 <div>
                   <h3>Send Voter Codes</h3>
-                  <p>While we're creating your ballot, please upload a CSV file containing the email of each voter who is participating in the vote. BlockBallot will generate and email a unique ID for each participant, which they can then use to securely access your ballot. 
+                  <p>While we are creating your ballot, please upload a CSV file containing the email of each voter who is participating in the vote. BlockBallot will generate and email a unique ID for each participant, which they can then use to securely access your ballot.
                   </p>
                 </div>
                 <CSVReader
@@ -448,7 +447,7 @@ class CreatePoll extends React.Component {
                 <Dialog
                   contentStyle={{
                     width: 500,
-                    color: '#2284d1'
+                    color: '#2284d1',
                   }}
                   title="Ballot Participants"
                   actions={dialogActions}
@@ -494,11 +493,11 @@ class CreatePoll extends React.Component {
           style={{
             marginTop: 50,
             fontSize: 'large',
-            padding: '5%'
+            padding: '5%',
           }}
         >
-          <div class="ui two column grid" >
-            <div class="column">
+          <div className="ui two column grid" >
+            <div className="column">
               <div>
                 <b>1. Title Your Ballot</b>
               </div>
@@ -513,7 +512,7 @@ class CreatePoll extends React.Component {
                 />
               </div>
 
-              <div style={{marginTop: 72}}>
+              <div style={{ marginTop: 72 }}>
                 <b>2. Choose Start and End Times</b><br />
                 <DateTimePicker
                   onChange={this.handleStartDateChange}
@@ -533,8 +532,7 @@ class CreatePoll extends React.Component {
                 />
               </div>
             </div>
-            
-            <div class="column">
+            <div className="column">
               <b>3. Add Ballot Options</b><br />
               {optionEntry}
 
@@ -546,12 +544,12 @@ class CreatePoll extends React.Component {
               >
                 Add Option
               </Button>
-              <br/>
+              <br />
               <div>
                 <b>4. Review and Deploy</b><br />
                 <p style={{
                     fontSize: 14,
-                    marginTop: '5px'
+                    marginTop: '5px',
                   }}
                 >
                   If everything looks good, click 'deploy' to create a read-only contract containing your ballot. This will be saved to the Ethereum blockchain.

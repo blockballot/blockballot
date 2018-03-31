@@ -3,3 +3,4 @@ bundle.js
 .env
 data
 .DS_Store
+.node-xmlhttprequest-sync-23425
