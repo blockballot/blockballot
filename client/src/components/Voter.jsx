@@ -2,8 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import { Button } from 'semantic-ui-react';
 import { Card, TextField } from 'material-ui';
-import Vote from './Vote.jsx';
-import VoterResults from './VoterResults.jsx';
+import Vote from './Vote';
+import VoterResults from './VoterResults';
 import '../style/voter.css';
 
 
