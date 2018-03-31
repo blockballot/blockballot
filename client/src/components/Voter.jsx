@@ -6,7 +6,6 @@ import Vote from './Vote';
 import VoterResults from './VoterResults';
 import '../style/voter.css';
 
-
 class Voter extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +13,7 @@ class Voter extends React.Component {
       uniqueId: '',
       isLogin: false,
       hasVoted: false,
-      pollId: 0, 
+      pollId: 0,
       errorText: '',
       pollHash: '',
       pollEnd: '',
@@ -110,7 +109,7 @@ class Voter extends React.Component {
               errorText={this.state.errorText}
               underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
             />
-            <br/>
+            <br />
             <Button
               primary
               className="submitButton"
