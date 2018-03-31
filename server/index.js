@@ -12,6 +12,7 @@ const mailer = require('../helpers/mailer.js');
 const dbHelper = require('../database/dbHelpers.js');
 const helpers = require('../helpers/helpers.js');
 const blockchain = require('../helpers/blockchainHelpers.js');
+const ReactEngine = require('express-react-engine');
 const app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
@@ -72,7 +73,7 @@ app.post('/signup', (req, res) => {
         console.log('org found in db');
         res.status(401).send('Account already exists');
       }
-  })
+    })
   });
 });
 
@@ -211,6 +212,17 @@ app.post('/emailcodes', (req, res) => {
       res.status(201).send(result);
   })
 });
+
+app.get('/reset/:token', function(req,res) {
+  let token = req.params.token;
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+})
+
+app.post('/resetPassword', (req, res) => {
+  let email = req.body.email;
+  let password = req.body.password;
+  res.status(201).send();
+})
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));

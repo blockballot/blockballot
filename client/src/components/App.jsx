@@ -9,6 +9,7 @@ import Voter from './Voter';
 import Vote from './Vote';
 import PollResults from './PollResults';
 import Poll from './Poll';
+import LoginReset from './LoginReset';
 import AboutUs from './AboutUs';
 import $ from 'jquery';
 import Nav from './Nav';
@@ -241,6 +242,13 @@ class App extends React.Component {
           exact path='/aboutus'
           render={ () =>
             <AboutUs/>
+          }
+        />
+
+        <Route
+          exact path='/reset'
+          render={ () =>
+            <LoginReset/>
           }
         />
         
