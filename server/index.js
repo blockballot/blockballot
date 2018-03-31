@@ -187,8 +187,9 @@ app.get('/polls', (req, res) => {
   })
 });
 
-app.post('/email', (req, res) => {
-  mailer.sendPasswordReset(req.body.email)
+app.post('/forgotpassword', (req, res) => {
+  let token = helpers.createPassword();
+  mailer.sendPasswordReset(req.body.email, token)
   .then(result => {
     console.log('sending success status')
     res.status(201).send(result);
@@ -209,19 +210,6 @@ app.post('/emailcodes', (req, res) => {
       res.status(201).send(result);
   })
 });
-
-app.post('/forgotpassword', (req, res) => {
-  console.log(req.body);
-  let email = req.body.email;
-  console.log('EMAIL', email);
-  mailer.sendPasswordReset(email, (err, result) => {
-    if (err) { res.status(500).send() }
-    else {
-      console.log('forgot password email sent')
-      res.status(201).send();
-    }
-  });
-})
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
