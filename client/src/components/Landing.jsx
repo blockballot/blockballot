@@ -38,7 +38,6 @@ class Landing extends React.Component {
   }
 
   render() {
-    console.log(cookie.load('loggedIn'));
     return (
       <Responsive>
         <Segment

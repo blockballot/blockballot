@@ -3,6 +3,7 @@ import { withRouter } from 'react-router';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import cookie from 'react-cookie';
 import $ from 'jquery';
+import axios from 'axios';
 import Landing from './Landing';
 import Signup from './Signup';
 import Dashboard from './Dashboard';
@@ -25,7 +26,7 @@ class App extends React.Component {
       loginPasswordError: '',
       currentPoll: {},
       activeItem: '',
-      modalOpen: false,
+      modalOpen: false
     };
     this.loginSubmit = this.loginSubmit.bind(this);
     this.signupSubmit = this.signupSubmit.bind(this);
@@ -35,7 +36,7 @@ class App extends React.Component {
     this.isValidEmail = this.isValidEmail.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     if (cookie.load('loggedIn') === 'true') {
       let currentUser = cookie.load('username');
       this.setState({
@@ -64,30 +65,24 @@ class App extends React.Component {
         signupPasswordError: 'This field is required'
       });
     } else {
-      const user = {
-        name: `${signup.name}`,
-        email: `${signup.email}`,
-        password: `${signup.password}`
-      };
-
-      $.ajax({
-        type: 'POST',
-        url: '/signup',
-        data: user,
-        success: (res, textStatus, jqXHR) => {
-          if (jqXHR.status === 200) {
+      axios.post('/signup', {
+        name: signup.name,
+        email: signup.email,
+        password: signup.password
+      })
+        .then((res) => {
+          if (res.status === 200) {
             this.setState({
               modalOpen: true
             });
             this.props.history.push('/');
           }
-        },
-        error: (err) => {
+        })
+        .catch((err) => {
           this.setState({
-            signupEmailError: err.responseText
+            signupEmailError: err.message
           });
-        }
-      });
+        });
     }
   }
 
@@ -99,39 +94,34 @@ class App extends React.Component {
   loginSubmit(login) {
     this.setState({
       loginEmailError: '',
-      loginPasswordError: '',
+      loginPasswordError: ''
     });
-    let user = {
-      email: `${login.email}`,
-      password: `${login.password}`
-    };
-    $.ajax({
-      type: 'POST',
-      url: '/login',
-      data: user,
-      success: (res, textStatus, jqXHR) => {
-        if (jqXHR.status === 200) {
+
+    axios.post('/login', {
+      email: login.email,
+      password: login.password
+    })
+      .then((res) => {
+        if (res.status === 200) {
           this.setState({
             loggedIn: true,
-            currentUser: user.email
+            currentUser: login.email
           });
-          this.props.history.push(`/dashboard`);
+          this.props.history.push('/dashboard');
         }
-      },
-      error: (err) => {
-        console.log('error!');
-        if (err.status === 401) {
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
           this.setState({
-            loginEmailError: err.responseText
+            loginEmailError: err.response.data
           });
         }
-        if (err.status === 402) {
+        if (err.response.status === 402) {
           this.setState({
-            loginPasswordError: err.responseText
+            loginPasswordError: err.response.data
           });
         }
-      }
-    });
+      });
   }
 
   logoutSubmit() {
@@ -145,7 +135,7 @@ class App extends React.Component {
     this.setState({
       currentPoll: poll
     });
-    this.props.history.push(`/pollresults`);
+    this.props.history.push('/pollresults');
   }
 
   handleOpen() {

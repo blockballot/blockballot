@@ -48,9 +48,9 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/signup', (req, res) => {
-  let name = req.body.name;
-  let email = req.body.email;
-  let password = req.body.password;
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = req.body.password;
 
   bcrypt.hash(password, 10).then((hash) => {
     db.Org.findOne({

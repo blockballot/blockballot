@@ -11,17 +11,13 @@ class Vote extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false,
-      storageValue: 0,
       voteHash: '',
-      pollHash: '',
       isVoteSubmitted: false,
-      isBallotCompleted: false,
       selectedOption: '',
       candidateName: '',
       ballotName: '',
       ballotOption: [],
-      loaderActive: false,
+      loaderActive: false
     };
     this.updateCheck = this.updateCheck.bind(this);
     this.submitVote = this.submitVote.bind(this);
@@ -33,8 +29,8 @@ class Vote extends React.Component {
       method: 'POST',
       url: '/api/poll',
       data: {
-        pollId: this.props.pollId,
-      },
+        pollId: this.props.pollId
+      }
     })
       .then((res) => {
         const options = res.data.map((element) => {
@@ -44,11 +40,12 @@ class Vote extends React.Component {
         option.setState({
           ballotName: name,
           ballotOption: options,
-          selectedOption: options[0].id,
+          selectedOption: options[0].id
         });
       })
       .catch((error) => {
-        voter.setState({
+        console.log(error);
+        option.setState({
           errorText: 'Your unique code is incorrect. Please, try again',
         });
       });
@@ -58,7 +55,7 @@ class Vote extends React.Component {
     const eventValue = event.target.value.split('.');
     this.setState({
       selectedOption: eventValue[0],
-      candidateName: eventValue[1],
+      candidateName: eventValue[1]
     });
   }
 
@@ -66,7 +63,7 @@ class Vote extends React.Component {
     event.preventDefault();
     const voted = this;
     voted.setState({
-      loaderActive: true,
+      loaderActive: true
     });
     axios.post('/blockchainvote', {
       address: voted.props.pollHash,

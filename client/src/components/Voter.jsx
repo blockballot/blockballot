@@ -27,7 +27,7 @@ class Voter extends React.Component {
 
   handleChange(event) {
     this.setState({
-      uniqueId: event.target.value,
+      uniqueId: event.target.value
     });
   }
 
@@ -38,7 +38,7 @@ class Voter extends React.Component {
       method: 'POST',
       url: '/api/voter',
       data: {
-        uniqueId: this.state.uniqueId,
+        uniqueId: this.state.uniqueId
       }
     })
       .then((res) => {
