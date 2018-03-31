@@ -189,6 +189,7 @@ app.get('/polls', (req, res) => {
 
 app.post('/forgotpassword', (req, res) => {
   let token = helpers.createPassword();
+
   mailer.sendPasswordReset(req.body.email, token)
   .then(result => {
     console.log('sending success status')

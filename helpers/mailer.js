@@ -16,13 +16,13 @@ let transporter = nodemailer.createTransport({
 const sendPasswordReset = function(email, token) {
   return new Promise(function(resolve, reject) {
     let mailPasswordOptions = {
-        from: '"BlockBallot" <blockballot@gmail.com>', 
-        to: `${email}`, 
-        subject: 'Link to reset your password', 
-        text: 'You are receiving this email because you have requested to reset your password.' + '\n' +
-        'Please click on the link below to complete the process.' + '\n' +
-        'http://localhost:3000' + '/reset/' + token + '\n' +
-        'If you did not request this, please ignore this message and your password will remain unchanged.'
+      from: '"BlockBallot" <blockballot@gmail.com>', 
+      to: `${email}`, 
+      subject: 'Link to reset your password', 
+      text: 'You are receiving this email because you have requested to reset your password.' + '\n' +
+      'Please click on the link below to complete the process.' + '\n' +
+      'http://localhost:3000' + '/reset/' + token + '\n' +
+      'If you did not request this, please ignore this message and your password will remain unchanged.'
     };  
 
     transporter.sendMail(mailPasswordOptions, (error, info) => {

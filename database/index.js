@@ -35,6 +35,12 @@ const Org = sequelize.define("org", {
   updatedAt: {
     type: Sequelize.DATE(3),
     defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
+  },
+  resetToken: {
+    type: Sequelize.STRING
+  },
+  resetExpiration: {
+    type: Sequelize.DATE,
   }
 });
 
@@ -56,7 +62,6 @@ const Poll = sequelize.define("poll", {
   pollHash: {
     type: Sequelize.STRING
   },
-
   createdAt: {
     type: Sequelize.DATE(3),
     defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
@@ -64,7 +69,6 @@ const Poll = sequelize.define("poll", {
   updatedAt: {
     type: Sequelize.DATE(3),
     defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
-
   }
 });
 
