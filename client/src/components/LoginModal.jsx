@@ -59,7 +59,7 @@ class LoginModal extends React.Component {
     })
     $.ajax({
       type: 'POST',
-      url: '/email',
+      url: '/forgotpassword',
       data: { email: this.state.forgotPasswordEmail },
       success: (res) => {
         console.log('email sent - client');

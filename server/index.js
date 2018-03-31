@@ -197,6 +197,7 @@ app.post('/email', (req, res) => {
   })
 });
 
+
 app.post('/emailcodes', (req, res) => {
   let emails = JSON.parse(req.body.emails);
   let pollId = req.body.pollId;
@@ -208,6 +209,19 @@ app.post('/emailcodes', (req, res) => {
       res.status(201).send(result);
   })
 });
+
+app.post('/forgotpassword', (req, res) => {
+  console.log(req.body);
+  let email = req.body.email;
+  console.log('EMAIL', email);
+  mailer.sendPasswordReset(email, (err, result) => {
+    if (err) { res.status(500).send() }
+    else {
+      console.log('forgot password email sent')
+      res.status(201).send();
+    }
+  });
+})
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
