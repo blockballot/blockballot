@@ -27,7 +27,6 @@ class CreatePoll extends React.Component {
       ballotOption: [{ optionName: '' }, { optionName: '' }],
       start: null,
       end: null,
-      dateTime: null,
       voterNumber: '4',
       emails: [],
       emailConfirmation: false,
@@ -64,13 +63,9 @@ class CreatePoll extends React.Component {
       this.setState({
         ballotName: localStoragePollInfo.title,
         ballotOption: localStoragePollInfo.option,
-        start: localStoragePollInfo.start,
-        end: localStoragePollInfo.end,
       });
       localStorage.clear();
     }
-    Moment.locale('en');
-    momentLocalizer();
   }
 
   handleInputChange(event) {
@@ -80,14 +75,12 @@ class CreatePoll extends React.Component {
   }
 
   handleStartDateChange(event) {
-    console.log(event);
     this.setState({
       start: event,
     });
   }
 
   handleEndDateChange(event) {
-    console.log(event);
     this.setState({
       end: event,
     });
@@ -119,7 +112,10 @@ class CreatePoll extends React.Component {
   }
 
   handleSubmit(event) {
-    if (this.state.ballotName === '' || this.state.start === null || this.state.end === null || this.state.ballotOption.length < 2) {
+    let startTime = this.state.start;
+    let endTime = this.state.end;
+
+    if (this.state.ballotName === '' || startTime === null || endTime === null || this.state.ballotOption.length < 2 || startTime.getTime() >= endTime.getTime()) {
       this.setState({
         open: true,
       });
@@ -232,9 +228,10 @@ class CreatePoll extends React.Component {
   }
 
   render() {
+    Moment.locale('en');
+    momentLocalizer();
     console.log(this.state.start);
     console.log(this.state.end);
-    console.log(new Date())
     const actions = [
       <FlatButton label="Close" primary onClick={this.handleClose} />,
     ];
@@ -265,7 +262,7 @@ class CreatePoll extends React.Component {
             open={this.state.open}
             onRequestClose={this.handleClose}
           >
-            Please fill out all required fields
+            Please fill out all required fields, and check the dates
           </Dialog>
         </div>
       );
@@ -518,12 +515,14 @@ class CreatePoll extends React.Component {
               <div style={{ marginTop: 72 }}>
                 <b>2. Choose Start and End Times</b><br />
                 <DateTimePicker
+                  min={new Date()}
                   onSelect={this.handleStartDateChange}
                   name="start"
                   value={this.state.start}
                   onChange={this.handleInputChange}
                 />
                 <DateTimePicker
+                  min={this.state.start || new Date()}
                   onSelect={this.handleEndDateChange}
                   name="end"
                   value={this.state.end}
