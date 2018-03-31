@@ -1,16 +1,9 @@
 import React from 'react';
-import Poll from './Poll.jsx';
 import axios from 'axios';
 import cookie from 'react-cookie';
-import {Link, Route, Redirect} from 'react-router-dom';
-import {
-  Card,
-  Button,
-  Container,
-  Header,
-  Icon,
-  Segment,
-} from 'semantic-ui-react';
+import { Link, Redirect } from 'react-router-dom';
+import { Card, Button, Container } from 'semantic-ui-react';
+import Poll from './Poll';
 import '../style/dashboard.css';
 
 class Dashboard extends React.Component {
@@ -20,7 +13,7 @@ class Dashboard extends React.Component {
       polls: [],
       currentPoll: {},
       loggedIn: false,
-      currentUser: props.currentUser,
+      currentUser: this.props.currentUser
     };
     this.retrieveOrgPolls = this.retrieveOrgPolls.bind(this);
   }
@@ -53,17 +46,18 @@ class Dashboard extends React.Component {
   render() {
     const polls = this.state.polls;
     if (cookie.load('loggedIn') !== 'true') {
-      return (<Redirect to='/' />)
+      return (<Redirect to="/" />)
     } 
     return (
       <div>
-        <div className='headers'>
-          <h2 className='dashboardTitle'>Your Ballot Dashboard {this.state.currentUser}</h2>
-          <Link to='/createpoll'>
+        <div className="headers">
+          <h2 className="welcome">Welcome, {this.state.currentUser}</h2>
+          <h2 className="dashboardTitle">Your Ballot Dashboard {this.state.currentUser}</h2>
+          <Link to="/createpoll">
             <Button
               primary
-              className='buttonStyle'
-              className='blueMatch'
+              className="buttonStyle"
+              className="blueMatch"
             >
               Create Ballot
             </Button>
@@ -73,8 +67,8 @@ class Dashboard extends React.Component {
           <div className="ui four link cards">
             {polls.map((poll) =>
               <Poll
-              poll={poll}
-              handlePollClick = {this.props.handlePollClick}
+                poll={poll}
+                handlePollClick = {this.props.handlePollClick}
               />
             )}
           </div>
