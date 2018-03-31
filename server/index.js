@@ -67,16 +67,12 @@ app.post('/signup', (req, res) => {
           } else {
             res.status(500).send('There was an error. Please try again later.')
           }
-        }).catch(err => {
-          res.status(500).send('There was an error. Please try again later.')
-        });
+        })
       } else {
         console.log('org found in db');
         res.status(401).send('Account already exists');
       }
-  }).catch(err => {
-    res.status(500).send('There was an error. Please try again later.')
-  });
+  })
   });
 });
 
@@ -168,6 +164,9 @@ app.post('/poll', (req, res) => {
       return Promise.all(optionArray)
     }).then(results => {
       res.status(201).send(results);
+    }).catch(err => {
+      console.log(err);
+      res.status(500).send('There was an error in creating a new poll');
     })
 });
 

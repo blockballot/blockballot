@@ -25,7 +25,7 @@ class Dashboard extends React.Component {
     this.retrieveOrgPolls = this.retrieveOrgPolls.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.retrieveOrgPolls();
     this.timer = setInterval(this.retrieveOrgPolls, 15000);
   }
