@@ -168,9 +168,6 @@ app.post('/poll', (req, res) => {
       return Promise.all(optionArray)
     }).then(results => {
       res.status(201).send(results);
-    }).catch(err => {
-      console.log(err);
-      res.status(500).send('There was an error in creating a new poll');
     })
 });
 
