@@ -65,7 +65,7 @@ class CreatePoll extends React.Component {
         ballotName: localStoragePollInfo.title,
         ballotOption: localStoragePollInfo.option,
         start: localStoragePollInfo.start,
-        end: localStoragePollInfo.end
+        end: localStoragePollInfo.end,
       });
       localStorage.clear();
     }
@@ -171,7 +171,7 @@ class CreatePoll extends React.Component {
       title: this.state.ballotName,
       start: this.state.start,
       end: this.state.end,
-      option: this.state.ballotOption
+      option: this.state.ballotOption,
     }
     console.log('before localstorage')
     localStorage.setItem('pollInfo', JSON.stringify(pollInfo));
@@ -243,10 +243,10 @@ class CreatePoll extends React.Component {
         <div>
           <Button
             primary
-            attached='bottom'
+            attached="bottom"
             // type='submit'
             onClick={this.handleSubmit}
-            backgroundColor='#2284d1'
+            backgroundColor="#2284d1"
           >
             Deploy
           </Button>
@@ -272,8 +272,8 @@ class CreatePoll extends React.Component {
         <Link to="/signup">
           <Button
             primary
-            attached='bottom'
-            backgroundColor='#2284d1'
+            attached="bottom"
+            backgroundColor="#2284d1"
           >
             Deploy
           </Button>
@@ -292,7 +292,7 @@ class CreatePoll extends React.Component {
             onClick={this.openVoterDialog}
             style={{
               cursor: 'pointer',
-              color: '#2284d1'
+              color: '#2284d1',
             }}
           >
             See Participants
@@ -317,7 +317,7 @@ class CreatePoll extends React.Component {
           value="x"
           onClick={this.handleRemoveOption}
           style={{
-            marginLeft: '20px'
+            marginLeft: '20px',
           }}
         />
       </div>
@@ -353,17 +353,17 @@ class CreatePoll extends React.Component {
     if (this.state.isSubmitted) {
       return (
         <div>
-          <div className='header'>Confirm and Send</div>
+          <div className="header">Confirm and Send</div>
           <section
              style={{
               display: 'flex',
-              padding: 30
+              padding: 30,
             }}
           >
             <div
               style={{
                 flex: 1,
-                padding: 5
+                padding: 5,
               }}
             >
               <Loadable
@@ -377,14 +377,14 @@ class CreatePoll extends React.Component {
                     margin: 15,
                     marginBottom: 50,
                     backgroundColor: '#F0F8FF',
-                    height: '425px'
+                    height: '425px',
                   }}
                 >
                   <div
                     style={{
                       textAlign: 'center',
                       fontSize: '22px',
-                      marginBottom: '10%'
+                      marginBottom: '10%',
                     }}
                   >
                     {this.state.ballotName}
@@ -394,7 +394,7 @@ class CreatePoll extends React.Component {
                     style={{
                       margin: '0 auto',
                       width: '300px',
-                      fontSize: '18px'
+                      fontSize: '18px',
                     }}
                   >
                     <div>
@@ -420,7 +420,7 @@ class CreatePoll extends React.Component {
               style={{
                 flex: 1,
                 padding: 5,
-                lineHeight: '1.7em'
+                lineHeight: '1.7em',
               }}
             >
               <Card
@@ -483,10 +483,10 @@ class CreatePoll extends React.Component {
       <div
         style={{
           maxWidth: '800px',
-          margin: '0 auto'
+          margin: '0 auto',
         }}
       >
-        <div className='header'>Create Your Ballot</div>
+        <div className="header">Create Your Ballot</div>
         <Segment
           attached
           raised
