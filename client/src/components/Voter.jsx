@@ -1,7 +1,8 @@
 import React from 'react';
-import axios from 'axios';
-import { Button } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { Menu, Button } from 'semantic-ui-react';
 import { Card, TextField } from 'material-ui';
+import axios from 'axios';
 import Vote from './Vote';
 import VoterResults from './VoterResults';
 import '../style/voter.css';
@@ -95,6 +96,19 @@ class Voter extends React.Component {
     }
     return (
       <div>
+        <Menu attached borderless style={{ border: 'none' }}>
+          <Link to='/'>
+            <Menu.Item>
+              <h3 style={{
+                fontFamily: 'Hammersmith One',
+                fontSize: '30px'
+              }}
+              >
+                BB
+              </h3>
+            </Menu.Item>
+          </Link>
+        </Menu>
         <div className="header">
         Enter Your Voter Code
         </div>

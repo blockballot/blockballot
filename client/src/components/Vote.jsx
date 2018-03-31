@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, RadioButton, RadioButtonGroup } from 'material-ui';
-import { Button } from 'semantic-ui-react';
+import { Menu, Button } from 'semantic-ui-react';
 import Loadable from 'react-loading-overlay';
 import axios from 'axios';
 import VoterResults from './VoterResults';
@@ -125,6 +126,19 @@ class Vote extends React.Component {
     }
     return (
       <div>
+        <Menu attached borderless style={{ border: 'none' }}>
+          <Link to='/'>
+            <Menu.Item>
+              <h3 style={{
+                fontFamily: 'Hammersmith One',
+                fontSize: '30px'
+              }}
+              >
+                BB
+              </h3>
+            </Menu.Item>
+          </Link>
+        </Menu>
         <div className="header">{ballotInfo.ballotName}</div>
         <form>
           <Card className="ballotOptions">

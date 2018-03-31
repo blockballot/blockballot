@@ -20,7 +20,10 @@ class VoterResults extends React.Component {
               <h3 style={{
                 fontFamily: 'Hammersmith One',
                 fontSize: '30px'
-              }}>BB</h3>
+              }}
+              >
+                BB
+              </h3>
             </Menu.Item>
           </Link>
         </Menu>
