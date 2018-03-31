@@ -1,16 +1,16 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { Card, TextField, Divider, RaisedButton, Dialog, FlatButton, RadioButtonGroup, RadioButton} from 'material-ui';
-import moment from 'moment';
+import { Card, TextField, Divider, RaisedButton, Dialog, FlatButton, RadioButtonGroup, RadioButton } from 'material-ui';
 import cookie from 'react-cookie';
 import $ from 'jquery';
 import axios from 'axios';
 import CSVReader from 'react-csv-reader';
 import { BarLoader } from 'react-spinners';
-import DateTimePicker from 'material-ui-datetimepicker';
-import DatePickerDialog from 'material-ui/DatePicker/DatePickerDialog';
-import TimePickerDialog from 'material-ui/TimePicker/TimePickerDialog';
 import Loadable from 'react-loading-overlay';
+import Moment from 'moment';
+import momentLocalizer from 'react-widgets-moment';
+import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+import 'react-widgets/dist/css/react-widgets.css';
 import '../style/voter.css';
 import {
   Button,
@@ -27,7 +27,6 @@ class CreatePoll extends React.Component {
       ballotOption: [{ optionName: '' }, { optionName: '' }],
       start: null,
       end: null,
-      dateTime: null,
       voterNumber: '4',
       emails: [],
       emailConfirmation: false,
@@ -59,13 +58,11 @@ class CreatePoll extends React.Component {
 
 
   componentWillMount() {
-    if(localStorage.getItem('pollInfo')) {
-      let localStoragePollInfo = JSON.parse(localStorage.getItem('pollInfo'));
+    if (localStorage.getItem('pollInfo')) {
+      const localStoragePollInfo = JSON.parse(localStorage.getItem('pollInfo'));
       this.setState({
         ballotName: localStoragePollInfo.title,
         ballotOption: localStoragePollInfo.option,
-        start: localStoragePollInfo.start,
-        end: localStoragePollInfo.end,
       });
       localStorage.clear();
     }
@@ -78,14 +75,12 @@ class CreatePoll extends React.Component {
   }
 
   handleStartDateChange(event) {
-    console.log(event);
     this.setState({
       start: event,
     });
   }
 
   handleEndDateChange(event) {
-    console.log(event);
     this.setState({
       end: event,
     });
@@ -117,14 +112,17 @@ class CreatePoll extends React.Component {
   }
 
   handleSubmit(event) {
-    if (this.state.ballotName === '' || this.state.start === null || this.state.end === null || this.state.ballotOption.length < 2) {
+    let startTime = this.state.start;
+    let endTime = this.state.end;
+
+    if (this.state.ballotName === '' || startTime === null || endTime === null || this.state.ballotOption.length < 2 || startTime.getTime() >= endTime.getTime()) {
       this.setState({
         open: true,
       });
       return;
     }
     event.preventDefault();
-    
+
     const options = [];
     for (let i = 0; i < this.state.ballotOption.length; i++) {
       const optName = this.state.ballotOption[i].optionName;
@@ -166,16 +164,13 @@ class CreatePoll extends React.Component {
   }
 
   handleVisitorSubmit() {
-    console.log('eeeeee' + cookie.load('loggedIn') )
-    let pollInfo = {
+    const pollInfo = {
       title: this.state.ballotName,
       start: this.state.start,
       end: this.state.end,
       option: this.state.ballotOption,
-    }
-    console.log('before localstorage')
+    };
     localStorage.setItem('pollInfo', JSON.stringify(pollInfo));
-    console.log('after localstorage', pollInfo)
   }
 
   handleSendEmail() {
@@ -233,6 +228,10 @@ class CreatePoll extends React.Component {
   }
 
   render() {
+    Moment.locale('en');
+    momentLocalizer();
+    console.log(this.state.start);
+    console.log(this.state.end);
     const actions = [
       <FlatButton label="Close" primary onClick={this.handleClose} />,
     ];
@@ -241,6 +240,7 @@ class CreatePoll extends React.Component {
     if (cookie.load('loggedIn') === 'true') {
       submitButton = (
         <div>
+
           <Button
             primary
             attached="bottom"
@@ -262,7 +262,7 @@ class CreatePoll extends React.Component {
             open={this.state.open}
             onRequestClose={this.handleClose}
           >
-            Please fill out all required fields
+            Please fill out all required fields, and check the dates
           </Dialog>
         </div>
       );
@@ -311,15 +311,14 @@ class CreatePoll extends React.Component {
           underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
           onChange={this.handleOptionChange}
         />
-        <input
-          type="button"
+        <Button
           name={index}
-          value="x"
           onClick={this.handleRemoveOption}
           style={{
-            marginLeft: '20px',
+            marginLeft: '30px',
           }}
-        />
+        >x
+        </Button>
       </div>
     ));
 
@@ -355,7 +354,7 @@ class CreatePoll extends React.Component {
         <div>
           <div className="header">Confirm and Send</div>
           <section
-             style={{
+            style={{
               display: 'flex',
               padding: 30,
             }}
@@ -389,7 +388,7 @@ class CreatePoll extends React.Component {
                   >
                     {this.state.ballotName}
                   </div>
-                  <br/><br/>
+                  <br /><br />
                   <form
                     style={{
                       margin: '0 auto',
@@ -400,7 +399,8 @@ class CreatePoll extends React.Component {
                     <div>
                       <RadioButtonGroup
                         name="voteoptions"
-                        labelPosition="left">
+                        labelPosition="left"
+                      >
                         {this.state.ballotOption.map((option, index) => (
                           <RadioButton
                             // style={{ marginButton:16, width:300 }}
@@ -515,20 +515,18 @@ class CreatePoll extends React.Component {
               <div style={{ marginTop: 72 }}>
                 <b>2. Choose Start and End Times</b><br />
                 <DateTimePicker
-                  onChange={this.handleStartDateChange}
-                  showCurrentDateByDefault={false}
-                  DatePicker={DatePickerDialog}
-                  TimePicker={TimePickerDialog}
-                  underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
-                  clearIcon={null}
+                  min={new Date()}
+                  onSelect={this.handleStartDateChange}
+                  name="start"
+                  value={this.state.start}
+                  onChange={this.handleInputChange}
                 />
                 <DateTimePicker
-                  onChange={this.handleEndDateChange}
-                  showCurrentDateByDefault={false}
-                  DatePicker={DatePickerDialog}
-                  TimePicker={TimePickerDialog}
-                  underlineFocusStyle={{ borderBottomColor: '#2284d1' }}
-                  clearIcon={null}
+                  min={this.state.start || new Date()}
+                  onSelect={this.handleEndDateChange}
+                  name="end"
+                  value={this.state.end}
+                  onChange={this.handleInputChange}
                 />
               </div>
             </div>
