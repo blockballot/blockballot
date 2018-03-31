@@ -187,6 +187,13 @@ class App extends React.Component {
           loginPasswordError={this.state.loginPasswordError}
         />
 
+        <Route
+          path='/reset'
+          render={ () =>
+            <LoginReset/>
+          }
+        />
+        
         <Route exact path='/'
           render={ () =>
             <Landing 
@@ -245,13 +252,6 @@ class App extends React.Component {
           }
         />
 
-        <Route
-          exact path='/reset'
-          render={ () =>
-            <LoginReset/>
-          }
-        />
-        
       </div>
     )
   }

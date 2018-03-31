@@ -12,7 +12,10 @@ const mailer = require('../helpers/mailer.js');
 const dbHelper = require('../database/dbHelpers.js');
 const helpers = require('../helpers/helpers.js');
 const blockchain = require('../helpers/blockchainHelpers.js');
-const ReactEngine = require('express-react-engine');
+const url = require('url');    
+
+const router = express.Router()
+
 const app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
@@ -215,11 +218,17 @@ app.post('/emailcodes', (req, res) => {
 
 app.get('/reset/:token', function(req,res) {
   let token = req.params.token;
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  console.log('TOKEN', token);
+  res.redirect(url.format({
+    pathname:"/reset",
+    query: {
+      'token': token,
+    }
+  }));
 })
 
 app.post('/resetPassword', (req, res) => {
-  let email = req.body.email;
+  let token = req.body.token;
   let password = req.body.password;
   res.status(201).send();
 })

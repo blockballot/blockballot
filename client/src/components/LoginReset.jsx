@@ -9,9 +9,11 @@ class LoginReset extends React.Component {
     super(props);
     this.state = {
       email: '',
-      password: '',
+      password1: '',
+      password2: '',
       resetComplete: false,
-      resetError: false
+      resetError: false,
+      passwordMatchError: false
     }
     this.onReset = this.onReset.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -25,23 +27,33 @@ class LoginReset extends React.Component {
   }
 
   onReset() {
-    axios.post('/resetPassword', {
-      email: this.state.email,
-      password: this.state.password
-    }).then((res) => {
-      console.log('RES', res);
-      if (res.status === 201) {
-        this.setState({
-          resetComplete: true,
-        });
-        console.log('reset successful');
-      }
-    }).catch((err) => {
+    this.setState({
+      resetError: false,
+      passwordMatchError: false
+    })
+    if (this.state.password1 !== this.state.password2) {
       this.setState({
-        resetError: true,
+        passwordMatchError: true
+      })
+    } else {
+      axios.post('/resetPassword', {
+        token: '',
+        password: this.state.password
+      }).then((res) => {
+        console.log('RES', res);
+        if (res.status === 201) {
+          this.setState({
+            resetComplete: true,
+          });
+          console.log('reset successful');
+        }
+      }).catch((err) => {
+        this.setState({
+          resetError: true,
+        });
+        console.log('error sending emails');
       });
-      console.log('error sending emails');
-    });
+    }
   }
   
   render() {
@@ -50,6 +62,15 @@ class LoginReset extends React.Component {
       resetConfirmation = (
         <div>
           <b>Password reset. You are now logged in.</b>
+        </div>
+      )
+    }
+
+    let passwordMismatch = null;
+    if (this.state.passwordMatchError === true) {
+      passwordMismatch = (
+        <div>
+          <b>Passwords do not match. Please reenter.</b>
         </div>
       )
     }
@@ -72,20 +93,21 @@ class LoginReset extends React.Component {
 
           <CardText style={{marginLeft: 20}}>
             <TextField
-              hintText="Email"
-              errorText={this.props.loginEmailError}
-              name='email'
-              value={this.state.email}
+              hintText="Enter your Password"
+              errorText={''}
+              type="password"
+              name='password1'
+              value={this.state.password1}
               onChange={this.onChange}
               underlineStyle={{borderBottomColor: 'white'}}/>
             <br/>
 
             <TextField
-              hintText="Password"
+              hintText="Confirm your Password"
               type="password"
-              errorText={this.props.loginPasswordError}
-              name='password'
-              value={this.state.password}
+              errorText={''}
+              name='password2'
+              value={this.state.password2}
               onChange={this.onChange}
               underlineStyle={{borderBottomColor: 'white'}}/>
 
@@ -98,6 +120,7 @@ class LoginReset extends React.Component {
 
             </div>
             <br/>
+            {passwordMismatch}
             {resetConfirmation}
 
           </CardText>

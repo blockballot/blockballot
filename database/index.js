@@ -37,10 +37,12 @@ const Org = sequelize.define("org", {
     defaultValue: Sequelize.literal("CURRENT_TIMESTAMP(3)")
   },
   resetToken: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: true
   },
   resetExpiration: {
     type: Sequelize.DATE,
+    allowNull: true
   }
 });
 
