@@ -1,7 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-import Checkbox from 'material-ui/Checkbox';
-import { Card, Divider, TextField, RaisedButton } from 'material-ui';
+import { Card } from 'material-ui';
 import '../style/voter.css';
 
 class VoterResults extends React.Component {
@@ -24,12 +22,12 @@ class VoterResults extends React.Component {
       }
       return acc;
     }, []);
-    
-    let etherscanUrl = `https://rinkeby.etherscan.io/tx/${this.props.voteHash}`;
+
+    const etherscanUrl = `https://rinkeby.etherscan.io/tx/${this.props.voteHash}`;
 
     return (
-      <div>
-        <div className='header'>
+      <div className="confirmationPage">
+        <div className="confirmationHeader">
           Thank You For Voting
         </div>
         <div className="subHeader">
@@ -38,20 +36,21 @@ class VoterResults extends React.Component {
         <div className="ballotName">
           {this.state.ballotName}
         </div>
-        <Card className="center">
+        <div className="subHeader">
+          Ballot closes at {this.props.pollEnd}
+        </div>
+        <Card className="confirmCard">
           <div>
             <b>Confirmation ID for Your Records:</b>
             <div className="voteHash">
               {this.props.voteHash}
             </div>
           </div>
-          <div className='etherscan'>
+          <div className="etherscan">
             <b>View a Record of Your Vote on Etherscan <a href={etherscanUrl}>Here</a></b>
           </div>
         </Card>
-        <div className='subHeader'>
-          Ballot closes at {this.props.pollEnd}
-        </div>
+        <div className="colorBackground" />
       </div>
     )
   }

@@ -91,7 +91,7 @@ class Landing extends React.Component {
             verticalAlign='middle'
             style={{
               marginTop: '3em',
-              fontFamily: 'Roboto, sans-serif'
+              fontFamily: 'Roboto, sans-serif',
             }}
           >
             <Grid.Row>
@@ -117,7 +117,7 @@ class Landing extends React.Component {
                 <p
                   style={{
                   fontSize: '1.33em',
-                  textAlign: 'center'
+                  textAlign: 'center',
                   }}>
                   Because voter data is permanently written to the Ethereum blockchain, BlockBallot is the safest, most transparent way to organize a vote.
                 </p>
@@ -138,7 +138,7 @@ class Landing extends React.Component {
           vertical
           style={{
             padding: '5em 0em',
-            fontFamily: 'Roboto, sans-serif'
+            fontFamily: 'Roboto, sans-serif',
           }}
         >
           <Container>

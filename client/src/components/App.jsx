@@ -1,15 +1,15 @@
 import React from 'react';
+import cookie from 'react-cookie';
 import Landing from './Landing';
 import Signup from './Signup';
 import Dashboard from './Dashboard';
 import CreatePoll from './CreatePoll';
 import VoterResults from './VoterResults';
-import cookie from 'react-cookie';
 import Voter from './Voter';
 import Vote from './Vote';
-import PollResults from './PollResults'
-import Poll from './Poll'
-import AboutUs from './AboutUs'
+import PollResults from './PollResults';
+import Poll from './Poll';
+import AboutUs from './AboutUs';
 import $ from 'jquery';
 import Nav from './Nav';
 import { withRouter } from 'react-router';
@@ -109,7 +109,7 @@ class App extends React.Component {
   loginSubmit(login) {
     this.setState({
       loginEmailError: '',
-      loginPasswordError: ''
+      loginPasswordError: '',
     })
     let user = {
       email: `${login.email}`,

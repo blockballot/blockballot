@@ -4,6 +4,15 @@
   font-size: 25px;
 }
 
+.confirmationHeader {
+  padding-top: 5%;
+  padding-bottom: 2%;
+  text-align: center;
+  font-size: 5em;
+  font-family: 'Hammersmith One';
+  color:#dfe6e9;
+}
+
 .enterCode {
   padding: 60px;
   position: absolute;
@@ -17,12 +26,12 @@
   margin-top: 10px !important;
 }
 
-.center {
-  padding: 60px;
-  position: absolute;
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.confirmCard {
+  padding: 3%;
+  margin: 0 auto;
+  max-width: 600px;
+  margin-top: 40px;
+  font-size: 15px;
 }
 
 .ballotOptions {
@@ -42,7 +51,7 @@
 .subHeader{
   padding-top: 20px;
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .ballotName {
@@ -56,8 +65,26 @@
   text-align: center;
 }
 
+.confirmationPage {
+  font-family: 'Roboto', sans-serif;
+}
+
 .voteHash {
-  padding-top: 7%;
+  padding-top: 2%;
+}
+
+.etherscan {
+  margin-top: 7%;
+}
+
+.colorBackground {
+  background-color: #2284d1;
+  position: fixed;
+  top: 70%;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  z-index: -1;
 }
 
 .csv-input {
@@ -65,8 +92,4 @@
   display: inline-block;
   margin: 15px auto;
   text-align: left;
-}
-
-.etherscan {
-  margin-top: 5%;
 }
