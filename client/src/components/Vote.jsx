@@ -1,9 +1,9 @@
 import React from 'react';
-import VoterResults from './VoterResults';
 import { Card, RadioButton, RadioButtonGroup } from 'material-ui';
 import { Button } from 'semantic-ui-react';
 import Loadable from 'react-loading-overlay';
 import axios from 'axios';
+import VoterResults from './VoterResults';
 import '../style/voter.css';
 
 class Vote extends React.Component {
@@ -20,7 +20,7 @@ class Vote extends React.Component {
       candidateName: '',
       ballotName: '',
       ballotOption: [],
-      loaderActive: false
+      loaderActive: false,
     };
     this.updateCheck = this.updateCheck.bind(this);
     this.submitVote = this.submitVote.bind(this);
@@ -32,85 +32,83 @@ class Vote extends React.Component {
       method: 'POST',
       url: '/api/poll',
       data: {
-        pollId: this.props.pollId
+        pollId: this.props.pollId,
       },
     })
       .then((res) => {
         const options = res.data.map((element) => {
           return element;
         });
-        var name = res.data[0].poll.pollName;
+        const name = res.data[0].poll.pollName;
         option.setState({
           ballotName: name,
           ballotOption: options,
-          selectedOption: options[0].id
+          selectedOption: options[0].id,
         });
       })
       .catch((error) => {
         voter.setState({
-          errorText: "Your unique code is incorrect. Please, try again"
+          errorText: 'Your unique code is incorrect. Please, try again',
         });
       });
   }
 
   updateCheck(event) {
-    var eventValue = event.target.value.split('.')
+    const eventValue = event.target.value.split('.');
     this.setState({
       selectedOption: eventValue[0],
-      candidateName: eventValue[1]
+      candidateName: eventValue[1],
     });
   }
 
   submitVote(event) {
     event.preventDefault();
-    var voted = this;
+    const voted = this;
     voted.setState({
-      loaderActive: true
+      loaderActive: true,
     });
     axios.post('/blockchainvote', {
       address: voted.props.pollHash,
-      candidate: voted.state.candidateName
+      candidate: voted.state.candidateName,
     })
-    .then(res => {
-      console.log(`Vote tx hash: ${res.data}`);
-      voted.setState({
-        voteHash: res.data
+      .then((res) => {
+        console.log(`Vote tx hash: ${res.data}`);
+        voted.setState({
+          voteHash: res.data,
+        });
+        return axios.post('/api/voteresult', {
+          voted: Number(voted.state.selectedOption),
+          voteHash: res.data,
+        });
+      })
+      .then((res) => {
+        console.log('vote has been submitted');
+        voted.setState({
+          loaderActive: false,
+          isVoteSubmitted: true,
+        });
+      })
+      .catch((error) => {
+        voted.setState({
+          loaderActive: false,
+        });
+        console.log(error);
       });
-      return axios.post('/api/voteresult', {
-        voted: Number(voted.state.selectedOption),
-        voteHash: res.data
-      });
-    })
-    .then(res => {
-      console.log(res)
-      console.log('vote has been submitted')
-      voted.setState({
-        loaderActive: false,
-        isVoteSubmitted: true
-      });
-    })
-    .catch(error => {
-      voted.setState({
-        loaderActive: false
-      });
-      console.log(error);
-    });
   }
 
   render() {
-    let ballotInfo = this.state;
-    let ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
+    const ballotInfo = this.state;
+    const ballotQuestionList = ballotInfo.ballotOption.map((option, index) => {
       return (
-          <RadioButton
-            iconStyle={{ fill:'#4183D9' }}
-            key={index}
-            label={option.optionName}
-            value={`${option.id}.${option.optionName}`}
-          />
-      )
+        <RadioButton
+          iconStyle={{ fill:'#4183D9' }}
+          key={index}
+          label={option.optionName}
+          value={`${option.id}.${option.optionName}`}
+        />
+      );
     });
-    
-    if(this.state.isVoteSubmitted === true) {
+    if (this.state.isVoteSubmitted === true) {
       return (
         <VoterResults
           ballotOption={this.state.ballotOption}
@@ -118,45 +116,44 @@ class Vote extends React.Component {
           voteHash={this.state.voteHash}
           pollEnd={this.props.pollEnd}
         />
-      )
-    } else {
-      return (
-        <div>
-          <div className='header'>{ballotInfo.ballotName}</div>
-          <form>
-              <Card className='ballotOptions'>
-                <div>
-                  <RadioButtonGroup
-                    name="voteoptions"
-                    labelPosition="left"
-                    valueSelected={this.state.selectedOption + "." + this.state.candidateName}
-                    onChange={this.updateCheck}
-                  >
-                    {ballotQuestionList}
-                  </RadioButtonGroup>
-                </div>
-                <br/>
-                <Loadable
-                  active={this.state.loaderActive}
-                  spinnerSize='35px'
-                  spinner
-                >
-                <Button
-                  fluid
-                  primary
-                  className='blueMatch'
-                  className='buttonStyle'
-                  className='voteButton'
-                  onClick={this.submitVote}
-                >
-                  Vote
-                </Button>
-                </Loadable>
-              </Card>
-          </form>
-        </div>
-      )
+      );
     }
+    return (
+      <div>
+        <div className="header">{ballotInfo.ballotName}</div>
+        <form>
+          <Card className="ballotOptions">
+            <div>
+              <RadioButtonGroup
+                name="voteoptions"
+                labelPosition="left"
+                valueSelected={`${this.state.selectedOption}.${this.state.candidateName}`}
+                onChange={this.updateCheck}
+              >
+                {ballotQuestionList}
+              </RadioButtonGroup>
+            </div>
+            <br />
+            <Loadable
+              active={this.state.loaderActive}
+              spinnerSize="35px"
+              spinner
+            >
+              <Button
+                fluid
+                primary
+                className="blueMatch"
+                className="buttonStyle"
+                className="voteButton"
+                onClick={this.submitVote}
+              >
+                Vote
+              </Button>
+            </Loadable>
+          </Card>
+        </form>
+      </div>
+    );
   }
 }
 
