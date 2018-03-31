@@ -70,22 +70,27 @@ class Vote extends React.Component {
     axios.post('/blockchainvote', {
       address: voted.props.pollHash,
       candidate: voted.state.candidateName,
+      uniqueId: voted.props.uniqueId
     })
       .then((res) => {
         console.log(`Vote tx hash: ${res.data}`);
         voted.setState({
-          voteHash: res.data,
+          voteHash: res.data
         });
         return axios.post('/api/voteresult', {
-          voted: Number(voted.state.selectedOption),
+          optionId: Number(voted.state.selectedOption),
           voteHash: res.data,
+          uniqueId: voted.props.uniqueId,
+          pollId: voted.props.pollId,
+          keyId: voted.props.keyId
         });
       })
       .then((res) => {
+        console.log(res);
         console.log('vote has been submitted');
         voted.setState({
           loaderActive: false,
-          isVoteSubmitted: true,
+          isVoteSubmitted: true
         });
       })
       .catch((error) => {
@@ -142,9 +147,7 @@ class Vote extends React.Component {
               <Button
                 fluid
                 primary
-                className="blueMatch"
-                className="buttonStyle"
-                className="voteButton"
+                className="blueMatch buttonStyle voteButton"
                 onClick={this.submitVote}
               >
                 Vote

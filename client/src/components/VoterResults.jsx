@@ -5,25 +5,10 @@ import '../style/voter.css';
 class VoterResults extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      uniqueId: '',
-      isLoggedIn: false,
-      isVoteSubmitted: false,
-      isBallotCompleted: false,
-      ballotName: props.ballotName || '',
-      ballotOption: props.ballotOption || []
-    };
   }
 
   render() {
-    let voteResult = this.state.ballotOption.reduce((acc, cur, index) => {
-      if (cur.optionAnswer === true) {
-        acc.push(<div key={index}>{cur.optionName}</div>);
-      }
-      return acc;
-    }, []);
-
-    const etherscanUrl = `https://rinkeby.etherscan.io/tx/${this.props.voteHash}`;
+    let etherscanUrl = `https://rinkeby.etherscan.io/tx/${this.props.voteHash}`;
 
     return (
       <div className="confirmationPage">
@@ -34,7 +19,7 @@ class VoterResults extends React.Component {
           Your response has been permanently recorded for the following ballot:
         </div>
         <div className="ballotName">
-          {this.state.ballotName}
+          {this.props.ballotName}
         </div>
         <div className="subHeader">
           Ballot closes at {this.props.pollEnd}

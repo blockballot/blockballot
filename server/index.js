@@ -5,13 +5,13 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
-const Sequelize = require('sequelize');
 const auth = require('../helpers/authHelpers.js');
 const db = require('../database/index.js');
 const mailer = require('../helpers/mailer.js');
 const dbHelper = require('../database/dbHelpers.js');
 const helpers = require('../helpers/helpers.js');
 const blockchain = require('../helpers/blockchainHelpers.js');
+
 const app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
@@ -28,9 +28,9 @@ app.use(session({
 app.post('/login', (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
-  db.Org.findOne({ 
-    where: { orgEmail: email } 
-  }).then(org => {
+  db.Org.findOne({
+    where: { orgEmail: email }
+  }).then((org) => {
     if (!org) {
       res.status(401).send('Account not recognized.');
     } else {
@@ -42,9 +42,9 @@ app.post('/login', (req, res) => {
         }
       });
     }
-  }).catch(err => {
+  }).catch((err) => {
     res.status(500).send('There was an error. Please try again later.')
-  })
+  });
 });
 
 app.post('/signup', (req, res) => {
@@ -52,27 +52,27 @@ app.post('/signup', (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
 
-  bcrypt.hash(password, 10).then( hash => {
+  bcrypt.hash(password, 10).then((hash) => {
     db.Org.findOne({
       where: { orgEmail: email }
-    }).then(org => {
+    }).then((org) => {
       if (org === null) {
         db.Org.create({
           orgName: name, 
           orgEmail: email, 
           orgPassword: hash
-        }).then(newUser => {
+        }).then((newUser) => {
           if (newUser) {
             res.status(200).send();
           } else {
             res.status(500).send('There was an error. Please try again later.')
           }
-        })
+        });
       } else {
         console.log('org found in db');
         res.status(401).send('Account already exists');
       }
-  })
+    });
   });
 });
 
@@ -89,124 +89,127 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/api/voter', (req, res) => {
-  db.VoteKey.findOne({
-    where: {voterUniqueId: req.body.uniqueId}, 
-    include: [db.Poll] 
-  }).catch(err => {
-    res.status(500).send('There was an error. Please try again later.')
-  }).then(result => {
-    if (!result) {
-      res.status(500).send('Invalid unique ID. Please try again.')
-    } else {
+  dbHelper.retrieveCode(req.body.uniqueId)
+    .then((result) => {
       res.status(200).send(result);
-    }
-  });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('Invalid unique ID. Please input a valid unique ID.');
+    });
 });
 
 app.post('/api/poll', (req, res) => {
   db.Option.findAll({
-    where: {pollId: req.body.pollId}, 
+    where: { pollId: req.body.pollId },
     include: [db.Poll]
-  }).catch(err => {
-    res.status(500).send('There was an error. Please try again later.')
-  }).then(option => {
-    if (!option) {
-      res.status(500).send('There was an error. Please try again later.')
-    } else {
-      res.status(200).send(option);
-    }
   })
-})
+    .then((option) => {
+      if (!option) {
+        res.status(500).send('There was an error. Please try again later.')
+      } else {
+        res.status(200).send(option);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('There was an error. Please try again later.')
+    });
+});
 
 app.post('/api/voteresult', (req, res) => {
-  db.Vote.create({
-    voteHash: req.body.voteHash, 
-    optionId: req.body.voted 
-  }).catch(err => {
-    res.status(500).send('There was an error. Please try again later.')
-  }).then(newUser => {
-    if (newUser) {
-      res.status(200).send(newUser);
-    } else {
-      res.status(500).send('There was an error. Please try again later.')
-    }
-  })
+  dbHelper.submitVote(req.body.voteHash, req.body.optionId, req.body.keyId)
+    .then((result) => {
+      res.status(201).send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('There was an error in submitting your vote');
+    });
 });
 
 app.post('/blockchainvote', (req, res) => {
-  // pass in candidatename and address of contract
   blockchain.castVote(req.body.candidate, req.body.address)
-  .catch(err => {
-    res.status(500).send('There was an error when creating the blockchain vote');
-  }).then(hash => {
-    res.status(201).send(hash);
-  })
+    .then((hash) => {
+      res.status(201).send(hash);
+    })
+    .catch((err) => {
+      res.status(500).send('There was an error when creating the blockchain vote');
+    });
 });
 
 app.post('/contract', (req, res) => {
   const options = req.body.options;
   blockchain.createContract(options)
-  .then((contract) => {
-    res.status(201).send(contract)
-  }).catch(err => {
-  res.status(500).send('There was an error when creating the blockchain vote');
-  })
+    .then((contract) => {
+      res.status(201).send(contract)
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('There was an error when creating the blockchain vote');
+    });
 }); 
 
 app.post('/poll', (req, res) => {
   dbHelper.createPoll(req.session.orgId, req.body)
-    .then(newPoll => {
-      let optionArray = [];
+    .then((newPoll) => {
+      const optionArray = [];
       const pollOpts = req.body.pollOptions;
-      for (var i = 0; i < pollOpts.length; i++) {
+      for (let i = 0; i < pollOpts.length; i++) {
         optionArray.push(dbHelper.createOption(newPoll.dataValues.id, pollOpts[i])); 
       }
       return Promise.all(optionArray)
-    }).then(results => {
+    })
+    .then((results) => {
       res.status(201).send(results);
-    }).catch(err => {
+    })
+    .catch((err) => {
       console.log(err);
       res.status(500).send('There was an error in creating a new poll');
-    })
+    });
 });
 
 // retrieve all polls for the logged in org
 app.get('/polls', (req, res) => {
   dbHelper.retrievePolls(req.session.orgId)
-  .then(polls => {
-    const promiseArr = [];
-    for (var i = 0; i < polls.length; i++) {
-      promiseArr.push(dbHelper.bundlePollVotes(polls[i]));
-    }
-    return Promise.all(promiseArr);
-  }).then(bundledPolls => {
-    res.status(200).send(bundledPolls);
-  }).catch(err => {
-    console.log(err);
-    res.status(500).send('Error retrieving polls from server');
-  })
+    .then((polls) => {
+      const promiseArr = [];
+      for (let i = 0; i < polls.length; i++) {
+        promiseArr.push(dbHelper.bundlePollVotes(polls[i]));
+      }
+      return Promise.all(promiseArr);
+    })
+    .then((bundledPolls) => {
+      res.status(200).send(bundledPolls);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('Error retrieving polls from server');
+    });
 });
 
 app.post('/email', (req, res) => {
   mailer.sendPasswordReset(req.body.email)
-  .then(result => {
-    console.log('sending success status')
-    res.status(201).send(result);
-  }).catch(err => {
-    res.status(500).send("There was an error in sending password reset")
-  })
+    .then((result) => {
+      res.status(201).send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('There was an error in sending password reset');
+    });
 });
 
 app.post('/emailcodes', (req, res) => {
-  let emails = JSON.parse(req.body.emails);
-  let pollId = req.body.pollId;
+  const emails = JSON.parse(req.body.emails);
+  const pollId = req.body.pollId;
   mailer.sendEmailCodes(emails, pollId)
-  .catch(err => {
-      console.log(err);
-      res.status(500).send("There was an error in sending voter Id");
-  }).then (result => {
+    .then((result) => {
       res.status(201).send(result);
-  })
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('There was an error in sending voter Id');
+    });
 });
 
 app.get('/*', (req, res) => {
