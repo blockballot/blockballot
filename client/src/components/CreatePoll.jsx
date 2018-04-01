@@ -21,7 +21,7 @@ class CreatePoll extends React.Component {
       ballotOption: [{ optionName: '' }, { optionName: '' }],
       start: null,
       end: null,
-      voterNumber: '4',
+      startNow: false,
       emails: [],
       emailConfirmation: false,
       open: false,
@@ -32,12 +32,13 @@ class CreatePoll extends React.Component {
       isSubmitted: false,
       pollId: 0,
       loaderActive: true,
-      sendVotesDisabled: true,
+      sendVotesDisabled: true
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
+    this.handleStartNow = this.handleStartNow.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.handleAddOption = this.handleAddOption.bind(this);
     this.handleRemoveOption = this.handleRemoveOption.bind(this);
@@ -56,7 +57,7 @@ class CreatePoll extends React.Component {
       const localStoragePollInfo = JSON.parse(localStorage.getItem('pollInfo'));
       this.setState({
         ballotName: localStoragePollInfo.title,
-        ballotOption: localStoragePollInfo.option,
+        ballotOption: localStoragePollInfo.option
       });
       localStorage.clear();
     }
@@ -64,19 +65,25 @@ class CreatePoll extends React.Component {
 
   handleInputChange(event) {
     this.setState({
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     });
   }
 
   handleStartDateChange(event) {
     this.setState({
-      start: event,
+      start: event
     });
   }
 
   handleEndDateChange(event) {
     this.setState({
-      end: event,
+      end: event
+    });
+  }
+
+  handleStartNow() {
+    this.setState({
+      startNow: !this.state.startNow
     });
   }
 
@@ -88,30 +95,30 @@ class CreatePoll extends React.Component {
       }
     });
     this.setState({
-      balletOption: newballotOption,
+      balletOption: newballotOption
     });
   }
 
   handleAddOption() {
     this.setState({
-      ballotOption: this.state.ballotOption.concat([{ optionName: '' }]),
+      ballotOption: this.state.ballotOption.concat([{ optionName: '' }])
     });
   }
 
   handleRemoveOption(event) {
     const removeIndex = Number(event.target.name);
     this.setState({
-      ballotOption: this.state.ballotOption.filter((option, i) => removeIndex !== i),
+      ballotOption: this.state.ballotOption.filter((option, i) => removeIndex !== i)
     });
   }
 
   handleSubmit(event) {
-    let startTime = this.state.start;
-    let endTime = this.state.end;
+    const startTime = this.state.start;
+    const endTime = this.state.end;
 
     if (this.state.ballotName === '' || startTime === null || endTime === null || this.state.ballotOption.length < 2 || startTime.getTime() >= endTime.getTime()) {
       this.setState({
-        open: true,
+        open: true
       });
       return;
     }
@@ -126,7 +133,7 @@ class CreatePoll extends React.Component {
     }
     console.log('Sending contract to get mined');
     axios.post('/contract', {
-      options,
+      options
     })
       .then((contractRes) => {
         console.log(contractRes);
@@ -136,7 +143,7 @@ class CreatePoll extends React.Component {
           pollStart: this.state.start,
           pollEnd: this.state.end,
           pollOptions: options,
-          pollAddress: contractRes.data.address,
+          pollAddress: contractRes.data.address
         };
         return axios.post('/poll', contractInfo);
       })
@@ -145,7 +152,7 @@ class CreatePoll extends React.Component {
         this.setState({
           pollId: pollRes.data[0].pollId,
           loaderActive: false,
-          sendVotesDisabled: false,
+          sendVotesDisabled: false
         });
       })
       .catch((err) => {
@@ -153,7 +160,7 @@ class CreatePoll extends React.Component {
       });
 
     this.setState({
-      isSubmitted: true,
+      isSubmitted: true
     });
   }
 
@@ -162,30 +169,30 @@ class CreatePoll extends React.Component {
       title: this.state.ballotName,
       start: this.state.start,
       end: this.state.end,
-      option: this.state.ballotOption,
+      option: this.state.ballotOption
     };
     localStorage.setItem('pollInfo', JSON.stringify(pollInfo));
   }
 
   handleSendEmail() {
     this.setState({
-      loading: true,
+      loading: true
     });
     axios.post('/emailcodes', {
       emails: JSON.stringify(this.state.emails),
-      pollId: this.state.pollId,
+      pollId: this.state.pollId
     }).then((res) => {
       console.log('RES', res);
       if (res.status === 201) {
         this.setState({
           emailConfirmation: true,
-          loading: false,
+          loading: false
         });
         console.log('emails successful');
       }
     }).catch((err) => {
       this.setState({
-        loading: false,
+        loading: false
       });
       console.log('error sending emails');
     });
@@ -193,19 +200,19 @@ class CreatePoll extends React.Component {
 
   handleClose() {
     this.setState({
-      open: false,
+      open: false
     });
   }
 
   openVoterDialog() {
     this.setState({
-      voterDialogOpen: true,
+      voterDialogOpen: true
     });
   }
 
   closeVoterDialog() {
     this.setState({
-      voterDialogOpen: false,
+      voterDialogOpen: false
     });
   }
 
@@ -217,7 +224,7 @@ class CreatePoll extends React.Component {
     this.setState({
       emails: data,
       numVoters: data.length,
-      displayInfoCSV: true,
+      displayInfoCSV: true
     });
   }
 
@@ -226,8 +233,9 @@ class CreatePoll extends React.Component {
     momentLocalizer();
     console.log(this.state.start);
     console.log(this.state.end);
+    console.log(this.state.startNow);
     const actions = [
-      <FlatButton label="Close" primary onClick={this.handleClose} />,
+      <FlatButton label="Close" primary onClick={this.handleClose} />
     ];
 
     let submitButton = null;
@@ -286,7 +294,7 @@ class CreatePoll extends React.Component {
             onClick={this.openVoterDialog}
             style={{
               cursor: 'pointer',
-              color: '#2284d1',
+              color: '#2284d1'
             }}
           >
             See Participants
@@ -309,7 +317,7 @@ class CreatePoll extends React.Component {
           name={index}
           onClick={this.handleRemoveOption}
           style={{
-            marginLeft: '30px',
+            marginLeft: '30px'
           }}
         >x
         </Button>
@@ -327,7 +335,7 @@ class CreatePoll extends React.Component {
         label="Close"
         onClick={this.closeVoterDialog}
         style={{ color: '#2284d1' }}
-      />,
+      />
     ];
 
     const emails = this.state.emails;
@@ -350,13 +358,13 @@ class CreatePoll extends React.Component {
           <section
             style={{
               display: 'flex',
-              padding: 30,
+              padding: 30
             }}
           >
             <div
               style={{
                 flex: 1,
-                padding: 5,
+                padding: 5
               }}
             >
               <Loadable
@@ -370,14 +378,14 @@ class CreatePoll extends React.Component {
                     margin: 15,
                     marginBottom: 50,
                     backgroundColor: '#F0F8FF',
-                    height: '425px',
+                    height: '425px'
                   }}
                 >
                   <div
                     style={{
                       textAlign: 'center',
                       fontSize: '22px',
-                      marginBottom: '10%',
+                      marginBottom: '10%'
                     }}
                   >
                     {this.state.ballotName}
@@ -387,7 +395,7 @@ class CreatePoll extends React.Component {
                     style={{
                       margin: '0 auto',
                       width: '300px',
-                      fontSize: '18px',
+                      fontSize: '18px'
                     }}
                   >
                     <div>
@@ -414,7 +422,7 @@ class CreatePoll extends React.Component {
               style={{
                 flex: 1,
                 padding: 5,
-                lineHeight: '1.7em',
+                lineHeight: '1.7em'
               }}
             >
               <Card
@@ -422,7 +430,7 @@ class CreatePoll extends React.Component {
                   padding: 30,
                   margin: 15,
                   fontSize: '14px',
-                  height: '425px',
+                  height: '425px'
                 }}
               >
                 <div>
@@ -441,7 +449,7 @@ class CreatePoll extends React.Component {
                 <Dialog
                   contentStyle={{
                     width: 500,
-                    color: '#2284d1',
+                    color: '#2284d1'
                   }}
                   title="Ballot Participants"
                   actions={dialogActions}
@@ -477,7 +485,7 @@ class CreatePoll extends React.Component {
       <div
         style={{
           maxWidth: '800px',
-          margin: '0 auto',
+          margin: '0 auto'
         }}
       >
         <div className="header">Create Your Ballot</div>
@@ -487,7 +495,7 @@ class CreatePoll extends React.Component {
           style={{
             marginTop: 50,
             fontSize: 'large',
-            padding: '5%',
+            padding: '5%'
           }}
         >
           <div className="ui two column grid" >
@@ -532,7 +540,7 @@ class CreatePoll extends React.Component {
                     fontSize: '16px'
                   }}
                 />
-                <div 
+                <div
                   style={{
                     marginTop: '15px',
                     maxWidth: '300px',
@@ -551,6 +559,7 @@ class CreatePoll extends React.Component {
                     maxWidth: '300px',
                     fontSize: '16px'
                   }}
+                  onClick={this.handleStartNow}
                 >
                   Start Now
                 </Button>
