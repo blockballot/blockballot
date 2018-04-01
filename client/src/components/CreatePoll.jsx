@@ -116,7 +116,7 @@ class CreatePoll extends React.Component {
     const startTime = this.state.start;
     const endTime = this.state.end;
 
-    if (this.state.ballotName === '' || startTime === null || endTime === null || this.state.ballotOption.length < 2 || startTime.getTime() >= endTime.getTime()) {
+    if (this.state.ballotName === '' ) {
       this.setState({
         open: true
       });
