@@ -110,6 +110,25 @@ const retrieveCode = (uniqueCode) => {
   });
 };
 
+const endPoll = (pollId, pollExpired) => {
+  console.log('pollid', pollId)
+  return new Promise((resolve, reject) => {
+    db.Poll.findOne({ where: { id: pollId } })
+      .then((result) => {
+        console.log(result);
+        if (result) {
+          const second = result.update({pollExpired: pollExpired});
+          resolve(second);
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+
+exports.endPoll = endPoll;
 exports.createPoll = createPoll;
 exports.createOption = createOption;
 exports.retrievePolls = retrievePolls;

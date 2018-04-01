@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { Bar as BarChart } from 'react-chartjs';
 import { Menu, Button } from 'semantic-ui-react';
 import { Dialog } from 'material-ui';
+import axios from 'axios';
 import cookie from 'react-cookie';
 
 class PollResults extends React.Component {
@@ -14,6 +15,7 @@ class PollResults extends React.Component {
     };
     this.handleDialogOpen = this.handleDialogOpen.bind(this);
     this.handleDialogClose = this.handleDialogClose.bind(this);
+    this.handleDialogSubmit = this.handleDialogSubmit.bind(this);
   }
 
   handleDialogOpen() {
@@ -27,6 +29,25 @@ class PollResults extends React.Component {
       open: false
     });
   }
+
+  handleDialogSubmit() {
+    this.setState({
+      open: false
+    });
+
+    axios.put('/api/endpoll', {
+      pollId: this.props.poll.pollId,
+      pollExpired: true
+    })
+      .then((result) => {
+        console.log('successful')
+     
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
 
   render() {
     console.log(this.props.poll);
@@ -59,7 +80,7 @@ class PollResults extends React.Component {
       if (this.props.poll.pollTimeEnd !== null && this.props.poll.pollTimeEnd !== null) {
         pollCloseTime = (
           <div className="subHeader">
-            Ballot Closes at: {this.props.poll.pollTimeEnd}
+            Ballot closing time: {this.props.poll.pollTimeEnd}
           </div>
         );
       } else {
@@ -88,10 +109,9 @@ class PollResults extends React.Component {
       <Button
         primary
         content="End the ballot"
-        onClick={this.handleDialogClose}
+        onClick={this.handleDialogSubmit}
       />
     ];
-
 
     return (
       <div>
@@ -121,7 +141,7 @@ class PollResults extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleDialogClose}
         >
-          Click the "End the ballot" button to close the ballot
+          If you want to proceed, Click the "End the ballot" button
         </Dialog>
       </div>
     );
