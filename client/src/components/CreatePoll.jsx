@@ -532,6 +532,28 @@ class CreatePoll extends React.Component {
                     fontSize: '16px'
                   }}
                 />
+                <div 
+                  style={{
+                    marginTop: '15px',
+                    maxWidth: '300px',
+                    fontSize: '16px',
+                    textAlign: 'center'
+                  }}
+                >
+                  <b>
+                    - Or -
+                  </b>
+                </div>
+                <Button
+                  style={{
+                    marginTop: '15px',
+                    width: '100%',
+                    maxWidth: '300px',
+                    fontSize: '16px'
+                  }}
+                >
+                  Start Now
+                </Button>
               </div>
             </div>
             <div className="column">
@@ -551,7 +573,7 @@ class CreatePoll extends React.Component {
                 <b>4. Review and Deploy</b><br />
                 <p style={{
                     fontSize: 14,
-                    marginTop: '10px',
+                    marginTop: '10px'
                   }}
                 >
                   If everything looks good, click 'deploy' to create a read-only contract containing your ballot. This will be saved to the Ethereum blockchain.
