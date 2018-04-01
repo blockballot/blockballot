@@ -83,7 +83,8 @@ class CreatePoll extends React.Component {
 
   handleStartNow() {
     this.setState({
-      startNow: !this.state.startNow
+      startNow: !this.state.startNow,
+      active: !this.state.active; 
     });
   }
 
@@ -116,7 +117,7 @@ class CreatePoll extends React.Component {
     const startTime = this.state.start;
     const endTime = this.state.end;
 
-    if (this.state.ballotName === '' ) {
+    if (this.state.ballotName === '' || startTime === null && this.state.startNow === false || endTime === null && this.state.startNow === false || this.state.ballotOption.length < 2 || startTime.getTime() >= endTime.getTime() && this.state.startNow === false ) {
       this.setState({
         open: true
       });
@@ -350,6 +351,7 @@ class CreatePoll extends React.Component {
         </div>
       );
     }
+    const { active } = this.state;
 
     if (this.state.isSubmitted) {
       return (
@@ -559,6 +561,8 @@ class CreatePoll extends React.Component {
                     maxWidth: '300px',
                     fontSize: '16px'
                   }}
+                  toggle 
+                  active={active}
                   onClick={this.handleStartNow}
                 >
                   Start Now
