@@ -9,9 +9,17 @@ import cookie from 'react-cookie';
 
 class PollResults extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = {
-      open: false
+      open: false,
+      pollId: props.poll.pollId,
+      options: props.poll.options,
+      optionVotes: props.poll.optionVotes,
+      pollExpired: props.poll.pollExpired,
+      pollTimeEnd: props.poll.pollTimeEnd,
+      pollTimeStart: props.poll.pollTimeStart,
+      pollName: props.poll.pollName,
+      voteCount: props.poll.voteCount
     };
     this.handleDialogOpen = this.handleDialogOpen.bind(this);
     this.handleDialogClose = this.handleDialogClose.bind(this);
@@ -36,12 +44,14 @@ class PollResults extends React.Component {
     });
 
     axios.put('/api/endpoll', {
-      pollId: this.props.poll.pollId,
+      pollId: this.state.pollId,
       pollExpired: true
     })
       .then((result) => {
-        console.log('successful')
-     
+        console.log('successful', result);
+        this.setState({
+          pollExpired: result.data.pollExpired
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -58,8 +68,8 @@ class PollResults extends React.Component {
     }
 
     const voteCounts = [];
-    const options = this.props.poll.options.split(',');
-    this.props.poll.optionVotes.forEach((optionVote, index) => {
+    const options = this.state.options.split(',');
+    this.state.optionVotes.forEach((optionVote, index) => {
       voteCounts.push(optionVote[options[index]]);
     });
     const data = {
@@ -76,11 +86,11 @@ class PollResults extends React.Component {
     };
 
     let pollCloseTime = null;
-    if (this.props.poll.pollExpired === null) {
-      if (this.props.poll.pollTimeEnd !== null && this.props.poll.pollTimeEnd !== null) {
+    if (this.state.pollExpired === null) {
+      if (this.state.pollTimeStart !== null && this.state.pollTimeEnd !== null) {
         pollCloseTime = (
           <div className="subHeader">
-            Ballot closing time: {this.props.poll.pollTimeEnd}
+            Ballot closing time: {this.state.pollTimeEnd}
           </div>
         );
       } else {
@@ -116,7 +126,7 @@ class PollResults extends React.Component {
     return (
       <div>
         <div className="header">
-          {this.props.poll.pollName}
+          {this.state.pollName}
         </div>
 
         <div className="header">
@@ -129,7 +139,7 @@ class PollResults extends React.Component {
         </div>
 
         <div className="subHeader">
-          Total Votes: {this.props.poll.voteCount}
+          Total Votes: {this.state.voteCount}
         </div><br />
         <div style={{ textAlign: 'center' }}>
           {pollCloseTime}

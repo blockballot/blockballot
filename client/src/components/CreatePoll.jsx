@@ -133,10 +133,8 @@ class CreatePoll extends React.Component {
         return;
       }
     }
-
-    console.log('xxxxxx');
+    
     event.preventDefault();
-
     const options = [];
     for (let i = 0; i < this.state.ballotOption.length; i++) {
       const optName = this.state.ballotOption[i].optionName;
