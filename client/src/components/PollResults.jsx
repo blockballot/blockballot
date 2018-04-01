@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { Link, Redirect } from 'react-router-dom';
 import { Bar as BarChart } from 'react-chartjs';
+import { Menu, Button } from 'semantic-ui-react';
 import cookie from 'react-cookie';
 
 class PollResults extends React.Component {
@@ -10,6 +11,7 @@ class PollResults extends React.Component {
   }
 
   render() {
+    console.log(this.props.poll)
     if (cookie.load('loggedIn') !== 'true') {
       return (<Redirect to="/" />);
     } else if (this.props.poll === undefined) {
@@ -34,6 +36,32 @@ class PollResults extends React.Component {
       ]
     };
 
+    let pollCloseTime = null;
+    if (this.props.poll.pollExpired === null) {
+      if (this.props.poll.pollTimeEnd !== null && this.props.poll.pollTimeEnd !== null) {
+        pollCloseTime = (
+          <div className="subHeader">
+            Ballot Closes at: {this.props.poll.pollTimeEnd}
+          </div>
+        );
+      } else {
+        pollCloseTime = (
+          <Button
+            primary
+          >
+          Close the Ballot
+          </Button>
+        );
+      }
+    } else {
+      pollCloseTime = (
+        <div className="header">
+          Ballot Closed
+        </div>
+      )
+    }
+
+
     return (
       <div>
         <div className="header">
@@ -51,6 +79,9 @@ class PollResults extends React.Component {
 
         <div className="subHeader">
           Total Votes: {this.props.poll.voteCount}
+        </div><br/>
+        <div style={{ textAlign: 'center' }}>
+          {pollCloseTime}
         </div>
       </div>
     );
