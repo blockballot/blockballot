@@ -28,7 +28,6 @@ class LoginReset extends React.Component {
 
   onReset() {
     let token = window.location.search.slice(7);
-    console.log(token);
     this.setState({
       resetError: false,
       passwordMatchError: false
@@ -39,10 +38,9 @@ class LoginReset extends React.Component {
       })
     } else {
       axios.post('/resetPassword', {
-        token: '',
-        password: this.state.password
+        token: token,
+        password: this.state.password1
       }).then((res) => {
-        console.log('RES', res);
         if (res.status === 201) {
           this.setState({
             resetComplete: true,

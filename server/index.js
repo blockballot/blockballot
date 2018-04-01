@@ -188,23 +188,6 @@ app.get('/polls', (req, res) => {
   })
 });
 
-app.post('/forgotpassword', (req, res) => {
-  let token = helpers.createPassword();
-  let email = req.body.email;
-  let expiration = Date.now() + 3600000;
-  //save token to db
-  dbHelper.updateOrgToken(email, token, expiration)
-  .then(result => {
-    mailer.sendPasswordReset(email, token)
-    .then(result => {
-      console.log('sending success status')
-      res.status(201).send(result);
-    }).catch(err => {
-      res.status(500).send("There was an error in sending password reset")
-    })
-  })
-});
-
 
 app.post('/emailcodes', (req, res) => {
   let emails = JSON.parse(req.body.emails);
@@ -215,6 +198,22 @@ app.post('/emailcodes', (req, res) => {
       res.status(500).send("There was an error in sending voter Id");
   }).then (result => {
       res.status(201).send(result);
+  })
+});
+
+app.post('/forgotpassword', (req, res) => {
+  let token = helpers.createPassword();
+  let email = req.body.email;
+  let expiration = Date.now() + 3600000;
+  dbHelper.updateOrgToken(email, token, expiration)
+  .then(result => {
+    mailer.sendPasswordReset(email, token)
+    .then(result => {
+      console.log('sending success status')
+      res.status(201).send(result);
+    }).catch(err => {
+      res.status(500).send("There was an error in sending password reset")
+    })
   })
 });
 
@@ -232,7 +231,13 @@ app.get('/reset/:token', function(req,res) {
 app.post('/resetPassword', (req, res) => {
   let token = req.body.token;
   let password = req.body.password;
-  res.status(201).send();
+  //need to encrypt password
+  dbHelper.updatePassword(token, password)
+  .then(result => {
+    res.status(201).send();
+  }).catch(err => {
+    res.status(500).send(err);
+  })
 })
 
 app.get('/*', (req, res) => {
