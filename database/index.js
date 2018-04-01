@@ -56,7 +56,9 @@ const Poll = sequelize.define("poll", {
   pollHash: {
     type: Sequelize.STRING
   },
-
+  pollExpired: {
+    type: Sequelize.STRING
+  },
   createdAt: {
     type: Sequelize.DATE(3),
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3)')
@@ -84,7 +86,6 @@ const Option = sequelize.define('option', {
   updatedAt: {
     type: Sequelize.DATE(3),
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(3)')
-
   }
 });
 

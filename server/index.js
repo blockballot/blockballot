@@ -14,8 +14,7 @@ const blockchain = require('../helpers/blockchainHelpers.js');
 
 const app = express();
 
-app.use(express.static(__dirname + '/../client/dist'));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(`${__dirname  }/../client/dist`));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -26,8 +25,8 @@ app.use(session({
 }));
 
 app.post('/login', (req, res) => {
-  let email = req.body.email;
-  let password = req.body.password;
+  const email = req.body.email;
+  const password = req.body.password;
   db.Org.findOne({
     where: { orgEmail: email }
   }).then((org) => {
@@ -43,7 +42,7 @@ app.post('/login', (req, res) => {
       });
     }
   }).catch((err) => {
-    res.status(500).send('There was an error. Please try again later.')
+    res.status(500).send('There was an error. Please try again later.');
   });
 });
 
@@ -58,14 +57,14 @@ app.post('/signup', (req, res) => {
     }).then((org) => {
       if (org === null) {
         db.Org.create({
-          orgName: name, 
-          orgEmail: email, 
+          orgName: name,
+          orgEmail: email,
           orgPassword: hash
         }).then((newUser) => {
           if (newUser) {
             res.status(200).send();
           } else {
-            res.status(500).send('There was an error. Please try again later.')
+            res.status(500).send('There was an error. Please try again later.');
           }
         });
       } else {
@@ -106,14 +105,14 @@ app.post('/api/poll', (req, res) => {
   })
     .then((option) => {
       if (!option) {
-        res.status(500).send('There was an error. Please try again later.')
+        res.status(500).send('There was an error. Please try again later.');
       } else {
         res.status(200).send(option);
       }
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).send('There was an error. Please try again later.')
+      res.status(500).send('There was an error. Please try again later.');
     });
 });
 
@@ -142,13 +141,13 @@ app.post('/contract', (req, res) => {
   const options = req.body.options;
   blockchain.createContract(options)
     .then((contract) => {
-      res.status(201).send(contract)
+      res.status(201).send(contract);
     })
     .catch((err) => {
       console.log(err);
       res.status(500).send('There was an error when creating the blockchain vote');
     });
-}); 
+});
 
 app.post('/poll', (req, res) => {
   dbHelper.createPoll(req.session.orgId, req.body)
@@ -156,9 +155,9 @@ app.post('/poll', (req, res) => {
       const optionArray = [];
       const pollOpts = req.body.pollOptions;
       for (let i = 0; i < pollOpts.length; i++) {
-        optionArray.push(dbHelper.createOption(newPoll.dataValues.id, pollOpts[i])); 
+        optionArray.push(dbHelper.createOption(newPoll.dataValues.id, pollOpts[i]));
       }
-      return Promise.all(optionArray)
+      return Promise.all(optionArray);
     })
     .then((results) => {
       res.status(201).send(results);
@@ -211,6 +210,19 @@ app.post('/emailcodes', (req, res) => {
       res.status(500).send('There was an error in sending voter Id');
     });
 });
+
+app.put('/api/endpoll', (req, res) => {
+  console.log(req.body)
+  dbHelper.endPoll(req.body.pollId, req.body.pollExpired)
+    .then((result) => {
+      res.status(201).send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('There was an error in updating ballot status');
+    }); 
+});
+
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));

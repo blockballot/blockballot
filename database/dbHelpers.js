@@ -27,7 +27,7 @@ const saveVoterID = (voteID, pollId) => {
 const retrievePolls = (orgId) => {
   return new Promise((resolve, reject) => {
     db.sequelize.query(`SELECT p.pollName, DATE_FORMAT(p.pollTimeStart,  '%Y-%m-%d %h:%i %p') as pollTimeStart, 
-                        DATE_FORMAT(p.pollTimeEnd,  '%Y-%m-%d %h:%i %p') as pollTimeEnd, p.pollHash,
+                        DATE_FORMAT(p.pollTimeEnd,  '%Y-%m-%d %h:%i %p') as pollTimeEnd, p.pollHash, p.pollExpired,
                         p.orgId, GROUP_CONCAT(o.optionName) as options,
                         GROUP_CONCAT(o.id) as optionIds, o.pollId
                         FROM polls p
@@ -110,6 +110,25 @@ const retrieveCode = (uniqueCode) => {
   });
 };
 
+const endPoll = (pollId, pollExpired) => {
+  console.log('pollid', pollId)
+  return new Promise((resolve, reject) => {
+    db.Poll.findOne({ where: { id: pollId } })
+      .then((result) => {
+        console.log(result);
+        if (result) {
+          const second = result.update({pollExpired: pollExpired});
+          resolve(second);
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+
+exports.endPoll = endPoll;
 exports.createPoll = createPoll;
 exports.createOption = createOption;
 exports.retrievePolls = retrievePolls;
