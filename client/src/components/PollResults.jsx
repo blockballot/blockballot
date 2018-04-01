@@ -3,15 +3,33 @@ import { withRouter } from 'react-router';
 import { Link, Redirect } from 'react-router-dom';
 import { Bar as BarChart } from 'react-chartjs';
 import { Menu, Button } from 'semantic-ui-react';
+import { Dialog } from 'material-ui';
 import cookie from 'react-cookie';
 
 class PollResults extends React.Component {
   constructor(props) {
     super();
+    this.state = {
+      open: false
+    };
+    this.handleDialogOpen = this.handleDialogOpen.bind(this);
+    this.handleDialogClose = this.handleDialogClose.bind(this);
+  }
+
+  handleDialogOpen() {
+    this.setState({
+      open: true
+    });
+  }
+
+  handleDialogClose() {
+    this.setState({
+      open: false
+    });
   }
 
   render() {
-    console.log(this.props.poll)
+    console.log(this.props.poll);
     if (cookie.load('loggedIn') !== 'true') {
       return (<Redirect to="/" />);
     } else if (this.props.poll === undefined) {
@@ -48,6 +66,7 @@ class PollResults extends React.Component {
         pollCloseTime = (
           <Button
             primary
+            onClick={this.handleDialogOpen}
           >
           Close the Ballot
           </Button>
@@ -55,11 +74,23 @@ class PollResults extends React.Component {
       }
     } else {
       pollCloseTime = (
-        <div className="header">
-          Ballot Closed
+        <div className="subHeader" style={{ color: 'red' }}>
+          <b>BALLOT IS CLOSED</b>
         </div>
-      )
+      );
     }
+
+    const actions = [
+      <Button
+        content="Cancel"
+        onClick={this.handleDialogClose}
+      />,
+      <Button
+        primary
+        content="End the ballot"
+        onClick={this.handleDialogClose}
+      />
+    ];
 
 
     return (
@@ -79,10 +110,19 @@ class PollResults extends React.Component {
 
         <div className="subHeader">
           Total Votes: {this.props.poll.voteCount}
-        </div><br/>
+        </div><br />
         <div style={{ textAlign: 'center' }}>
           {pollCloseTime}
         </div>
+        <Dialog
+          title="You are about to close the Ballot"
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleDialogClose}
+        >
+          Click the "End the ballot" button to close the ballot
+        </Dialog>
       </div>
     );
   }
