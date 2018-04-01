@@ -231,12 +231,14 @@ app.get('/reset/:token', function(req,res) {
 app.post('/resetPassword', (req, res) => {
   let token = req.body.token;
   let password = req.body.password;
-  //need to encrypt password
-  dbHelper.updatePassword(token, password)
-  .then(result => {
-    res.status(201).send();
-  }).catch(err => {
-    res.status(500).send(err);
+  bcrypt.hash(password, 10)
+  .then(hash => {
+    dbHelper.updatePassword(token, hash)
+    .then(result => {
+      res.status(201).send();
+    }).catch(err => {
+      res.status(500).send(err);
+    })
   })
 })
 
