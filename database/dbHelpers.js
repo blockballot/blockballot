@@ -55,6 +55,24 @@ const retrieveVoteCount = (optionId) => {
   })
 }
 
+const updateOrgToken = (email, token, expiration) => {
+  console.log('DATA UPDATE ORG', email, token, expiration);
+  return new Promise((resolve, reject) => {
+    db.Org.update({
+      resetToken: token, 
+      resetExpiration: expiration
+    }, {where: {orgEmail: email}})
+    .then(result => {
+      console.log('RESULT', result);
+      resolve(result);
+    })
+    .catch(err => {
+      console.log('ERROR', err);
+      reject(err);
+    })
+  })
+}
+
 // helper function that takes in a poll object from retrievePolls query
 // and bundles it with optionName: voteCounts
 const bundlePollVotes = (poll) => {
@@ -90,3 +108,4 @@ exports.retrievePolls = retrievePolls;
 exports.retrieveVoteCount = retrieveVoteCount;
 exports.bundlePollVotes = bundlePollVotes;
 exports.saveVoterID = saveVoterID;
+exports.updateOrgToken = updateOrgToken;

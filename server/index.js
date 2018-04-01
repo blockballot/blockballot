@@ -12,10 +12,7 @@ const mailer = require('../helpers/mailer.js');
 const dbHelper = require('../database/dbHelpers.js');
 const helpers = require('../helpers/helpers.js');
 const blockchain = require('../helpers/blockchainHelpers.js');
-const url = require('url');    
-
-const router = express.Router()
-
+const url = require('url');
 const app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
@@ -193,13 +190,18 @@ app.get('/polls', (req, res) => {
 
 app.post('/forgotpassword', (req, res) => {
   let token = helpers.createPassword();
-
-  mailer.sendPasswordReset(req.body.email, token)
+  let email = req.body.email;
+  let expiration = Date.now() + 3600000;
+  //save token to db
+  dbHelper.updateOrgToken(email, token, expiration)
   .then(result => {
-    console.log('sending success status')
-    res.status(201).send(result);
-  }).catch(err => {
-    res.status(500).send("There was an error in sending password reset")
+    mailer.sendPasswordReset(email, token)
+    .then(result => {
+      console.log('sending success status')
+      res.status(201).send(result);
+    }).catch(err => {
+      res.status(500).send("There was an error in sending password reset")
+    })
   })
 });
 

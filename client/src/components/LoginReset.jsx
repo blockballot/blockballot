@@ -27,6 +27,8 @@ class LoginReset extends React.Component {
   }
 
   onReset() {
+    let token = window.location.search.slice(7);
+    console.log(token);
     this.setState({
       resetError: false,
       passwordMatchError: false
@@ -61,7 +63,7 @@ class LoginReset extends React.Component {
     if (this.state.resetComplete === true) {
       resetConfirmation = (
         <div>
-          <b>Password reset. You are now logged in.</b>
+          <b>Password reset!</b>
         </div>
       )
     }
@@ -70,7 +72,7 @@ class LoginReset extends React.Component {
     if (this.state.passwordMatchError === true) {
       passwordMismatch = (
         <div>
-          <b>Passwords do not match. Please reenter.</b>
+          <b>Passwords do not match. Please try again.</b>
         </div>
       )
     }
