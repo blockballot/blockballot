@@ -10,6 +10,8 @@ import Dashboard from './Dashboard';
 import CreatePoll from './CreatePoll';
 import Voter from './Voter';
 import PollResults from './PollResults';
+import Poll from './Poll';
+import LoginReset from './LoginReset';
 import AboutUs from './AboutUs';
 import Nav from './Nav';
 
@@ -168,6 +170,17 @@ class App extends React.Component {
     return (
 
       <div>
+        <Route
+          path='/reset'
+          render={() => (
+            <div>
+              {AddNav}
+              <LoginReset/>
+            </div>
+            )
+          }
+        />
+
         <Route
           exact
           path="/"

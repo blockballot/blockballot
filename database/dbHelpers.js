@@ -55,6 +55,52 @@ const retrieveVoteCount = (optionId) => {
   });
 };
 
+const updateOrgToken = (email, token, expiration) => {
+  return new Promise((resolve, reject) => {
+    db.Org.update({
+      resetToken: token, 
+      resetExpiration: expiration
+    }, {where: {orgEmail: email}})
+    .then(result => {
+      resolve(result);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })
+}
+
+const updatePassword = (token, password) => {
+  return new Promise((resolve, reject) => {
+    db.Org.update({
+      orgPassword: password 
+    }, {where: {resetToken: token}})
+    .then(result => {
+      resolve(result);
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })
+}
+
+const verifyToken = (token) => {
+  return new Promise((resolve, reject) => {
+    db.Org.findOne({where: {resetToken: token}})
+    .then(org => {
+      let date = new Date()
+      if (date < org.resetExpiration) {
+        resolve(org);
+      } else {
+        reject('Token expired');
+      }
+    })
+    .catch(err => {
+      reject(err);
+    })
+  })
+}
+
 // helper function that takes in a poll object from retrievePolls query
 // and bundles it with optionName: voteCounts
 const bundlePollVotes = (poll) => {
@@ -135,5 +181,8 @@ exports.retrievePolls = retrievePolls;
 exports.retrieveVoteCount = retrieveVoteCount;
 exports.bundlePollVotes = bundlePollVotes;
 exports.saveVoterID = saveVoterID;
+exports.updateOrgToken = updateOrgToken;
+exports.updatePassword = updatePassword;
+exports.verifyToken = verifyToken;
 exports.submitVote = submitVote;
 exports.retrieveCode = retrieveCode;

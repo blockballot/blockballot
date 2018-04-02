@@ -2,8 +2,21 @@ const nodemailer = require('nodemailer');
 const env = require('dotenv').config();
 const helpers = require('../helpers/helpers.js');
 const dbHelper = require('../database/dbHelpers.js');
+const fs = require('fs');
+const handlebars = require('handlebars');
+const path = require('path');
 
-let transporter = nodemailer.createTransport({
+
+const readHTMLFile = (path) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path, {encoding: 'utf-8'}, function(err, file) {
+      if (err) { reject(err) } 
+      else { resolve(file) }
+    })  
+  })
+};
+
+const transporter = nodemailer.createTransport({
   service: 'gmail',
   port: 587,
   secure: false, 
@@ -13,47 +26,65 @@ let transporter = nodemailer.createTransport({
   }
 });
 
-const sendPasswordReset = function(email) {
-  return new Promise(function(resolve, reject) {
-    let mailPasswordOptions = {
+const sendPasswordReset = (email, token) => {
+  return new Promise((resolve, reject) => {
+    readHTMLFile(path.join(__dirname, '../client/src/templates/resetPasswordEmail.html'))
+    .then(template => {
+      let compiler = handlebars.compile(template);
+      let replacements = {
+        resetLink: 'http://localhost:3000' + '/reset/' + token
+      };
+      let templateToSend = compiler(replacements);
+      let mailPasswordOptions = {
         from: '"BlockBallot" <blockballot@gmail.com>', 
         to: `${email}`, 
-        subject: 'Link to reset your password', 
-        html: '<b>Click the link below to reset your password.</b>' 
-    };
+        subject: 'Reset Password', 
+        html: templateToSend
+      }; 
 
-    transporter.sendMail(mailPasswordOptions, (error, info) => {
-      if (error) {
-        reject(error);
-      } else {
-        console.log('no error');
-        resolve(info);
-      }
-    });
-  })
-}
-
-const sendEmailCodes = (emails, pollId) => {
-  return new Promise(function(resolve, reject) {
-    emails.forEach((recipient) => {
-      let code = helpers.createUniqueId();
-
-      let emailCodeOptions = {
-        from: '"BlockBallot" <blockballot@gmail.com>', 
-        to: `${recipient}`, 
-        subject: 'Your voting code', 
-        html: '<p>Visit localhost:3000/voter and enter the code below to submit your vote.</p><p>Your unique code is <b>' + `${code}` + '</b></p>' 
-      };
-
-      dbHelper.saveVoterID(code, pollId);
-      transporter.sendMail(emailCodeOptions, (error, info) => {
+      transporter.sendMail(mailPasswordOptions, (error, info) => {
         if (error) {
           reject(error);
         } else {
-          resolve(null);
+          resolve(info);
         }
       });
-    })
+    }) 
+  })
+}
+
+const sendEmailCodes = (emails, pollId, ballotName, start, end) => {
+  return new Promise((resolve, reject) => {
+    readHTMLFile(path.join(__dirname, '../client/src/templates/voterCodeEmail.html'))
+    .then(template => {
+      let compiler = handlebars.compile(template);
+
+      emails.forEach((recipient) => {
+        let code = helpers.createUniqueId();
+        let replacements = {
+          voterCode: code,
+          ballotName: ballotName,
+          start: start,
+          end: end
+        };
+        let templateToSend = compiler(replacements);
+        let emailCodeOptions = {
+          from: '"BlockBallot" <blockballot@gmail.com>', 
+          to: `${recipient}`, 
+          subject: `Submit a vote for ${ballotName}`, 
+          html: templateToSend
+        };
+
+        dbHelper.saveVoterID(code, pollId);
+        transporter.sendMail(emailCodeOptions, (error, info) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(info);
+          }
+        });
+      });
+    }) 
   })
 }
 

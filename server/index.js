@@ -11,6 +11,7 @@ const mailer = require('../helpers/mailer.js');
 const dbHelper = require('../database/dbHelpers.js');
 const helpers = require('../helpers/helpers.js');
 const blockchain = require('../helpers/blockchainHelpers.js');
+const url = require('url');
 
 const app = express();
 
@@ -170,6 +171,7 @@ app.post('/poll', (req, res) => {
 
 // retrieve all polls for the logged in org
 app.get('/polls', (req, res) => {
+  console.log(req.session.orgID)
   dbHelper.retrievePolls(req.session.orgId)
     .then((polls) => {
       const promiseArr = [];
@@ -187,25 +189,14 @@ app.get('/polls', (req, res) => {
     });
 });
 
-app.post('/email', (req, res) => {
-  mailer.sendPasswordReset(req.body.email)
-    .then((result) => {
-      res.status(201).send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send('There was an error in sending password reset');
-    });
-});
-
 app.post('/emailcodes', (req, res) => {
-  const emails = JSON.parse(req.body.emails);
-  const pollId = req.body.pollId;
-  mailer.sendEmailCodes(emails, pollId)
-    .then((result) => {
-      res.status(201).send(result);
-    })
-    .catch((err) => {
+  let emails = JSON.parse(req.body.emails);
+  let pollId = req.body.pollId;
+  let ballotName = req.body.ballotName;
+  let start = req.body.start;
+  let end = req.body.end;
+  mailer.sendEmailCodes(emails, pollId, ballotName, start, end)
+  .catch(err => {
       console.log(err);
       res.status(500).send('There was an error in sending voter Id');
     });
@@ -223,6 +214,60 @@ app.put('/api/endpoll', (req, res) => {
     }); 
 });
 
+app.post('/forgotpassword', (req, res) => {
+  let email = req.body.email;
+  let token = helpers.createPassword();
+  let expiration = Date.now() + 3600000;
+  dbHelper.updateOrgToken(email, token, expiration)
+  .then(result => {
+    if (result[0] === 0) {
+      res.status(500).send('User does not exist')
+    } else {
+      mailer.sendPasswordReset(email, token)
+      .then(result => {
+        res.status(201).send(result);
+      }).catch(err => {
+        res.status(500).send("Error resetting the password")
+      })
+    }
+  })
+});
+
+app.get('/reset/:token', function(req,res) {
+  let token = req.params.token;
+  dbHelper.verifyToken(token)
+  .then(result => {
+    console.log('RESULT', result);
+    res.redirect(url.format({
+      pathname:"/reset",
+      query: {
+        'token': token,
+      }
+    }))
+  }).catch(err => {
+    console.log('ERROR', err);
+    res.redirect(url.format({
+      pathname:"/reset",
+      query: {
+        'token': 'error'
+      }
+    }))
+  })
+})
+
+app.post('/resetPassword', (req, res) => {
+  let token = req.body.token;
+  let password = req.body.password;
+  bcrypt.hash(password, 10)
+  .then(hash => {
+    dbHelper.updatePassword(token, hash)
+    .then(result => {
+      res.status(201).send();
+    }).catch(err => {
+      res.status(500).send(err);
+    })
+  })
+})
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));

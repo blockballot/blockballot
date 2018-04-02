@@ -17,7 +17,8 @@ class LoginModal extends React.Component {
       forgotPasswordEmail: '',
       dialogOpen: false,
       dialogEmailSent: false,
-      loading: false
+      loading: false,
+      emailInvalidError: false
     };
     this.loginClick = this.loginClick.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -55,9 +56,10 @@ class LoginModal extends React.Component {
 
   handlePasswordReset() {
     this.setState({
-      loading: true
+      loading: true,
+      emailInvalidError: false
     });
-    axios.post('/email', {
+    axios.post('/forgotpassword', {
       email: this.state.forgotPasswordEmail
     })
       .then(() => {
@@ -68,7 +70,10 @@ class LoginModal extends React.Component {
         });
       })
       .catch((err) => {
-        console.log(err);
+        this.setState({
+          emailInvalidError: true,
+          loading: false
+        })
         console.log('Error sending email for password reset');
       });
   }
@@ -85,6 +90,15 @@ class LoginModal extends React.Component {
           <b>A link to reset your password has been sent to your email inbox.</b>
         </div>
       );
+    }
+
+    let emailInvalidError = null;
+    if (this.state.emailInvalidError === true) {
+      emailInvalidError = (
+        <div>
+          <b>This email doesn't exist in our system.</b>
+        </div>
+      )
     }
 
     return (
@@ -204,6 +218,7 @@ class LoginModal extends React.Component {
               Send
             </Button>
             {sendConfirmation}
+            {emailInvalidError}
           </Dialog>
         </div>
       </div>
