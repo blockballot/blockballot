@@ -37,7 +37,7 @@ class LoginReset extends React.Component {
         passwordMatchError: true
       })
     } else {
-      axios.post('/resetPassword', {
+      axios.post('/resetpassword', {
         token: this.state.token,
         password: this.state.password1
       }).then((res) => {
@@ -75,7 +75,7 @@ class LoginReset extends React.Component {
       )
     }
 
-    if (this.state.token === 'error') {
+    if (this.state.token === 'error' || this.state.token === '') {
       return (
         <div style={{
         width: 400,
@@ -94,7 +94,7 @@ class LoginReset extends React.Component {
             />
             <CardText style={{marginLeft: 20, marginRight: 20}}>
               <p>This link is invalid or has expired.</p>
-              <p>Please visit 'Forgot Your Password' in the login window to receive a new link.</p>
+              <p>If you need to reset your password, visit <b>Forgot Your Password</b> in the login window.</p>
             </CardText>
           </Card>
         </div>
