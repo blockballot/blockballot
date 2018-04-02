@@ -180,6 +180,9 @@ class CreatePoll extends React.Component {
     axios.post('/emailcodes', {
       emails: JSON.stringify(this.state.emails),
       pollId: this.state.pollId,
+      ballotName: this.state.ballotName,
+      start: this.state.start,
+      end: this.state.end
     }).then((res) => {
       console.log('RES', res);
       if (res.status === 201) {

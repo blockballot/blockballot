@@ -53,53 +53,41 @@ const sendPasswordReset = (email, token) => {
   })
 }
 
+const sendEmailCodes = (emails, pollId, ballotName, start, end) => {
+  console.log('inside email codes')
+  return new Promise((resolve, reject) => {
+    readHTMLFile(path.join(__dirname, '../client/src/templates/voterCodeEmail.html'))
+    .then(template => {
+      console.log('step1', template)
+      let compiler = handlebars.compile(template);
 
+      emails.forEach((recipient) => {
+        let code = helpers.createUniqueId();
+        console.log('step2', recipient, code)
+        let replacements = {
+          voterCode: code,
+          ballotName: ballotName,
+          start: start,
+          end: end
+        };
+        let templateToSend = compiler(replacements);
+        let emailCodeOptions = {
+          from: '"BlockBallot" <blockballot@gmail.com>', 
+          to: `${recipient}`, 
+          subject: `Submit a vote for ${ballotName}`, 
+          html: templateToSend
+        };
 
-
-// const sendPasswordReset = function(email, token) {
-//   return new Promise(function(resolve, reject) {
-//     let mailPasswordOptions = {
-//       from: '"BlockBallot" <blockballot@gmail.com>', 
-//       to: `${email}`, 
-//       subject: 'Link to reset your password', 
-//       text: 'You are receiving this email because you have requested to reset your password.' + '\n' +
-//       'Please click on the link below to complete the process.' + '\n' +
-//       'http://localhost:3000' + '/reset/' + token + '\n' +
-//       'If you did not request this, please ignore this message and your password will remain unchanged.'
-//     };  
-
-//     transporter.sendMail(mailPasswordOptions, (error, info) => {
-//       if (error) {
-//         reject(error);
-//       } else {
-//         console.log('no error');
-//         resolve(info);
-//       }
-//     });
-//   })
-// }
-
-const sendEmailCodes = (emails, pollId) => {
-  return new Promise(function(resolve, reject) {
-    emails.forEach((recipient) => {
-      let code = helpers.createUniqueId();
-
-      let emailCodeOptions = {
-        from: '"BlockBallot" <blockballot@gmail.com>', 
-        to: `${recipient}`, 
-        subject: 'Your voting code', 
-        html: '<p>Visit localhost:3000/voter and enter the code below to submit your vote.</p><p>Your unique code is <b>' + `${code}` + '</b></p>' 
-      };
-
-      dbHelper.saveVoterID(code, pollId);
-      transporter.sendMail(emailCodeOptions, (error, info) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(null);
-        }
+        dbHelper.saveVoterID(code, pollId);
+        transporter.sendMail(emailCodeOptions, (error, info) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(info);
+          }
+        });
       });
-    })
+    }) 
   })
 }
 

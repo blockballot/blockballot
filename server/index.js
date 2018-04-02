@@ -193,7 +193,10 @@ app.get('/polls', (req, res) => {
 app.post('/emailcodes', (req, res) => {
   let emails = JSON.parse(req.body.emails);
   let pollId = req.body.pollId;
-  mailer.sendEmailCodes(emails, pollId)
+  let ballotName = req.body.ballotName;
+  let start = req.body.start;
+  let end = req.body.end;
+  mailer.sendEmailCodes(emails, pollId, ballotName, start, end)
   .catch(err => {
       console.log(err);
       res.status(500).send("There was an error in sending voter Id");
