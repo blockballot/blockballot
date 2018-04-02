@@ -173,6 +173,7 @@ app.post('/poll', (req, res) => {
 
 // retrieve all polls for the logged in org
 app.get('/polls', (req, res) => {
+  console.log(req.session.orgID)
   dbHelper.retrievePolls(req.session.orgId)
   .then(polls => {
     const promiseArr = [];
@@ -202,18 +203,21 @@ app.post('/emailcodes', (req, res) => {
 });
 
 app.post('/forgotpassword', (req, res) => {
-  let token = helpers.createPassword();
   let email = req.body.email;
+  let token = helpers.createPassword();
   let expiration = Date.now() + 3600000;
   dbHelper.updateOrgToken(email, token, expiration)
   .then(result => {
-    mailer.sendPasswordReset(email, token)
-    .then(result => {
-      console.log('sending success status')
-      res.status(201).send(result);
-    }).catch(err => {
-      res.status(500).send("There was an error in sending password reset")
-    })
+    if (result[0] === 0) {
+      res.status(500).send('User does not exist')
+    } else {
+      mailer.sendPasswordReset(email, token)
+      .then(result => {
+        res.status(201).send(result);
+      }).catch(err => {
+        res.status(500).send("Error resetting the password")
+      })
+    }
   })
 });
 

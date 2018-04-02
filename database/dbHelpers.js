@@ -62,11 +62,9 @@ const updateOrgToken = (email, token, expiration) => {
       resetExpiration: expiration
     }, {where: {orgEmail: email}})
     .then(result => {
-      console.log('RESULT', result);
       resolve(result);
     })
     .catch(err => {
-      console.log('ERROR', err);
       reject(err);
     })
   })
@@ -78,11 +76,9 @@ const updatePassword = (token, password) => {
       orgPassword: password 
     }, {where: {resetToken: token}})
     .then(result => {
-      console.log('RESULT', result);
       resolve(result);
     })
     .catch(err => {
-      console.log('ERROR', err);
       reject(err);
     })
   })
