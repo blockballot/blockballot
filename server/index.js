@@ -219,13 +219,24 @@ app.post('/forgotpassword', (req, res) => {
 
 app.get('/reset/:token', function(req,res) {
   let token = req.params.token;
-  console.log('TOKEN', token);
-  res.redirect(url.format({
-    pathname:"/reset",
-    query: {
-      'token': token,
-    }
-  }));
+  dbHelper.verifyToken(token)
+  .then(result => {
+    console.log('RESULT', result);
+    res.redirect(url.format({
+      pathname:"/reset",
+      query: {
+        'token': token,
+      }
+    }))
+  }).catch(err => {
+    console.log('ERROR', err);
+    res.redirect(url.format({
+      pathname:"/reset",
+      query: {
+        'token': 'error'
+      }
+    }))
+  })
 })
 
 app.post('/resetPassword', (req, res) => {

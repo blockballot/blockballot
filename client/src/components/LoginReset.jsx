@@ -8,6 +8,7 @@ class LoginReset extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      token: window.location.search.slice(7),
       email: '',
       password1: '',
       password2: '',
@@ -27,7 +28,6 @@ class LoginReset extends React.Component {
   }
 
   onReset() {
-    let token = window.location.search.slice(7);
     this.setState({
       resetError: false,
       passwordMatchError: false
@@ -38,7 +38,7 @@ class LoginReset extends React.Component {
       })
     } else {
       axios.post('/resetPassword', {
-        token: token,
+        token: this.state.token,
         password: this.state.password1
       }).then((res) => {
         if (res.status === 201) {
@@ -74,9 +74,10 @@ class LoginReset extends React.Component {
         </div>
       )
     }
-    
-    return (
-      <div style={{
+
+    if (this.state.token === 'error') {
+      return (
+        <div style={{
         width: 400,
         height: 500,
         position: 'absolute',
@@ -85,48 +86,73 @@ class LoginReset extends React.Component {
         left: 0,
         right: 0,
         margin: 'auto'
-      }}>
-        <Card>
-          <CardHeader
-            titleStyle={{marginLeft: 20, marginTop: 10, fontSize: 25}}
-            title="Reset your Password"/>
+        }}>
+          <Card>
+            <CardHeader
+              titleStyle={{margin: 20, marginBottom: 10, fontSize: 25}}
+              title="Invalid link"
+            />
+            <CardText style={{marginLeft: 20, marginRight: 20}}>
+              <p>This link is invalid or has expired.</p>
+              <p>Please visit 'Forgot Your Password' in the login window to receive a new link.</p>
+            </CardText>
+          </Card>
+        </div>
+      )
+    } else {
+      return (
+        <div style={{
+          width: 400,
+          height: 500,
+          position: 'absolute',
+          top:200,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          margin: 'auto'
+        }}>
+          <Card>
+            <CardHeader
+              titleStyle={{marginLeft: 20, marginTop: 10, fontSize: 25}}
+              title="Reset your Password"/>
 
-          <CardText style={{marginLeft: 20}}>
-            <TextField
-              hintText="Enter your Password"
-              errorText={''}
-              type="password"
-              name='password1'
-              value={this.state.password1}
-              onChange={this.onChange}
-              underlineStyle={{borderBottomColor: 'white'}}/>
-            <br/>
+            <CardText style={{marginLeft: 20}}>
+              <TextField
+                hintText="Enter your Password"
+                errorText={''}
+                type="password"
+                name='password1'
+                value={this.state.password1}
+                onChange={this.onChange}
+                underlineStyle={{borderBottomColor: 'white'}}/>
+              <br/>
 
-            <TextField
-              hintText="Confirm your Password"
-              type="password"
-              errorText={''}
-              name='password2'
-              value={this.state.password2}
-              onChange={this.onChange}
-              underlineStyle={{borderBottomColor: 'white'}}/>
+              <TextField
+                hintText="Confirm your Password"
+                type="password"
+                errorText={''}
+                name='password2'
+                value={this.state.password2}
+                onChange={this.onChange}
+                underlineStyle={{borderBottomColor: 'white'}}/>
 
-            <br/>
+              <br/>
 
-            <div style= {{marginTop: 20}}>
-              <RaisedButton 
-                label="Reset"
-                onClick={this.onReset}/>
+              <div style= {{marginTop: 20}}>
+                <RaisedButton 
+                  label="Reset"
+                  onClick={this.onReset}/>
 
-            </div>
-            <br/>
-            {passwordMismatch}
-            {resetConfirmation}
+              </div>
+              <br/>
+              {passwordMismatch}
+              {resetConfirmation}
 
-          </CardText>
-        </Card>
-      </div>
-    );
+            </CardText>
+          </Card>
+        </div>
+      );
+    }
   }
 }
 

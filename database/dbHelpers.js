@@ -73,7 +73,6 @@ const updateOrgToken = (email, token, expiration) => {
 }
 
 const updatePassword = (token, password) => {
-  console.log('token/password', token, password)
   return new Promise((resolve, reject) => {
     db.Org.update({
       orgPassword: password 
@@ -84,6 +83,23 @@ const updatePassword = (token, password) => {
     })
     .catch(err => {
       console.log('ERROR', err);
+      reject(err);
+    })
+  })
+}
+
+const verifyToken = (token) => {
+  return new Promise((resolve, reject) => {
+    db.Org.findOne({where: {resetToken: token}})
+    .then(org => {
+      let date = new Date()
+      if (date < org.resetExpiration) {
+        resolve(org);
+      } else {
+        reject('Token expired');
+      }
+    })
+    .catch(err => {
       reject(err);
     })
   })
@@ -126,3 +142,4 @@ exports.bundlePollVotes = bundlePollVotes;
 exports.saveVoterID = saveVoterID;
 exports.updateOrgToken = updateOrgToken;
 exports.updatePassword = updatePassword;
+exports.verifyToken = verifyToken;
