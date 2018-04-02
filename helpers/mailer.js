@@ -75,7 +75,7 @@ const sendEmailCodes = (emails, pollId, ballotName, start, end) => {
           html: templateToSend
         };
 
-        dbHelper.saveVoterID(code, pollId);
+        dbHelper.saveVoterID(code, pollId)
         transporter.sendMail(emailCodeOptions, (error, info) => {
           if (error) {
             reject(error);
