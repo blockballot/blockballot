@@ -190,14 +190,17 @@ app.get('/polls', (req, res) => {
 });
 
 app.post('/emailcodes', (req, res) => {
+  console.log('inside email codes')
   let emails = JSON.parse(req.body.emails);
   let pollId = req.body.pollId;
   let ballotName = req.body.ballotName;
   let start = req.body.start;
   let end = req.body.end;
   mailer.sendEmailCodes(emails, pollId, ballotName, start, end)
+  .then(result => {
+      res.status(201).send(result);
+    })
   .catch(err => {
-      console.log(err);
       res.status(500).send('There was an error in sending voter Id');
     });
 });
@@ -237,7 +240,6 @@ app.get('/reset/:token', function(req,res) {
   let token = req.params.token;
   dbHelper.verifyToken(token)
   .then(result => {
-    console.log('RESULT', result);
     res.redirect(url.format({
       pathname:"/reset",
       query: {
@@ -245,7 +247,6 @@ app.get('/reset/:token', function(req,res) {
       }
     }))
   }).catch(err => {
-    console.log('ERROR', err);
     res.redirect(url.format({
       pathname:"/reset",
       query: {
