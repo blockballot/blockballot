@@ -1,8 +1,9 @@
 import React from 'react';
+import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
 import cookie from 'react-cookie';
-import { Button, Header, Modal } from 'semantic-ui-react';
-import { Card, CardText, CardHeader, TextField, FlatButton, Dialog } from 'material-ui';
+import { Button, Modal } from 'semantic-ui-react';
+import { Card, CardText, TextField, FlatButton, Dialog } from 'material-ui';
 import { BarLoader } from 'react-spinners';
 import $ from 'jquery';
 import '../style/forms.css';
@@ -11,7 +12,6 @@ class LoginModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalOpen: false,
       email: '',
       password: '',
       forgotPasswordEmail: '',
@@ -19,7 +19,7 @@ class LoginModal extends React.Component {
       dialogEmailSent: false,
       loading: false,
       emailInvalidError: false
-    }
+    };
     this.loginClick = this.loginClick.bind(this);
     this.onChange = this.onChange.bind(this);
     this.handleOpenDialog = this.handleOpenDialog.bind(this);
@@ -27,9 +27,10 @@ class LoginModal extends React.Component {
     this.handlePasswordReset = this.handlePasswordReset.bind(this);
   }
 
-  handleOpenDialog() {
+  onChange(e) {
+    const target = e.target.name;
     this.setState({
-      dialogOpen: true
+      [target]: e.target.value
     });
   }
 
@@ -39,15 +40,14 @@ class LoginModal extends React.Component {
     });
   }
 
-  onChange(e) {
-    let target = e.target.name;
+  handleOpenDialog() {
     this.setState({
-      [target]: e.target.value
+      dialogOpen: true
     });
   }
 
   loginClick() {
-    let login = {
+    const login = {
       email: this.state.email,
       password: this.state.password
     }
@@ -58,30 +58,29 @@ class LoginModal extends React.Component {
     this.setState({
       loading: true,
       emailInvalidError: false
+    });
+    axios.post('/forgotpassword', {
+      email: this.state.forgotPasswordEmail
     })
-    $.ajax({
-      type: 'POST',
-      url: '/forgotpassword',
-      data: { email: this.state.forgotPasswordEmail },
-      success: (res) => {
+      .then(() => {
         console.log('email sent - client');
         this.setState({
           dialogEmailSent: true,
           loading: false
         });
-      },
-      error: (err) => {
+      })
+      .catch((err) => {
         this.setState({
           emailInvalidError: true,
           loading: false
         })
-      }
-    })
+        console.log('Error sending email for password reset');
+      });
   }
 
   render() {
     if (cookie.load('loggedIn') === 'true') {
-      return (<Redirect to='/dashboard' />)
+      return (<Redirect to="/dashboard" />);
     }
 
     let sendConfirmation = null;
@@ -90,7 +89,7 @@ class LoginModal extends React.Component {
         <div>
           <b>A link to reset your password has been sent to your email inbox.</b>
         </div>
-      )
+      );
     }
 
     let emailInvalidError = null;
@@ -105,12 +104,12 @@ class LoginModal extends React.Component {
     return (
       <div>
         <Modal
-          className='loginModal'
+          className="loginModal"
           trigger={
             <Button
               basic
-              color='black'
-              className='buttonStyle'
+              color="black"
+              className="buttonStyle"
               onClick={this.props.handleOpen}
             >
               Log In
@@ -119,40 +118,39 @@ class LoginModal extends React.Component {
           open={this.props.modalOpen}
           onClose={this.props.handleClose}
           basic
-          size='small'
+          size="small"
         >
           <Modal.Content>
-            <h3 className='loginHeader'>Log Into Your BlockBallot Account</h3>
-            <Card className='loginCardContent'>
+            <h3 className="loginHeader">Log Into Your BlockBallot Account</h3>
+            <Card className="loginCardContent">
 
-              <CardText className='loginCardText'>
+              <CardText className="loginCardText">
                 <TextField
                   fullWidth
-                  hintText='Email'
+                  hintText="Email"
                   errorText={this.props.loginEmailError}
-                  name='email'
+                  name="email"
                   value={this.state.email}
                   onChange={this.onChange}
                   underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
                 />
-                <br/>
+                <br />
                 <TextField
                   fullWidth
                   hintText="Password"
                   type="password"
                   errorText={this.props.loginPasswordError}
-                  name='password'
+                  name="password"
                   value={this.state.password}
                   onChange={this.onChange}
                   underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
                 />
-                <br/>
+                <br />
               </CardText>
-              <Modal.Actions className='modalButtons'>
+              <Modal.Actions className="modalButtons">
                 <Button
                   primary
-                  className='buttonStyle'
-                  className='blueMatch'
+                  className="buttonStyle blueMatch"
                   onClick={this.loginClick}
                 >
                   Submit
@@ -160,27 +158,27 @@ class LoginModal extends React.Component {
                 <Button
                   basic
                   color="black"
-                  className='buttonStyle'
+                  className="buttonStyle"
                   onClick={this.handleOpenDialog}
                 >
                   Forgot Your Password?
                 </Button>
               </Modal.Actions>
             </Card>
-            <div className='signupRedirect'>
-              Don't have an account?  
+            <div className="signupRedirect">
+              Don&apos;t have an account?
               <Link
-                to='/signup'
+                to="/signup"
                 onClick={this.props.handleClose}
               >
-                <span className='signupSpan'>Sign Up</span>
+                <span className="signupSpan">Sign Up</span>
               </Link>
             </div>
           </Modal.Content>
         </Modal>
-        <div className='dialogDiv'>
+        <div className="dialogDiv">
           <Dialog
-            className='dialog'
+            className="dialog"
             actions={
               <FlatButton
                 label="Close"
@@ -191,32 +189,32 @@ class LoginModal extends React.Component {
             open={this.state.dialogOpen}
             onRequestClose={this.handleCloseDialog}
           >
-            <h2 className='forgotPassword'>Forgot Your Password?</h2>
+            <h2 className="forgotPassword">Forgot Your Password?</h2>
             <div>
               Enter your account email to reset your password.
-              </div>
+            </div>
             <br />
             <TextField
               fullwidth
-              hintText='Email'
-              name='forgotPasswordEmail'
+              hintText="Email"
+              name="forgotPasswordEmail"
               value={this.state.forgotPasswordEmail}
               onChange={this.onChange}
               underlineFocusStyle={{ borderBottomColor: '#4183D9' }}
             />
             <br />
             <BarLoader
-              className='barLoader'
-              color={'#4183D9'}
+              className="barLoader"
+              color="#4183D9"
               loading={this.state.loading}
               width={250}
             />
             <br />
             <Button
               primary
-              className='buttonStyle'
-              className='blueMatch'
-              onClick={this.handlePasswordReset}>
+              className="buttonStyle blueMatch"
+              onClick={this.handlePasswordReset}
+            >
               Send
             </Button>
             {sendConfirmation}

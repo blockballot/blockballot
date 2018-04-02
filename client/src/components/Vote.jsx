@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, RadioButton, RadioButtonGroup } from 'material-ui';
-import { Button } from 'semantic-ui-react';
+import { Menu, Button } from 'semantic-ui-react';
 import Loadable from 'react-loading-overlay';
 import axios from 'axios';
 import VoterResults from './VoterResults';
@@ -10,17 +11,13 @@ class Vote extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false,
-      storageValue: 0,
       voteHash: '',
-      pollHash: '',
       isVoteSubmitted: false,
-      isBallotCompleted: false,
       selectedOption: '',
       candidateName: '',
       ballotName: '',
       ballotOption: [],
-      loaderActive: false,
+      loaderActive: false
     };
     this.updateCheck = this.updateCheck.bind(this);
     this.submitVote = this.submitVote.bind(this);
@@ -32,8 +29,8 @@ class Vote extends React.Component {
       method: 'POST',
       url: '/api/poll',
       data: {
-        pollId: this.props.pollId,
-      },
+        pollId: this.props.pollId
+      }
     })
       .then((res) => {
         const options = res.data.map((element) => {
@@ -43,11 +40,12 @@ class Vote extends React.Component {
         option.setState({
           ballotName: name,
           ballotOption: options,
-          selectedOption: options[0].id,
+          selectedOption: options[0].id
         });
       })
       .catch((error) => {
-        voter.setState({
+        console.log(error);
+        option.setState({
           errorText: 'Your unique code is incorrect. Please, try again',
         });
       });
@@ -57,7 +55,7 @@ class Vote extends React.Component {
     const eventValue = event.target.value.split('.');
     this.setState({
       selectedOption: eventValue[0],
-      candidateName: eventValue[1],
+      candidateName: eventValue[1]
     });
   }
 
@@ -65,27 +63,32 @@ class Vote extends React.Component {
     event.preventDefault();
     const voted = this;
     voted.setState({
-      loaderActive: true,
+      loaderActive: true
     });
     axios.post('/blockchainvote', {
       address: voted.props.pollHash,
       candidate: voted.state.candidateName,
+      uniqueId: voted.props.uniqueId
     })
       .then((res) => {
         console.log(`Vote tx hash: ${res.data}`);
         voted.setState({
-          voteHash: res.data,
+          voteHash: res.data
         });
         return axios.post('/api/voteresult', {
-          voted: Number(voted.state.selectedOption),
+          optionId: Number(voted.state.selectedOption),
           voteHash: res.data,
+          uniqueId: voted.props.uniqueId,
+          pollId: voted.props.pollId,
+          keyId: voted.props.keyId
         });
       })
       .then((res) => {
+        console.log(res);
         console.log('vote has been submitted');
         voted.setState({
           loaderActive: false,
-          isVoteSubmitted: true,
+          isVoteSubmitted: true
         });
       })
       .catch((error) => {
@@ -120,6 +123,19 @@ class Vote extends React.Component {
     }
     return (
       <div>
+        <Menu attached borderless style={{ border: 'none' }}>
+          <Link to='/'>
+            <Menu.Item>
+              <h3 style={{
+                fontFamily: 'Hammersmith One',
+                fontSize: '30px'
+              }}
+              >
+                BB
+              </h3>
+            </Menu.Item>
+          </Link>
+        </Menu>
         <div className="header">{ballotInfo.ballotName}</div>
         <form>
           <Card className="ballotOptions">
@@ -142,9 +158,7 @@ class Vote extends React.Component {
               <Button
                 fluid
                 primary
-                className="blueMatch"
-                className="buttonStyle"
-                className="voteButton"
+                className="blueMatch buttonStyle voteButton"
                 onClick={this.submitVote}
               >
                 Vote

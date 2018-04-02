@@ -2,6 +2,13 @@
   padding-left: 5%;
 }
 
+.welcome {
+  padding-top: 3%;
+  font-size: 3.5em;
+  font-family: 'Hammersmith One';
+  color: #636e72;
+}
+
 .dashboardTitle {
-  padding-top: 5%;
+  padding-top: 2%;
 }
