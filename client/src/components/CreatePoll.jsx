@@ -184,13 +184,11 @@ class CreatePoll extends React.Component {
       start: this.state.start,
       end: this.state.end
     }).then((res) => {
-      console.log('RES', res);
       if (res.status === 201) {
         this.setState({
           emailConfirmation: true,
           loading: false,
         });
-        console.log('emails successful');
       }
     }).catch((err) => {
       this.setState({

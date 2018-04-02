@@ -38,7 +38,7 @@ const sendPasswordReset = (email, token) => {
       let mailPasswordOptions = {
         from: '"BlockBallot" <blockballot@gmail.com>', 
         to: `${email}`, 
-        subject: 'Link to reset your password', 
+        subject: 'Reset Password', 
         html: templateToSend
       }; 
 
@@ -54,16 +54,13 @@ const sendPasswordReset = (email, token) => {
 }
 
 const sendEmailCodes = (emails, pollId, ballotName, start, end) => {
-  console.log('inside email codes')
   return new Promise((resolve, reject) => {
     readHTMLFile(path.join(__dirname, '../client/src/templates/voterCodeEmail.html'))
     .then(template => {
-      console.log('step1', template)
       let compiler = handlebars.compile(template);
 
       emails.forEach((recipient) => {
         let code = helpers.createUniqueId();
-        console.log('step2', recipient, code)
         let replacements = {
           voterCode: code,
           ballotName: ballotName,
