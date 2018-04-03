@@ -43,7 +43,7 @@ class PollResults extends React.Component {
       open: false
     });
 
-    axios.put('/api/endpoll', {
+    axios.put('/endpoll', {
       pollId: this.state.pollId,
       pollExpired: true
     })

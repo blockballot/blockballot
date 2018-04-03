@@ -27,7 +27,7 @@ class Vote extends React.Component {
     const option = this;
     axios({
       method: 'POST',
-      url: '/api/poll',
+      url: '/poll',
       data: {
         pollId: this.props.pollId
       }
@@ -75,7 +75,7 @@ class Vote extends React.Component {
         voted.setState({
           voteHash: res.data
         });
-        return axios.post('/api/voteresult', {
+        return axios.post('/voteresult', {
           optionId: Number(voted.state.selectedOption),
           voteHash: res.data,
           uniqueId: voted.props.uniqueId,

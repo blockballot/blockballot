@@ -65,6 +65,8 @@ const castVote = (candidate, address) => {
   });
 };
 
-exports.createContract = createContract;
-exports.retrieveContract = retrieveContract;
-exports.castVote = castVote;
+module.exports = {
+  createContract: createContract,
+  retrieveContract: retrieveContract,
+  castVote: castVote
+}

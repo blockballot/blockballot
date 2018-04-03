@@ -10,10 +10,14 @@ const path = require('path');
 const readHTMLFile = (path) => {
   return new Promise((resolve, reject) => {
     fs.readFile(path, {encoding: 'utf-8'}, function(err, file) {
-      if (err) { reject(err) } 
-      else { resolve(file) }
-    })  
-  })
+      if (err) { 
+        reject(err)
+      } 
+      else { 
+        resolve(file) 
+      }
+    }); 
+  });
 };
 
 const transporter = nodemailer.createTransport({
@@ -49,8 +53,8 @@ const sendPasswordReset = (email, token) => {
           resolve(info);
         }
       });
-    }) 
-  })
+    }); 
+  });
 }
 
 const sendEmailCodes = (emails, pollId, ballotName, start, end) => {
@@ -74,7 +78,6 @@ const sendEmailCodes = (emails, pollId, ballotName, start, end) => {
           subject: `Submit a vote for ${ballotName}`, 
           html: templateToSend
         };
-
         dbHelper.saveVoterID(code, pollId)
         transporter.sendMail(emailCodeOptions, (error, info) => {
           if (error) {
@@ -84,9 +87,11 @@ const sendEmailCodes = (emails, pollId, ballotName, start, end) => {
           }
         });
       });
-    }) 
-  })
+    }); 
+  });
 }
 
-exports.sendPasswordReset = sendPasswordReset;
-exports.sendEmailCodes = sendEmailCodes;
+module.exports = {
+  sendPasswordReset: sendPasswordReset,
+  sendEmailCodes: sendEmailCodes
+}
