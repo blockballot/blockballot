@@ -98,27 +98,6 @@ const updateOrgName = (email, newName) => {
   });
 };
 
-// const updateOrgEmail = (currentEmail, newEmail) => {
-//   db.Org.findOne({ where: { orgEmail: currentEmail } })
-//     .then((org) => {
-//       if (org) {
-//         return new Promise((resolve, reject) => {
-//           db.Org.update({
-//             orgEmail: newEmail
-//           }, { where: { orgEmail: currentEmail } })
-//             .then((result) => {
-//               resolve(result);
-//             })
-//             .catch((err) => {
-//               reject(err);
-//             });
-//         });
-//       } else {
-//         console.log('No organization with that email exists');
-//       }
-//     });
-// };
-
 const updateOrgEmail = (currentEmail, newEmail) => {
   return new Promise((resolve, reject) => {
     db.Org.findOne({ where: { orgEmail: currentEmail } })
