@@ -3,7 +3,6 @@ import { Redirect, Link } from 'react-router-dom';
 import {Card, CardText, CardHeader, TextField, RaisedButton, FlatButton} from 'material-ui';
 import axios from 'axios';
 
-
 class LoginReset extends React.Component {
   constructor(props) {
     super(props);
@@ -78,14 +77,14 @@ class LoginReset extends React.Component {
     if (this.state.token === 'error' || this.state.token === '') {
       return (
         <div style={{
-        width: 400,
-        height: 500,
-        position: 'absolute',
-        top:200,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        margin: 'auto'
+          width: 400,
+          height: 500,
+          position: 'absolute',
+          top:200,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          margin: 'auto'
         }}>
           <Card>
             <CardHeader
@@ -114,8 +113,8 @@ class LoginReset extends React.Component {
           <Card>
             <CardHeader
               titleStyle={{marginLeft: 20, marginTop: 10, fontSize: 25}}
-              title="Reset your Password"/>
-
+              title="Reset your Password"
+            />
             <CardText style={{marginLeft: 20}}>
               <TextField
                 hintText="Enter your Password"
@@ -124,9 +123,9 @@ class LoginReset extends React.Component {
                 name='password1'
                 value={this.state.password1}
                 onChange={this.onChange}
-                underlineStyle={{borderBottomColor: 'white'}}/>
+                underlineStyle={{borderBottomColor: 'white'}}
+              />
               <br/>
-
               <TextField
                 hintText="Confirm your Password"
                 type="password"
@@ -134,20 +133,18 @@ class LoginReset extends React.Component {
                 name='password2'
                 value={this.state.password2}
                 onChange={this.onChange}
-                underlineStyle={{borderBottomColor: 'white'}}/>
-
+                underlineStyle={{borderBottomColor: 'white'}}
+              />
               <br/>
-
               <div style= {{marginTop: 20}}>
                 <RaisedButton 
                   label="Reset"
-                  onClick={this.onReset}/>
-
+                  onClick={this.onReset}
+                />
               </div>
               <br/>
               {passwordMismatch}
               {resetConfirmation}
-
             </CardText>
           </Card>
         </div>
