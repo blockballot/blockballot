@@ -12,7 +12,6 @@ const voter = (req, res) => {
     });
 }
 
-//refactor to not use db
 const poll = (req, res) => {
   let pollId = req.body.pollId;
   dbHelpers.findOptions(pollId)
@@ -20,7 +19,6 @@ const poll = (req, res) => {
       if (!options) {
         res.status(500).send('There was an error. Please try again later.');
       } else {
-        console.log('OPTION', options)
         res.status(200).send(options);
       }
     })
@@ -40,8 +38,6 @@ const voteresult = (req, res) => {
       res.status(500).send('There was an error in submitting your vote');
     });
 }
-
-
 
 const createpoll = (req, res) => {
   dbHelpers.createPoll(req.session.orgId, req.body)
@@ -80,7 +76,6 @@ const getpolls = (req, res) => {
 }
 
 const endpoll = (req, res) => {
-  console.log(req.body)
   dbHelpers.endPoll(req.body.pollId, req.body.pollExpired)
     .then((result) => {
       res.status(201).send(result);
@@ -95,11 +90,13 @@ const wildcard = (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 }
 
-exports.voter = voter;
-exports.poll = poll;
-exports.voteresult = voteresult;
-exports.createpoll = createpoll;
-exports.getpolls = getpolls;
-exports.endpoll = endpoll;
-exports.wildcard = wildcard;
+module.exports = {
+  voter: voter,
+  poll: poll,
+  voteresult: voteresult,
+  createpoll: createpoll,
+  getpolls: getpolls,
+  endpoll: endpoll,
+  wildcard: wildcard
+}
 

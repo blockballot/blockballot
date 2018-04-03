@@ -20,13 +20,13 @@ app.use(session({
   saveUninitialized: true
 }));
 
-//authroutes
+//auth routes
 app.post('/login', authRoutes.login);
 app.post('/signup', authRoutes.signup);
 app.get('/password', authRoutes.password);
 app.get('/logout', authRoutes.logout);
 app.get('/reset/:token', authRoutes.resettoken);
-app.post('/resetpassword', authRoutes.resetpassword)
+app.post('/resetpassword', authRoutes.resetpassword);
 
 //mailer routes
 app.post('/forgotpassword', mailerRoutes.forgotpassword);
