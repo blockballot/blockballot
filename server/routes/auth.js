@@ -1,20 +1,21 @@
-const auth = require('../helpers/authHelpers.js');
 const bcrypt = require('bcrypt');
-const dbHelpers = require('../database/dbHelpers.js');
-const helpers = require('../helpers/helpers.js');
+const dbHelpers = require('../../database/dbHelpers.js');
+const helpers = require('../../helpers/helpers.js');
 const url = require('url');
+const authHelpers = require('../../helpers/authHelpers.js');
 
 const login = (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+
   dbHelpers.findOrg(email)
     .then((org) => {
       if (!org) {
         res.status(401).send('Account not recognized.');
       } else {
-        auth.comparePassword(password, org, (match) => {
+        authHelpers.comparePassword(password, org, (match) => {
           if (match) {
-            auth.createSession(req, res, org);
+            authHelpers.createSession(req, res, org);
           } else {
             res.status(402).send('Incorrect password. Please try again.');
           }

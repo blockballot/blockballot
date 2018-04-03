@@ -67,7 +67,6 @@ class Login extends React.Component {
           dialogEmailSent: true,
           loading: false
         });
-        console.log(this.state.dialogEmailSent);
       },
       error: (err) => {
         console.log('error');

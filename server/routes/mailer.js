@@ -1,10 +1,10 @@
-const dbHelpers = require('../database/dbHelpers.js');
-const mailer = require('../helpers/mailer.js');
-const helpers = require('../helpers/helpers.js')
+const dbHelpers = require('../../database/dbHelpers.js');
+const mailerHelpers = require('../../helpers/mailerHelpers.js');
+const helpers = require('../../helpers/helpers.js')
 
 const emailcodes = (req, res) => {
   let emails = JSON.parse(req.body.emails);
-  mailer.sendEmailCodes(emails, req.body.pollId, req.body.ballotName, req.body.start, req.body.end)
+  mailerHelpers.sendEmailCodes(emails, req.body.pollId, req.body.ballotName, req.body.start, req.body.end)
     .then((result) => {
       res.status(201).send(result);
     })
@@ -22,7 +22,7 @@ const forgotpassword = (req, res) => {
       if (result[0] === 0) {
         res.status(500).send('User does not exist')
       } else {
-        mailer.sendPasswordReset(email, token)
+        mailerHelpers.sendPasswordReset(email, token)
         .then((result) => {
           res.status(201).send(result);
         }).catch((err) => {

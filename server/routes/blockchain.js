@@ -1,4 +1,4 @@
-const blockchain = require('../helpers/blockchainHelpers.js');
+const blockchain = require('../../helpers/blockchainHelpers.js');
 
 const blockchainvote = (req, res) => {
   blockchain.castVote(req.body.candidate, req.body.address)

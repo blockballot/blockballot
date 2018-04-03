@@ -156,7 +156,7 @@ class CreatePoll extends React.Component {
           pollOptions: options,
           pollAddress: contractRes.data.address
         };
-        return axios.post('/createpoll', contractInfo);
+        return axios.post('/polls', contractInfo);
       })
       .then((pollRes) => {
         console.log('poll result', pollRes);

@@ -230,6 +230,7 @@ const findOrg = (email) => {
       where: { orgEmail: email }
     })
       .then((org) => {
+        console.log('org found', org)
         resolve(org);
       })
       .catch((err) => {

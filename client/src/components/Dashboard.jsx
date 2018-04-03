@@ -31,7 +31,7 @@ class Dashboard extends React.Component {
   }
 
   retrieveOrgPolls() {
-    axios.get('/getpolls')
+    axios.get('/polls')
       .then((polls) => {
         this.updatePoll(polls);
       })
