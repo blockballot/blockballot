@@ -36,7 +36,7 @@ class Voter extends React.Component {
     const voter = this;
     axios({
       method: 'POST',
-      url: '/api/voter',
+      url: '/voter',
       data: {
         uniqueId: this.state.uniqueId
       }

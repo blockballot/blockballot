@@ -66,8 +66,8 @@ const updateOrgToken = (email, token, expiration) => {
     })
     .catch(err => {
       reject(err);
-    })
-  })
+    });
+  });
 }
 
 const updatePassword = (token, password) => {
@@ -80,8 +80,8 @@ const updatePassword = (token, password) => {
     })
     .catch(err => {
       reject(err);
-    })
-  })
+    });
+  });
 }
 
 const verifyToken = (token) => {
@@ -97,8 +97,8 @@ const verifyToken = (token) => {
     })
     .catch(err => {
       reject(err);
-    })
-  })
+    });
+  });
 }
 
 // helper function that takes in a poll object from retrievePolls query
@@ -173,16 +173,65 @@ const endPoll = (pollId, pollExpired) => {
   });
 };
 
+const findOptions = (pollId) => {
+  return new Promise((resolve, reject) => {
+    db.Option.findAll({
+      where: { pollId: pollId },
+      include: [db.Poll]
+    })
+      .then(options => {
+        resolve(options);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });  
+}
 
-exports.endPoll = endPoll;
-exports.createPoll = createPoll;
-exports.createOption = createOption;
-exports.retrievePolls = retrievePolls;
-exports.retrieveVoteCount = retrieveVoteCount;
-exports.bundlePollVotes = bundlePollVotes;
-exports.saveVoterID = saveVoterID;
-exports.updateOrgToken = updateOrgToken;
-exports.updatePassword = updatePassword;
-exports.verifyToken = verifyToken;
-exports.submitVote = submitVote;
-exports.retrieveCode = retrieveCode;
+const findOrg = (email) => {
+  return new Promise((resolve, reject) => {
+    db.Org.findOne({
+      where: { orgEmail: email }
+    })
+      .then((org) => {
+        resolve(org);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+const createOrg = (name, email, password) => {
+  return new Promise((resolve, reject) => {
+    db.Org.create({
+      orgName: name,
+      orgEmail: email,
+      orgPassword: password
+    })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+module.exports = {
+  endPoll: endPoll,
+  createPoll: createPoll,
+  createOption: createOption,
+  retrievePolls: retrievePolls,
+  retrieveVoteCount: retrieveVoteCount,
+  bundlePollVotes: bundlePollVotes,
+  saveVoterID: saveVoterID,
+  updateOrgToken: updateOrgToken,
+  updatePassword: updatePassword,
+  verifyToken: verifyToken,
+  submitVote: submitVote,
+  retrieveCode: retrieveCode,
+  findOptions: findOptions,
+  findOrg: findOrg,
+  createOrg: createOrg
+}

@@ -14,5 +14,7 @@ let createUniqueId = () => {
   return pw.substring(0, 10);
 };
 
-exports.createUniqueId = createUniqueId;
-exports.createPassword = createPassword;
+module.exports = {
+  createUniqueId: createUniqueId,
+  createPassword: createPassword
+}
