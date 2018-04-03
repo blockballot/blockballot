@@ -331,7 +331,8 @@ class CreatePoll extends React.Component {
           style={{
             marginLeft: '30px'
           }}
-        >x
+        >
+          x
         </Button>
       </div>
     ));
@@ -527,7 +528,7 @@ class CreatePoll extends React.Component {
                 />
               </div>
 
-              <div style={{ marginTop: 72 }}>
+              <div style={{ marginTop: '18px' }}>
                 <b>2. Choose Start and End Times</b><br />
                 <DateTimePicker
                   name="start"
@@ -570,13 +571,13 @@ class CreatePoll extends React.Component {
                     marginTop: '15px',
                     width: '100%',
                     maxWidth: '300px',
-                    fontSize: '16px'
+                    fontSize: '14px'
                   }}
                   toggle
                   active={active}
                   onClick={this.handleStartNow}
                 >
-                  Start Now
+                  Start Now and Close Manually
                 </Button>
               </div>
             </div>
@@ -597,7 +598,7 @@ class CreatePoll extends React.Component {
                 <b>4. Review and Deploy</b><br />
                 <p style={{
                     fontSize: 14,
-                    marginTop: '10px'
+                    marginTop: '20px'
                   }}
                 >
                   If everything looks good, click 'deploy' to create a read-only contract containing your ballot. This will be saved to the Ethereum blockchain.

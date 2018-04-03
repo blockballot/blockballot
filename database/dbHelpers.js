@@ -1,7 +1,7 @@
 const db = require('./index.js');
 
 const createPoll = (orgId, pollOptions) => {
-  return db.Poll.create({ 
+  return db.Poll.create({
     orgId: orgId,
     pollName: pollOptions.pollName,
     pollTimeStart: pollOptions.pollStart,
@@ -58,48 +58,83 @@ const retrieveVoteCount = (optionId) => {
 const updateOrgToken = (email, token, expiration) => {
   return new Promise((resolve, reject) => {
     db.Org.update({
-      resetToken: token, 
+      resetToken: token,
       resetExpiration: expiration
-    }, {where: {orgEmail: email}})
-    .then(result => {
-      resolve(result);
-    })
-    .catch(err => {
-      reject(err);
-    });
+    }, { where: { orgEmail: email } })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
-}
+};
 
 const updatePassword = (token, password) => {
   return new Promise((resolve, reject) => {
     db.Org.update({
-      orgPassword: password 
-    }, {where: {resetToken: token}})
-    .then(result => {
-      resolve(result);
-    })
-    .catch(err => {
-      reject(err);
-    });
+      orgPassword: password
+    }, { where: { resetToken: token } })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
-}
+};
+
+const updateOrgName = (email, newName) => {
+  return new Promise((resolve, reject) => {
+    db.Org.update({
+      orgName: newName
+    }, { where: { orgEmail: email } })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+const updateOrgEmail = (newEmail, currentEmail) => {
+  db.Org.findOne({ where: { orgEmail: newEmail } })
+    .then((org) => {
+      return new Promise((resolve, reject) => {
+        if (org === null) {
+          db.Org.update({
+            orgEmail: newEmail
+          }, { where: { orgEmail: currentEmail } })
+            .then((result) => {
+              resolve(result);
+            })
+            .catch((err) => {
+              reject(err);
+            });
+        } else {
+          resolve(null);
+        }
+      });
+    });
+};
 
 const verifyToken = (token) => {
   return new Promise((resolve, reject) => {
-    db.Org.findOne({where: {resetToken: token}})
-    .then(org => {
-      let date = new Date()
-      if (date < org.resetExpiration) {
-        resolve(org);
-      } else {
-        reject('Token expired');
-      }
-    })
-    .catch(err => {
-      reject(err);
-    });
+    db.Org.findOne({ where: { resetToken: token } })
+      .then((org) => {
+        const date = new Date();
+        if (date < org.resetExpiration) {
+          resolve(org);
+        } else {
+          reject('Token expired');
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
-}
+};
 
 // helper function that takes in a poll object from retrievePolls query
 // and bundles it with optionName: voteCounts
@@ -186,7 +221,7 @@ const findOptions = (pollId) => {
         reject(err);
       });
   });  
-}
+};
 
 const findOrg = (email) => {
   return new Promise((resolve, reject) => {
@@ -200,7 +235,7 @@ const findOrg = (email) => {
         reject(err);
       });
   });
-}
+};
 
 const createOrg = (name, email, password) => {
   return new Promise((resolve, reject) => {
@@ -216,7 +251,7 @@ const createOrg = (name, email, password) => {
         reject(err);
       });
   });
-}
+};
 
 module.exports = {
   endPoll: endPoll,
@@ -228,6 +263,8 @@ module.exports = {
   saveVoterID: saveVoterID,
   updateOrgToken: updateOrgToken,
   updatePassword: updatePassword,
+  updateOrgName: updateOrgName,
+  updateOrgEmail: updateOrgEmail,
   verifyToken: verifyToken,
   submitVote: submitVote,
   retrieveCode: retrieveCode,

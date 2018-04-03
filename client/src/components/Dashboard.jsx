@@ -42,8 +42,31 @@ class Dashboard extends React.Component {
 
   render() {
     const polls = this.state.polls;
+    let pollComponent = null;
+
     if (cookie.load('loggedIn') !== 'true') {
       return (<Redirect to="/" />);
+    }
+    if (polls.length === 0) {
+      pollComponent = (
+        <div className="ballotImg">
+          <img src="https://c1.staticflickr.com/1/805/39390736730_b01c35326c_n.jpg" alt="No Ballots Currently" />
+          <h2>No Ballots to Display</h2>
+        </div>
+      );
+    } else {
+      pollComponent = (
+        <div style={{ marginLeft: 50, marginRight: 50, marginTop: 50 }}>
+          <div className="ui four link cards">
+            {polls.map(poll => (
+              <Poll
+                poll={poll}
+                handlePollClick={this.props.handlePollClick}
+              />
+            ))}
+          </div>
+        </div>
+      );
     }
     return (
       <div>
@@ -59,16 +82,7 @@ class Dashboard extends React.Component {
             </Button>
           </Link>
         </div>
-        <div style={{marginLeft: 50, marginRight: 50, marginTop: 50 }}>
-          <div className="ui four link cards">
-            {polls.map(poll => (
-              <Poll
-                poll={poll}
-                handlePollClick={this.props.handlePollClick}
-              />
-            ))}
-          </div>
-        </div>
+        {pollComponent}
       </div>
     );
   }

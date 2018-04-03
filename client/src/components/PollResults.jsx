@@ -90,7 +90,7 @@ class PollResults extends React.Component {
       if (this.state.pollTimeStart !== null && this.state.pollTimeEnd !== null) {
         pollCloseTime = (
           <div className="subHeader">
-            Ballot closing time: {this.state.pollTimeEnd}
+            Ballot Closing Time: {this.state.pollTimeEnd}
           </div>
         );
       } else {
@@ -99,14 +99,14 @@ class PollResults extends React.Component {
             primary
             onClick={this.handleDialogOpen}
           >
-          Close the Ballot
+          End Voting Period for Ballot
           </Button>
         );
       }
     } else {
       pollCloseTime = (
         <div className="subHeader" style={{ color: 'red' }}>
-          <b>BALLOT IS CLOSED</b>
+          <b>Your Ballot is Closed</b>
         </div>
       );
     }
