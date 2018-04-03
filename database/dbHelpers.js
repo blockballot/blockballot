@@ -173,20 +173,20 @@ const endPoll = (pollId, pollExpired) => {
   });
 };
 
-// const findOptions = () => {
-//   return new Promise((resolve, reject) => {
-//     db.Option.findAll({
-//       where: { pollId: req.body.pollId },
-//       include: [db.Poll]
-//     })
-//       .then(result => {
-//         resolve(result);
-//       })
-//       .catch(err => {
-//         resolve(err);
-//       })
-//   })  
-// }
+const findOptions = (pollId) => {
+  return new Promise((resolve, reject) => {
+    db.Option.findAll({
+      where: { pollId: pollId },
+      include: [db.Poll]
+    })
+      .then(options => {
+        resolve(options);
+      })
+      .catch(err => {
+        reject(err);
+      })
+  })  
+}
 
 exports.endPoll = endPoll;
 exports.createPoll = createPoll;
@@ -200,4 +200,4 @@ exports.updatePassword = updatePassword;
 exports.verifyToken = verifyToken;
 exports.submitVote = submitVote;
 exports.retrieveCode = retrieveCode;
-//exports.findOptions = findOptions;
+exports.findOptions = findOptions;

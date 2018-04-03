@@ -1,9 +1,8 @@
-const db = require('../database/index.js');
-const dbHelper = require('../database/dbHelpers.js');
+const dbHelpers = require('../database/dbHelpers.js');
 const path = require('path');
 
 const voter = (req, res) => {
-  dbHelper.retrieveCode(req.body.uniqueId)
+  dbHelpers.retrieveCode(req.body.uniqueId)
     .then((result) => {
       res.status(200).send(result);
     })
@@ -15,16 +14,14 @@ const voter = (req, res) => {
 
 //refactor to not use db
 const poll = (req, res) => {
-  db.Option.findAll({
-    where: { pollId: req.body.pollId },
-    include: [db.Poll]
-  })
-    .then((option) => {
-      if (!option) {
+  let pollId = req.body.pollId;
+  dbHelpers.findOptions(pollId)
+    .then((options) => {
+      if (!options) {
         res.status(500).send('There was an error. Please try again later.');
       } else {
-        console.log('OPTION', option)
-        res.status(200).send(option);
+        console.log('OPTION', options)
+        res.status(200).send(options);
       }
     })
     .catch((err) => {
@@ -34,7 +31,7 @@ const poll = (req, res) => {
 }
 
 const voteresult = (req, res) => {
-  dbHelper.submitVote(req.body.voteHash, req.body.optionId, req.body.keyId)
+  dbHelpers.submitVote(req.body.voteHash, req.body.optionId, req.body.keyId)
     .then((result) => {
       res.status(201).send(result);
     })
@@ -47,12 +44,12 @@ const voteresult = (req, res) => {
 
 
 const createpoll = (req, res) => {
-  dbHelper.createPoll(req.session.orgId, req.body)
+  dbHelpers.createPoll(req.session.orgId, req.body)
     .then((newPoll) => {
       const optionArray = [];
       const pollOpts = req.body.pollOptions;
       for (let i = 0; i < pollOpts.length; i++) {
-        optionArray.push(dbHelper.createOption(newPoll.dataValues.id, pollOpts[i]));
+        optionArray.push(dbHelpers.createOption(newPoll.dataValues.id, pollOpts[i]));
       }
       return Promise.all(optionArray);
     })
@@ -66,11 +63,11 @@ const createpoll = (req, res) => {
 }
 
 const getpolls = (req, res) => {
-  dbHelper.retrievePolls(req.session.orgId)
+  dbHelpers.retrievePolls(req.session.orgId)
     .then((polls) => {
       const promiseArr = [];
       for (let i = 0; i < polls.length; i++) {
-        promiseArr.push(dbHelper.bundlePollVotes(polls[i]));
+        promiseArr.push(dbHelpers.bundlePollVotes(polls[i]));
       }
       return Promise.all(promiseArr);
     })
@@ -84,7 +81,7 @@ const getpolls = (req, res) => {
 
 const endpoll = (req, res) => {
   console.log(req.body)
-  dbHelper.endPoll(req.body.pollId, req.body.pollExpired)
+  dbHelpers.endPoll(req.body.pollId, req.body.pollExpired)
     .then((result) => {
       res.status(201).send(result);
     })
