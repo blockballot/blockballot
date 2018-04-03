@@ -24,7 +24,7 @@ const login = (req, res) => {
     .catch((err) => {
       res.status(500).send('There was an error. Please try again later.');
     });
-}
+};
 
 const signup = (req, res) => {
   const name = req.body.name;
@@ -42,7 +42,7 @@ const signup = (req, res) => {
               } else {
                 res.status(500).send('There was an error. Please try again later.');
               }
-            })
+            });
         } else {
           res.status(401).send('Account already exists');
         }
@@ -51,53 +51,78 @@ const signup = (req, res) => {
         res.status(500).send('There was an error. Please try again later.');
       });
   });
-}
+};
 
 const password = (req, res) => {
   res.status(200).send(helpers.createPassword());
-}
+};
 
 const logout = (req, res) => {
   req.session.destroy(() => {
     res.clearCookie('loggedIn');
     res.redirect('/');
   });
-}
+};
 
-const resettoken = function(req,res) {
-  let token = req.params.token;
+const resettoken = (req,res) => {
+  const token = req.params.token;
   dbHelpers.verifyToken(token)
-    .then(result => {
+    .then((result) => {
       res.redirect(url.format({
-        pathname:"/reset",
+        pathname: '/reset',
         query: {
           'token': token,
         }
       }));
     })
-    .catch(err => {
+    .catch((err) => {
       res.redirect(url.format({
-        pathname:"/reset",
+        pathname: '/reset',
         query: {
-          'token': 'error'
+          token: 'error'
         }
       }));
-    })
-}
+    });
+};
 
 const resetpassword = (req, res) => {
-  let token = req.body.token;
-  let password = req.body.password;
+  const token = req.body.token;
+  const password = req.body.password;
   bcrypt.hash(password, 10)
-    .then(hash => {
+    .then((hash) => {
       dbHelpers.updatePassword(token, hash)
-      .then(result => {
-        res.status(201).send();
-      }).catch(err => {
-        res.status(500).send(err);
-      })
+        .then((result) => {
+          res.status(201).send();
+        })
+        .catch((err) => {
+          res.status(500).send(err);
+        });
     });
-}
+};
+
+const resetname = (req, res) => {
+  const email = req.body.currentEmail;
+  const newName = req.body.newName;
+  dbHelpers.updateOrgName(email, newName)
+    .then(() => {
+      res.status(201).send();
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
+const resetemail = (req, res) => {
+  const email = req.body.currentEmail;
+  const newEmail = req.body.newEmail;
+  dbHelpers.updateOrgEmail(email, newEmail)
+    .then(() => {
+      res.status(201).send();
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
 
 module.exports = {
   login: login,
@@ -105,5 +130,7 @@ module.exports = {
   password: password,
   logout: logout,
   resettoken: resettoken,
-  resetpassword: resetpassword
+  resetpassword: resetpassword,
+  resetname: resetname,
+  resetemail: resetemail
 };

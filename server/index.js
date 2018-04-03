@@ -27,6 +27,8 @@ app.get('/password', authRoutes.password);
 app.get('/logout', authRoutes.logout);
 app.get('/reset/:token', authRoutes.resettoken);
 app.post('/resetpassword', authRoutes.resetpassword);
+app.post('/resetname', authRoutes.resetname);
+app.post('/resetemail', authRoutes.resetemail);
 
 //mailer routes
 app.post('/forgotpassword', mailerRoutes.forgotpassword);

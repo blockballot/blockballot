@@ -10,9 +10,9 @@ import Dashboard from './Dashboard';
 import CreatePoll from './CreatePoll';
 import Voter from './Voter';
 import PollResults from './PollResults';
-import Poll from './Poll';
 import LoginReset from './LoginReset';
 import AboutUs from './AboutUs';
+import Settings from './Settings';
 import Nav from './Nav';
 
 class App extends React.Component {
@@ -244,6 +244,20 @@ class App extends React.Component {
               />
             </div>
             )
+          }
+        />
+
+        <Route
+          exact
+          path="/settings"
+          render={() => (
+            <div>
+              {AddNav}
+              <Settings
+                loggedIn={this.state.loggedIn}
+              />
+            </div>
+          )
           }
         />
 

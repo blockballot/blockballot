@@ -98,14 +98,35 @@ const updateOrgName = (email, newName) => {
   });
 };
 
-const updateOrgEmail = (newEmail, currentEmail) => {
-  db.Org.findOne({ where: { orgEmail: newEmail } })
-    .then((org) => {
-      return new Promise((resolve, reject) => {
-        if (org === null) {
+// const updateOrgEmail = (currentEmail, newEmail) => {
+//   db.Org.findOne({ where: { orgEmail: currentEmail } })
+//     .then((org) => {
+//       if (org) {
+//         return new Promise((resolve, reject) => {
+//           db.Org.update({
+//             orgEmail: newEmail
+//           }, { where: { orgEmail: currentEmail } })
+//             .then((result) => {
+//               resolve(result);
+//             })
+//             .catch((err) => {
+//               reject(err);
+//             });
+//         });
+//       } else {
+//         console.log('No organization with that email exists');
+//       }
+//     });
+// };
+
+const updateOrgEmail = (currentEmail, newEmail) => {
+  return new Promise((resolve, reject) => {
+    db.Org.findOne({ where: { orgEmail: currentEmail } })
+      .then((org) => {
+        if (org) {
           db.Org.update({
             orgEmail: newEmail
-          }, { where: { orgEmail: currentEmail } })
+          }, { where: {orgEmail: currentEmail } })
             .then((result) => {
               resolve(result);
             })
@@ -116,8 +137,9 @@ const updateOrgEmail = (newEmail, currentEmail) => {
           resolve(null);
         }
       });
-    });
+  });
 };
+
 
 const verifyToken = (token) => {
   return new Promise((resolve, reject) => {
@@ -198,7 +220,7 @@ const endPoll = (pollId, pollExpired) => {
       .then((result) => {
         console.log(result);
         if (result) {
-          const second = result.update({pollExpired: pollExpired});
+          const second = result.update({ pollExpired: pollExpired });
           resolve(second);
         }
       })
@@ -214,13 +236,13 @@ const findOptions = (pollId) => {
       where: { pollId: pollId },
       include: [db.Poll]
     })
-      .then(options => {
+      .then((options) => {
         resolve(options);
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
-  });  
+  });
 };
 
 const findOrg = (email) => {

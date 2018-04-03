@@ -1,30 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import cookie from 'react-cookie';
 import ScrollReveal from 'scrollreveal';
 import {
-  Button,
   Container,
-  Divider,
   Grid,
   Header,
-  Icon,
   Image,
   List,
-  Menu,
   Responsive,
-  Segment,
-  Sidebar,
-  Visibility
+  Segment
 } from 'semantic-ui-react';
 
 class Landing extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      fixed: true
-    }
-  }
 
   componentDidMount() {
     const config = {
@@ -33,7 +20,7 @@ class Landing extends React.Component {
       delay: 150,
       distance: '50px',
       easing: 'ease'
-    }
+    };
     ScrollReveal().reveal(this.refs.box1, config);
   }
 
@@ -165,8 +152,8 @@ class Landing extends React.Component {
                 <Grid.Column width={3}>
                   <Header style={{textAlign: 'left'}} inverted as="h4" content="Actions" />
                   <List link inverted>
-                    <Link to="/signup">
-                      <List.Item as="a">Create Account</List.Item>
+                    <Link to="/settings">
+                      <List.Item as="a">Settings</List.Item>
                     </Link>
                     <br/>
                     <Link to="/createpoll">
