@@ -5,6 +5,7 @@ import { Card, TextField } from 'material-ui';
 import axios from 'axios';
 import Vote from './Vote';
 import VoterResults from './VoterResults';
+import VoteStartsAt from './VoteStartsAt'
 import '../style/voter.css';
 
 class Voter extends React.Component {
@@ -17,9 +18,11 @@ class Voter extends React.Component {
       pollId: 0,
       errorText: '',
       pollHash: '',
+      pollStart: null,
       pollEnd: '',
+      pollName: '',
       voteHash: '',
-      keyId: 0
+      keyId: 0,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,7 +45,8 @@ class Voter extends React.Component {
       }
     })
       .then((res) => {
-        console.log(res);
+        console.log(res)
+        const startTime = res.data.poll.pollTimeStart;
         const endTime = res.data.poll.pollTimeEnd;
         // this code has already voted, send them directly to results
         if (res.data.vote) {
@@ -57,12 +61,15 @@ class Voter extends React.Component {
           const poll = res.data.pollId;
           const hash = res.data.poll.pollHash;
           const keyId = res.data.id;
+          const name = res.data.poll.pollName;
           voter.setState({
             isLogin: true,
             pollId: poll,
             pollHash: hash,
+            pollStart: startTime,
+            pollName: name,
             pollEnd: endTime,
-            keyId: keyId
+            keyId: keyId,
           });
         }
       })
@@ -75,12 +82,29 @@ class Voter extends React.Component {
   }
 
   render() {
+
+    let startTime = this.state.pollStart;
+    let now = new Date();
+    if(startTime === null) {
+      startTime = new Date();
+    }
+    startTime = new Date(this.state.pollStart);
+
+    if(startTime.getTime() > now.getTime()) {
+      return (
+        <VoteStartsAt
+          pollStart={this.state.pollStart}
+          pollName={this.state.pollName}
+        />
+      );
+    }
+
     if (this.state.isLogin) {
       if (this.state.hasVoted) {
         return (
           <VoterResults
             voteHash={this.state.voteHash}
-            pollEnd={this.props.pollEnd}
+            pollEnd={this.state.pollEnd}
           />
         );
       }
