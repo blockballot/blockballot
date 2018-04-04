@@ -215,7 +215,8 @@ class CreatePoll extends React.Component {
       }
     }).catch((err) => {
       this.setState({
-        loading: false
+        loading: false,
+        emailSendError: true
       });
       console.log('error sending emails');
     });
@@ -393,11 +394,11 @@ class CreatePoll extends React.Component {
         </CardMedia>
       )
     }
-    let csvError = null;
-    if (this.state.csvError === true) {
-      csvError = (
+    let emailSendError = null;
+    if (this.state.emailSendError === true) {
+      emailSendError = (
         <div>
-          There was an error uploading your file. Please make sure it is a CSV file.
+          There was an error sending emails. Please check that the uploaded emails are valid.
         </div>
       )
     }
@@ -528,7 +529,7 @@ class CreatePoll extends React.Component {
                   fullWidth
                 />
                 {pollConfirmation}
-                {csvError}
+                {emailSendError}
               </Card>
             </div>
           </section>

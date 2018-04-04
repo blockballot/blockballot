@@ -143,6 +143,10 @@ class PollResults extends React.Component {
         </div><br />
         <div style={{ textAlign: 'center' }}>
           {pollCloseTime}
+          <Button
+            primary
+            content="Delete Ballot"
+          />
         </div>
         <Dialog
           title="You are about to close the Ballot"
