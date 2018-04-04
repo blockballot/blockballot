@@ -62,15 +62,17 @@ const sendEmailCodes = (emails, pollId, ballotName, start, end, orgName) => {
     readHTMLFile(path.join(__dirname, '../client/src/templates/voterCodeEmail.html'))
     .then(template => {
       let compiler = handlebars.compile(template);
-
+      let pollTimingMessage = 'The ballot opens on ' + start + ' and closes on ' + end + '.'
+      if (start === null || end === null) {
+        pollTimingMessage = 'The ballot is open now. ' + orgName + ' will close the ballot once votes are received.'
+      }
       emails.forEach((recipient) => {
         let code = helpers.createUniqueId();
         let replacements = {
           voterCode: code,
           ballotName: ballotName,
-          start: start,
-          end: end,
-          orgName: orgName
+          orgName: orgName,
+          pollTimingMessage: pollTimingMessage
         };
         let templateToSend = compiler(replacements);
         let emailCodeOptions = {
