@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from 'material-ui';
 import { Menu } from 'semantic-ui-react';
+import { formatDate } from '../../../helpers/helpers';
 import '../style/voter.css';
 
 class VoterResults extends React.Component {
@@ -17,7 +18,8 @@ class VoterResults extends React.Component {
     if (this.props.pollEnd === '') {
       endTime = 'Ballot will be manually closed by the org.  Return to this page once the ballot is closed to view results.';
     } else {
-      endTime = `Ballot closes at ${this.props.pollEnd}. Return to this page once the allotted time is over to view results.`;
+      const formattedTime = formatDate(this.props.pollEnd);
+      endTime = `Ballot closes on ${formattedTime}. Return to this page once the allotted time is over to view results.`;
     }
 
     return (
