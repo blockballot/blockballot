@@ -5,6 +5,7 @@ import { Card, TextField } from 'material-ui';
 import axios from 'axios';
 import Vote from './Vote';
 import VoterResults from './VoterResults';
+import VoteStartsAt from './VoteStartsAt';
 import '../style/voter.css';
 import PollResults from './PollResults';
 
@@ -18,6 +19,7 @@ class Voter extends React.Component {
       pollId: 0,
       errorText: '',
       pollHash: '',
+      pollStart: null,
       pollEnd: '',
       pollExpired: false,
       pollName: '',
@@ -51,6 +53,8 @@ class Voter extends React.Component {
       uniqueId: this.state.uniqueId
     })
       .then((res) => {
+
+        const startTime = res.data.poll.pollTimeStart;
         const endTime = res.data.poll.pollTimeEnd;
         if (res.data.poll.pollExpired === '1') {
           // poll is closed, take voter to poll results
@@ -112,10 +116,13 @@ class Voter extends React.Component {
           const poll = res.data.pollId;
           const hash = res.data.poll.pollHash;
           const keyId = res.data.id;
+          const name = res.data.poll.pollName;
           voter.setState({
             isLogin: true,
             pollId: poll,
             pollHash: hash,
+            pollStart: startTime,
+            pollName: name,
             pollEnd: endTime,
             keyId: keyId
           });
@@ -130,6 +137,22 @@ class Voter extends React.Component {
   }
 
   render() {
+
+    let startTime = this.state.pollStart;
+    let now = new Date();
+    if(startTime === null) {
+      startTime = new Date();
+    }
+    startTime = new Date(this.state.pollStart);
+
+    if(startTime.getTime() > now.getTime()) {
+      return (
+        <VoteStartsAt
+          pollStart={this.state.pollStart}
+          pollName={this.state.pollName}
+        />
+      );
+    }
     const pollResult = (
       <div>
         <Menu attached borderless style={{ border: 'none' }}>
@@ -151,6 +174,7 @@ class Voter extends React.Component {
         />
       </div>
     );
+
     if (this.state.isLogin) {
       if (this.state.showResult && !this.state.hasVoted) {
         return (
