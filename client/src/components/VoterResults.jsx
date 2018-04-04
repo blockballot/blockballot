@@ -11,12 +11,19 @@ class VoterResults extends React.Component {
   }
 
   render() {
-    let etherscanUrl = `https://rinkeby.etherscan.io/tx/${this.props.voteHash}`;
+    const etherscanUrl = `https://rinkeby.etherscan.io/tx/${this.props.voteHash}`;
+
+    let endTime = null;
+    if (this.props.pollEnd === '') {
+      endTime = 'Ballot will be manually closed by the org.  Return to this page once the ballot is closed to view results.';
+    } else {
+      endTime = `Ballot closes at ${this.props.pollEnd}. Return to this page once the allotted time is over to view results.`;
+    }
 
     return (
       <div>
         <Menu attached borderless style={{ border: 'none' }}>
-          <Link to='/'>
+          <Link to="/">
             <Menu.Item>
               <h3 style={{
                 fontFamily: 'Hammersmith One',
@@ -39,7 +46,18 @@ class VoterResults extends React.Component {
             {this.props.ballotName}
           </div>
           <div className="subHeader">
-            Ballot closes at {this.props.pollEnd}
+            {
+              this.props.pollExpired &&
+              <div>
+                Ballot is now closed for voting. View ballot results <a href="#" onClick={this.props.handleResult}>here</a>
+              </div>
+            }
+            {
+              !this.props.pollExpired &&
+              <div>
+                {endTime}
+              </div>
+            }
           </div>
           <Card className="confirmCard">
             <div>
@@ -55,7 +73,7 @@ class VoterResults extends React.Component {
           <div className="colorBackground" />
         </div>
       </div>
-    )
+    );
   }
 }
 

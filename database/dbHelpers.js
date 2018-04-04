@@ -170,6 +170,7 @@ const submitVote = (hash, optionId, keyId) => {
   return new Promise((resolve, reject) => {
     const promiseArr = [];
     promiseArr.push(db.Vote.create({ voteHash: hash, optionId: optionId, votekeyId: keyId }));
+    promiseArr.push(db.sequelize.query(`UPDATE options SET voteCount = voteCount + 1 WHERE id = ${optionId}`));
     Promise.all(promiseArr)
       .then((result) => {
         resolve(result);
