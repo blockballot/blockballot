@@ -510,6 +510,7 @@ class CreatePoll extends React.Component {
                   modal={false}
                   open={this.state.voterDialogOpen}
                   onRequestClose={this.handleClose}
+                  autoScrollBodyContent={true}
                 >
                   <div>{emailList}</div>
                   <br />
