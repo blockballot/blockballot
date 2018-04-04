@@ -20,6 +20,16 @@ const createpoll = (req, res) => {
     });
 }
 
+const deletepoll = (req, res) => {
+  dbHelpers.deletePoll(req.query.pollId)
+    .then((result) => {
+      res.sendStatus(200).send(result);
+    })
+    .catch((err) => {
+      res.status(500).send('Unable to delete ballot')
+    })
+}
+
 const getpolls = (req, res) => {
   console.log(req.session);
   console.log('ORG ID', req.session.orgId)
@@ -58,6 +68,7 @@ const wildcard = (req, res) => {
 
 module.exports = {
   createpoll: createpoll,
+  deletepoll: deletepoll,
   getpolls: getpolls,
   endpoll: endpoll,
   wildcard: wildcard

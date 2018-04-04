@@ -196,6 +196,8 @@ class CreatePoll extends React.Component {
   }
 
   handleSendEmail() {
+    let orgName = (cookie.load('username'));
+    console.log('ORGNAME', orgName);
     this.setState({
       loading: true,
       emailSendError: false
@@ -203,6 +205,7 @@ class CreatePoll extends React.Component {
     axios.post('/emailcodes', {
       emails: JSON.stringify(this.state.emails),
       pollId: this.state.pollId,
+      orgName: orgName,
       ballotName: this.state.ballotName,
       start: this.state.start,
       end: this.state.end

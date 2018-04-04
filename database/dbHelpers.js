@@ -255,9 +255,24 @@ const createOrg = (name, email, password) => {
   });
 };
 
+const deletePoll = (pollId) => {
+  return new Promise((resolve, reject) => {
+    db.Poll.destroy({ 
+      where: { id: pollId }
+    })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
 module.exports = {
   endPoll: endPoll,
   createPoll: createPoll,
+  deletePoll: deletePoll,
   createOption: createOption,
   retrievePolls: retrievePolls,
   retrieveVoteCount: retrieveVoteCount,
