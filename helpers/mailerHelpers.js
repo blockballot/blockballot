@@ -57,7 +57,7 @@ const sendPasswordReset = (email, token) => {
   });
 }
 
-const sendEmailCodes = (emails, pollId, ballotName, start, end) => {
+const sendEmailCodes = (emails, pollId, ballotName, start, end, orgName) => {
   return new Promise((resolve, reject) => {
     readHTMLFile(path.join(__dirname, '../client/src/templates/voterCodeEmail.html'))
     .then(template => {
@@ -69,7 +69,8 @@ const sendEmailCodes = (emails, pollId, ballotName, start, end) => {
           voterCode: code,
           ballotName: ballotName,
           start: start,
-          end: end
+          end: end,
+          orgName: orgName
         };
         let templateToSend = compiler(replacements);
         let emailCodeOptions = {

@@ -4,7 +4,7 @@ const helpers = require('../../helpers/helpers.js')
 
 const emailcodes = (req, res) => {
   let emails = JSON.parse(req.body.emails);
-  mailerHelpers.sendEmailCodes(emails, req.body.pollId, req.body.ballotName, req.body.start, req.body.end)
+  mailerHelpers.sendEmailCodes(emails, req.body.pollId, req.body.ballotName, req.body.start, req.body.end, req.body.orgName)
     .then((result) => {
       res.status(201).send(result);
     })
