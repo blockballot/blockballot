@@ -37,6 +37,7 @@ app.post('/contract', routes.blockchain.contract);
 
 //poll routes
 app.post('/polls', routes.poll.createpoll);
+app.delete('/polls', routes.poll.deletepoll);
 app.get('/polls', routes.poll.getpolls);
 app.put('/endpoll', routes.poll.endpoll);
 app.get('/*', routes.poll.wildcard);

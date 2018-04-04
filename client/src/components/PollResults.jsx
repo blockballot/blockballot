@@ -76,10 +76,17 @@ class PollResults extends React.Component {
   }
 
   handleDeleteBallot() {
-    console.log('Delete Ballot')
-    this.setState({
-      confirmDelete: true
+    axios.delete('/polls', { 
+      params: { pollId: this.state.pollId }
     })
+      .then((res) => {
+        this.setState({
+          confirmDelete: true
+        })
+      })
+      .catch((err) => {
+        console.log('unable to delete poll')
+      })
   }
 
 
@@ -138,8 +145,8 @@ class PollResults extends React.Component {
     let confirmDelete = null;
     if (this.state.confirmDelete === true) {
       confirmDelete = (
-        <div>
-          Ballot Deleted!
+        <div style={{marginTop: 10}}>
+          <b>Ballot Deleted!</b>
         </div>
       )
     }
