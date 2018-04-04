@@ -21,13 +21,12 @@ class Voter extends React.Component {
       pollHash: '',
       pollStart: null,
       pollEnd: '',
-
       pollExpired: false,
       pollName: '',
       pollResult: '',
       showResult: false,
       voteHash: '',
-      keyId: 0,
+      keyId: 0
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -125,7 +124,7 @@ class Voter extends React.Component {
             pollStart: startTime,
             pollName: name,
             pollEnd: endTime,
-            keyId: keyId,
+            keyId: keyId
           });
         }
       })
