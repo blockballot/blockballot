@@ -10,17 +10,17 @@ import Moment from 'moment';
 import momentLocalizer from 'react-widgets-moment';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import 'react-widgets/dist/css/react-widgets.css';
-import '../style/voter.css';
-import { 
-  Card, 
-  TextField, 
-  Dialog, 
-  FlatButton, 
-  RadioButtonGroup, 
-  RadioButton, 
-  CardMedia, 
-  CardTitle 
+import {
+  Card,
+  TextField,
+  Dialog,
+  FlatButton,
+  RadioButtonGroup,
+  RadioButton,
+  CardMedia,
+  CardTitle
 } from 'material-ui';
+import '../style/voter.css';
 
 class CreatePoll extends React.Component {
   constructor() {
@@ -103,7 +103,7 @@ class CreatePoll extends React.Component {
 
   handleOptionChange(event) {
     const matchIndex = Number(event.target.name);
-    const newballotOption = this.state.ballotOption.map((option, index) => {
+    const newballotOption = this.state.ballotOption.forEach((option, index) => {
       if (matchIndex === index) {
         option.optionName = event.target.value;
       }
@@ -127,9 +127,17 @@ class CreatePoll extends React.Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     const startTime = this.state.start;
     const endTime = this.state.end;
-    if (this.state.ballotName === '' || this.state.ballotOption.length < 2) {
+    const options = [];
+    for (let i = 0; i < this.state.ballotOption.length; i++) {
+      const optName = this.state.ballotOption[i].optionName;
+      if (optName !== '') {
+        options.push(optName);
+      }
+    }
+    if (this.state.ballotName === '' || options.length < 2) {
       this.setState({
         open: true
       });
@@ -143,19 +151,9 @@ class CreatePoll extends React.Component {
         return;
       }
     }
-    
-    event.preventDefault();
-    const options = [];
-    for (let i = 0; i < this.state.ballotOption.length; i++) {
-      const optName = this.state.ballotOption[i].optionName;
-      if (optName !== '') {
-        options.push(optName);
-      }
-    }
     console.log('Sending contract to get mined');
     axios.post('/contract', { options })
       .then((contractRes) => {
-        console.log(contractRes);
         console.log('Contract mined, updating database');
         const contractInfo = {
           pollName: this.state.ballotName,
@@ -174,11 +172,12 @@ class CreatePoll extends React.Component {
         });
       })
       .catch((err) => {
+        console.log(err);
         this.setState({
           loaderActive: false,
           pollError: true
-        })
-      })
+        });
+      });
 
     this.setState({
       isSubmitted: true
@@ -196,8 +195,7 @@ class CreatePoll extends React.Component {
   }
 
   handleSendEmail() {
-    let orgName = (cookie.load('username'));
-    console.log('ORGNAME', orgName);
+    const orgName = (cookie.load('username'));
     this.setState({
       loading: true,
       emailSendError: false
@@ -217,11 +215,11 @@ class CreatePoll extends React.Component {
         });
       }
     }).catch((err) => {
+      console.log(err);
       this.setState({
         loading: false,
         emailSendError: true
       });
-      console.log('error sending emails');
     });
   }
 
@@ -246,7 +244,7 @@ class CreatePoll extends React.Component {
   handleErrorCSV() {
     this.setState({
       csvError: true
-    })
+    });
   }
 
   handleUploadCSV(data) {
@@ -389,13 +387,13 @@ class CreatePoll extends React.Component {
             marginLeft: -30
           }}
           overlay={
-            <CardTitle 
-            title="Error" 
-            subtitle="There was an error creating your ballot. Please try again later." 
+            <CardTitle
+              title="Error"
+              subtitle="There was an error creating your ballot. Please try again later."
             />
-          }>
-        </CardMedia>
-      )
+          }
+        />
+      );
     }
     let emailSendError = null;
     if (this.state.emailSendError === true) {
@@ -403,7 +401,7 @@ class CreatePoll extends React.Component {
         <div>
           There was an error sending emails. Please check that the uploaded emails are valid.
         </div>
-      )
+      );
     }
     const { active } = this.state;
 
@@ -492,7 +490,11 @@ class CreatePoll extends React.Component {
               >
                 <div>
                   <h3>Send Voter Codes</h3>
-                  <p>While we are creating your ballot, please upload a CSV file containing the email of each voter who is participating in the vote. BlockBallot will generate and email a unique ID for each participant, which they can then use to securely access your ballot.
+                  <p>
+                    While we are creating your ballot, please upload a CSV file
+                    containing the email of each voter who is participating in the vote.
+                    BlockBallot will generate and email a unique ID for each participant,
+                    which they can then use to securely access your ballot.
                   </p>
                 </div>
                 <CSVReader
@@ -646,7 +648,8 @@ class CreatePoll extends React.Component {
                     marginTop: '20px'
                   }}
                 >
-                  If everything looks good, click 'deploy' to create a read-only contract containing your ballot. This will be saved to the Ethereum blockchain.
+                  If everything looks good, click 'deploy' to create a read-only contract
+                  containing your ballot. This will be saved to the Ethereum blockchain.
                 </p>
               </div>
             </div>
