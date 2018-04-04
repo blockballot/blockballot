@@ -100,7 +100,8 @@ class Settings extends React.Component {
         style={{
           width: 500,
           margin: '0 auto',
-          marginTop: '50px'
+          marginTop: '50px',
+          marginBottom: '50px'
         }}
       >
         <Card>
