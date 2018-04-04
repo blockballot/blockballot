@@ -5,7 +5,7 @@ import { Card, TextField } from 'material-ui';
 import axios from 'axios';
 import Vote from './Vote';
 import VoterResults from './VoterResults';
-import VoteStartsAt from './VoteStartsAt'
+import VoteStartsAt from './VoteStartsAt';
 import '../style/voter.css';
 
 class Voter extends React.Component {

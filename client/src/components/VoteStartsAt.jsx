@@ -28,7 +28,7 @@ class VoteStartsAt extends React.Component {
         <div className="confirmationPage">
           <div className="confirmationHeader">
             Thank You For Visiting
-          </div>
+          </div><br/>
           <div className="subHeader">
             Following ballot has not started:
           </div>
@@ -36,7 +36,8 @@ class VoteStartsAt extends React.Component {
             {this.props.pollName}
           </div>
           <div className="subHeader">
-            Ballot opens at {this.props.pollStart}
+            Ballot opens at: <br/> 
+            {this.props.pollStart}
           </div>
           <div className="colorBackground" />
         </div>
