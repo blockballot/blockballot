@@ -10,10 +10,6 @@ class VoteStartsAt extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    console.log(formatDate)
-  }
-
   render() {
     return (
       <div>
@@ -33,7 +29,7 @@ class VoteStartsAt extends React.Component {
         <div className="confirmationPage">
           <div className="confirmationHeader">
             Thank You For Visiting
-          </div><br/>
+          </div>
           <div className="subHeader">
             Following ballot has not started:
           </div>
@@ -41,8 +37,10 @@ class VoteStartsAt extends React.Component {
             {this.props.pollName}
           </div>
           <div className="subHeader">
-            Ballot opens at: <br/> 
-            {this.props.pollStart}
+            Ballot opens at:
+          </div>
+          <div className="subHeader">
+            {formatDate(this.props.pollStart)}
           </div>
           <div className="colorBackground" />
         </div>
