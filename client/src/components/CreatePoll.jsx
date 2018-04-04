@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, TextField, Dialog, FlatButton, RadioButtonGroup, RadioButton } from 'material-ui';
 import { Button, Segment } from 'semantic-ui-react';
 import cookie from 'react-cookie';
 import axios from 'axios';
@@ -12,6 +11,16 @@ import momentLocalizer from 'react-widgets-moment';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 import 'react-widgets/dist/css/react-widgets.css';
 import '../style/voter.css';
+import { 
+  Card, 
+  TextField, 
+  Dialog, 
+  FlatButton, 
+  RadioButtonGroup, 
+  RadioButton, 
+  CardMedia, 
+  CardTitle 
+} from 'material-ui';
 
 class CreatePoll extends React.Component {
   constructor() {
@@ -32,7 +41,9 @@ class CreatePoll extends React.Component {
       isSubmitted: false,
       pollId: 0,
       loaderActive: true,
-      sendVotesDisabled: true
+      sendVotesDisabled: true,
+      pollError: false,
+      csvError: false
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -118,7 +129,6 @@ class CreatePoll extends React.Component {
   handleSubmit(event) {
     const startTime = this.state.start;
     const endTime = this.state.end;
-    console.log('1xxxxxx');
     if (this.state.ballotName === '' || this.state.ballotOption.length < 2) {
       this.setState({
         open: true
@@ -143,9 +153,7 @@ class CreatePoll extends React.Component {
       }
     }
     console.log('Sending contract to get mined');
-    axios.post('/contract', {
-      options
-    })
+    axios.post('/contract', { options })
       .then((contractRes) => {
         console.log(contractRes);
         console.log('Contract mined, updating database');
@@ -156,10 +164,9 @@ class CreatePoll extends React.Component {
           pollOptions: options,
           pollAddress: contractRes.data.address
         };
-        return axios.post('/createpoll', contractInfo);
+        return axios.post('/polls', contractInfo);
       })
       .then((pollRes) => {
-        console.log('poll result', pollRes);
         this.setState({
           pollId: pollRes.data[0].pollId,
           loaderActive: false,
@@ -167,8 +174,11 @@ class CreatePoll extends React.Component {
         });
       })
       .catch((err) => {
-        console.log(err);
-      });
+        this.setState({
+          loaderActive: false,
+          pollError: true
+        })
+      })
 
     this.setState({
       isSubmitted: true
@@ -187,7 +197,8 @@ class CreatePoll extends React.Component {
 
   handleSendEmail() {
     this.setState({
-      loading: true
+      loading: true,
+      emailSendError: false
     });
     axios.post('/emailcodes', {
       emails: JSON.stringify(this.state.emails),
@@ -204,7 +215,8 @@ class CreatePoll extends React.Component {
       }
     }).catch((err) => {
       this.setState({
-        loading: false
+        loading: false,
+        emailSendError: true
       });
       console.log('error sending emails');
     });
@@ -229,23 +241,23 @@ class CreatePoll extends React.Component {
   }
 
   handleErrorCSV() {
-    console.log('csv upload failed');
+    this.setState({
+      csvError: true
+    })
   }
 
   handleUploadCSV(data) {
     this.setState({
       emails: data,
       numVoters: data.length,
-      displayInfoCSV: true
+      displayInfoCSV: true,
+      csvError: false
     });
   }
 
   render() {
     Moment.locale('en');
     momentLocalizer();
-    console.log(this.state.start);
-    console.log(this.state.end);
-    console.log(this.state.startNow);
     const actions = [
       <FlatButton label="Close" primary onClick={this.handleClose} />
     ];
@@ -363,6 +375,33 @@ class CreatePoll extends React.Component {
         </div>
       );
     }
+    let pollError = null;
+    if (this.state.pollError === true) {
+      pollError = (
+        <CardMedia
+          overlayContainerStyle={{
+            width: 545,
+            height: 395,
+            padding: 0,
+            marginLeft: -30
+          }}
+          overlay={
+            <CardTitle 
+            title="Error" 
+            subtitle="There was an error creating your ballot. Please try again later." 
+            />
+          }>
+        </CardMedia>
+      )
+    }
+    let emailSendError = null;
+    if (this.state.emailSendError === true) {
+      emailSendError = (
+        <div>
+          There was an error sending emails. Please check that the uploaded emails are valid.
+        </div>
+      )
+    }
     const { active } = this.state;
 
     if (this.state.isSubmitted) {
@@ -395,6 +434,7 @@ class CreatePoll extends React.Component {
                     height: '425px'
                   }}
                 >
+                  {pollError}
                   <div
                     style={{
                       textAlign: 'center',
@@ -470,6 +510,7 @@ class CreatePoll extends React.Component {
                   modal={false}
                   open={this.state.voterDialogOpen}
                   onRequestClose={this.handleClose}
+                  autoScrollBodyContent={true}
                 >
                   <div>{emailList}</div>
                   <br />
@@ -489,6 +530,7 @@ class CreatePoll extends React.Component {
                   fullWidth
                 />
                 {pollConfirmation}
+                {emailSendError}
               </Card>
             </div>
           </section>

@@ -3,10 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const routes = require('./routes.js')
-const authRoutes = require('./authRoutes.js');
-const mailerRoutes = require('./mailerRoutes.js');
-const blockchainRoutes = require('./blockchainRoutes.js');
+const routes = require('./routes/index.js')
 
 const app = express();
 
@@ -21,31 +18,33 @@ app.use(session({
 }));
 
 //auth routes
-app.post('/login', authRoutes.login);
-app.post('/signup', authRoutes.signup);
-app.get('/password', authRoutes.password);
-app.get('/logout', authRoutes.logout);
-app.get('/reset/:token', authRoutes.resettoken);
-app.post('/resetpassword', authRoutes.resetpassword);
-app.post('/resetname', authRoutes.resetname);
-app.post('/resetemail', authRoutes.resetemail);
+app.post('/login', routes.auth.login);
+app.post('/signup', routes.auth.signup);
+app.get('/password', routes.auth.password);
+app.get('/logout', routes.auth.logout);
+app.get('/reset/:token', routes.auth.resettoken);
+app.post('/resetpassword', routes.auth.resetpassword);
+app.post('/resetname', routes.auth.resetname);
+app.post('/resetemail', routes.auth.resetemail);
 
 //mailer routes
-app.post('/forgotpassword', mailerRoutes.forgotpassword);
-app.post('/emailcodes', mailerRoutes.emailcodes);
+app.post('/forgotpassword', routes.mailer.forgotpassword);
+app.post('/emailcodes', routes.mailer.emailcodes);
 
 //blockchain routes
-app.post('/blockchainvote', blockchainRoutes.blockchainvote);
-app.post('/contract', blockchainRoutes.contract);
+app.post('/blockchainvote', routes.blockchain.blockchainvote);
+app.post('/contract', routes.blockchain.contract);
 
-//general routes
-app.post('/createpoll', routes.createpoll);
-app.get('/getpolls', routes.getpolls);
-app.put('/endpoll', routes.endpoll);
-app.post('/poll', routes.poll);
-app.post('/voter', routes.voter);
-app.post('/voteresult', routes.voteresult);
-app.get('/*', routes.wildcard);
+//poll routes
+app.post('/polls', routes.poll.createpoll);
+app.get('/polls', routes.poll.getpolls);
+app.put('/endpoll', routes.poll.endpoll);
+app.get('/*', routes.poll.wildcard);
+
+//voter routes
+app.post('/poll', routes.voter.poll);
+app.post('/voter', routes.voter.voter);
+app.post('/voteresult', routes.voter.voteresult);
 
 app.listen(process.env.PORT || 3000, () => console.log('Listening on port 3000'));
 
