@@ -5,6 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
 import Poll from './Poll';
 import '../style/dashboard.css';
+import { formatDate } from '../../../helpers/helpers';
 
 class Dashboard extends React.Component {
   constructor(props) {

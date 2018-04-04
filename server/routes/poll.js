@@ -1,6 +1,5 @@
 const dbHelpers = require('../../database/dbHelpers.js');
 const path = require('path');
-const helpers = require('../../helpers/helpers.js')
 
 const createpoll = (req, res) => {
   dbHelpers.createPoll(req.session.orgId, req.body)
@@ -39,12 +38,7 @@ const getpolls = (req, res) => {
     .then((polls) => {
       const promiseArr = [];
       for (let i = 0; i < polls.length; i++) {
-        let poll = polls[i];
-        let pollStart = helpers.formatDate(poll.pollTimeStart);
-        let pollEnd = helpers.formatDate(poll.pollTimeEnd);
-        poll.pollTimeStart = pollStart;
-        poll.pollTimeEnd = pollEnd;
-        promiseArr.push(dbHelpers.bundlePollVotes(poll));
+        promiseArr.push(dbHelpers.bundlePollVotes(polls[i]));
       }
       return Promise.all(promiseArr);
     })
