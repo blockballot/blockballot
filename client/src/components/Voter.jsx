@@ -6,6 +6,7 @@ import axios from 'axios';
 import Vote from './Vote';
 import VoterResults from './VoterResults';
 import '../style/voter.css';
+import PollResults from './PollResults';
 
 class Voter extends React.Component {
   constructor(props) {
@@ -18,11 +19,23 @@ class Voter extends React.Component {
       errorText: '',
       pollHash: '',
       pollEnd: '',
+      pollExpired: false,
+      pollName: '',
+      pollResult: '',
+      showResult: false,
       voteHash: '',
       keyId: 0
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleShowResult = this.handleShowResult.bind(this);
+  }
+
+  handleShowResult(event) {
+    event.preventDefault();
+    this.setState({
+      showResult: true
+    });
   }
 
   handleChange(event) {
@@ -34,24 +47,66 @@ class Voter extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const voter = this;
-    axios({
-      method: 'POST',
-      url: '/voter',
-      data: {
-        uniqueId: this.state.uniqueId
-      }
+    axios.post('/voter', {
+      uniqueId: this.state.uniqueId
     })
       .then((res) => {
-        console.log(res);
         const endTime = res.data.poll.pollTimeEnd;
-        // this code has already voted, send them directly to results
-        if (res.data.vote) {
+        if (res.data.poll.pollExpired === '1') {
+          // poll is closed, take voter to poll results
+          const poll = res.data.poll;
+          axios.post('/poll', {
+            pollId: poll.id
+          })
+            .then((options) => {
+              const optionNames = [];
+              const optionVotes = [];
+              let totalVotes = 0;
+              options.data.forEach((option) => {
+                optionNames.push(option.optionName);
+                const voteObj = {};
+                totalVotes += Number(option.voteCount);
+                voteObj[option.optionName] = option.voteCount;
+                optionVotes.push(voteObj);
+              });
+              // format poll object in a way that PollResults component understands
+              poll.options = optionNames.join(',');
+              poll.voteCount = totalVotes;
+              poll.optionVotes = optionVotes;
+              poll.pollId = poll.id;
+              if (res.data.vote) {
+                const voteHash = res.data.vote.voteHash;
+                voter.setState({
+                  isLogin: true,
+                  pollExpired: true,
+                  pollResult: poll,
+                  hasVoted: true,
+                  pollEnd: endTime,
+                  voteHash: voteHash,
+                  pollName: poll.pollName
+                });
+              } else {
+                voter.setState({
+                  isLogin: true,
+                  pollExpired: true,
+                  pollResult: poll,
+                  pollEnd: endTime,
+                  pollName: poll.pollName
+                });
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else if (res.data.vote) {
+          // this code has already voted, send them directly to their vote result page
           const voteHash = res.data.vote.voteHash;
           voter.setState({
             isLogin: true,
             hasVoted: true,
             pollEnd: endTime,
-            voteHash: voteHash
+            voteHash: voteHash,
+            pollName: res.data.poll.pollName
           });
         } else {
           const poll = res.data.pollId;
@@ -69,19 +124,58 @@ class Voter extends React.Component {
       .catch((error) => {
         console.log(error);
         voter.setState({
-          errorText: 'Your unique code is incorrect. Please try again',
+          errorText: 'Your unique code is incorrect. Please try again'
         });
       });
   }
 
   render() {
+    const pollResult = (
+      <div>
+        <Menu attached borderless style={{ border: 'none' }}>
+          <Link to="/">
+            <Menu.Item>
+              <h3 style={{
+                fontFamily: 'Hammersmith One',
+                fontSize: '30px'
+              }}
+              >
+                BB
+              </h3>
+            </Menu.Item>
+          </Link>
+        </Menu>
+        <PollResults
+          poll={this.state.pollResult}
+          loggedIn={false}
+        />
+      </div>
+    );
     if (this.state.isLogin) {
-      if (this.state.hasVoted) {
+      if (this.state.showResult && !this.state.hasVoted) {
+        return (
+          <div>
+            {pollResult}
+          </div>
+        );
+      }
+      if (this.state.hasVoted && !this.state.showResult) {
         return (
           <VoterResults
+            ballotName={this.state.pollName}
+            handleResult={this.handleShowResult}
             voteHash={this.state.voteHash}
-            pollEnd={this.props.pollEnd}
+            pollEnd={this.state.pollEnd}
+            poll={this.state.pollResult}
+            pollExpired={this.state.pollExpired}
           />
+        );
+      }
+      if (this.state.pollExpired) {
+        return (
+          <div>
+            {pollResult}
+          </div>
         );
       }
       return (
@@ -97,7 +191,7 @@ class Voter extends React.Component {
     return (
       <div>
         <Menu attached borderless style={{ border: 'none' }}>
-          <Link to='/'>
+          <Link to="/">
             <Menu.Item>
               <h3 style={{
                 fontFamily: 'Hammersmith One',

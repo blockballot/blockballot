@@ -1,11 +1,9 @@
 import React from 'react';
-import { withRouter } from 'react-router';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Bar as BarChart } from 'react-chartjs';
-import { Menu, Button } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import { Dialog } from 'material-ui';
 import axios from 'axios';
-import cookie from 'react-cookie';
 
 class PollResults extends React.Component {
   constructor(props) {
@@ -53,7 +51,6 @@ class PollResults extends React.Component {
       pollExpired: true
     })
       .then((result) => {
-        console.log('successful', result);
         this.setState({
           pollExpired: result.data.pollExpired
         });
@@ -66,7 +63,7 @@ class PollResults extends React.Component {
   openDeleteDialog() {
     this.setState({
       openDelete: true
-    })
+    });
   }
 
   closeDeleteDialog() {
@@ -76,35 +73,33 @@ class PollResults extends React.Component {
   }
 
   handleDeleteBallot() {
-    axios.delete('/polls', { 
+    axios.delete('/polls', {
       params: { pollId: this.state.pollId }
     })
-      .then((res) => {
+      .then(() => {
         this.setState({
           confirmDelete: true
-        })
+        });
       })
       .catch((err) => {
-        console.log('unable to delete poll')
-      })
+        console.log(err);
+        console.log('unable to delete poll');
+      });
   }
 
 
   render() {
-    console.log(this.props.poll);
-    if (cookie.load('loggedIn') !== 'true') {
-      return (<Redirect to="/" />);
-    } else if (this.props.poll === undefined) {
+    if (this.props.poll === undefined && this.props.loggedIn === true) {
       return (<Redirect to="/dashboard" />);
     }
 
     const voteCounts = [];
-    const options = this.state.options.split(',');
+    const voteOptions = this.state.options.split(',');
     this.state.optionVotes.forEach((optionVote, index) => {
-      voteCounts.push(optionVote[options[index]]);
+      voteCounts.push(optionVote[voteOptions[index]]);
     });
     const data = {
-      labels: options,
+      labels: voteOptions,
       datasets: [
         {
           fillColor: 'rgba(240,248,255,0.5)',
@@ -114,6 +109,42 @@ class PollResults extends React.Component {
           data: voteCounts
         }
       ]
+    };
+
+    const options = {
+      // Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+      scaleBeginAtZero: true,
+
+      // Boolean - Whether grid lines are shown across the chart
+      scaleShowGridLines: false,
+
+      // String - Colour of the grid lines
+      scaleGridLineColor: 'rgba(0,0,0,.05)',
+
+      // Number - Width of the grid lines
+      scaleGridLineWidth: 1,
+
+      // Boolean - Whether to show horizontal lines (except X axis)
+      scaleShowHorizontalLines: false,
+
+      // Boolean - Whether to show vertical lines (except Y axis)
+      scaleShowVerticalLines: true,
+
+      // Boolean - If there is a stroke on each bar
+      barShowStroke: true,
+
+      // Number - Pixel width of the bar stroke
+      barStrokeWidth: 2,
+
+      // Number - Spacing between each of the X value sets
+      barValueSpacing: 5,
+
+      // Number - Spacing between data sets within X values
+      barDatasetSpacing: 1,
+
+      // String - A legend template
+      legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"><%if(datasets[i].label){%><%=datasets[i].label%><%}%></span></li><%}%></ul>'
+
     };
 
     let pollCloseTime = null;
@@ -145,10 +176,10 @@ class PollResults extends React.Component {
     let confirmDelete = null;
     if (this.state.confirmDelete === true) {
       confirmDelete = (
-        <div style={{marginTop: 10}}>
+        <div style={{ marginTop: 10 }}>
           <b>Ballot Deleted!</b>
         </div>
-      )
+      );
     }
 
     const actions = [
@@ -173,7 +204,7 @@ class PollResults extends React.Component {
         content="Delete"
         onClick={this.handleDeleteBallot}
       />
-    ]
+    ];
 
     return (
       <div>
@@ -193,16 +224,21 @@ class PollResults extends React.Component {
         <div className="subHeader">
           Total Votes: {this.state.voteCount}
         </div><br />
-        <div style={{ textAlign: 'center' }}> 
-          <span>
-            {pollCloseTime}
-          </span>
-          <Button
-            style={{marginTop: 10}}
-            primary
-            content="Delete Ballot"
-            onClick={this.openDeleteDialog}
-          />
+        <div style={{ textAlign: 'center' }}>
+          { this.props.loggedIn && (
+            <div>
+              <span>
+                {pollCloseTime}
+              </span>
+              <Button
+                style={{ marginTop: 10 }}
+                primary
+                content="Delete Ballot"
+                onClick={this.openDeleteDialog}
+              />
+            </div>
+            )
+          }
         </div>
         <Dialog
           title="You are about to close the Ballot"
@@ -227,41 +263,5 @@ class PollResults extends React.Component {
     );
   }
 }
-
-const options = {
-  // Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-  scaleBeginAtZero: true,
-
-  // Boolean - Whether grid lines are shown across the chart
-  scaleShowGridLines: false,
-
-  // String - Colour of the grid lines
-  scaleGridLineColor: 'rgba(0,0,0,.05)',
-
-  // Number - Width of the grid lines
-  scaleGridLineWidth: 1,
-
-  // Boolean - Whether to show horizontal lines (except X axis)
-  scaleShowHorizontalLines: false,
-
-  // Boolean - Whether to show vertical lines (except Y axis)
-  scaleShowVerticalLines: true,
-
-  // Boolean - If there is a stroke on each bar
-  barShowStroke: true,
-
-  // Number - Pixel width of the bar stroke
-  barStrokeWidth: 2,
-
-  // Number - Spacing between each of the X value sets
-  barValueSpacing: 5,
-
-  // Number - Spacing between data sets within X values
-  barDatasetSpacing: 1,
-
-  // String - A legend template
-  legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"><%if(datasets[i].label){%><%=datasets[i].label%><%}%></span></li><%}%></ul>'
-
-};
 
 export default PollResults;

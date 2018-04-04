@@ -84,7 +84,11 @@ const Option = sequelize.define('option', {
     primaryKey: true
   },
   optionName: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+  },
+  voteCount: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   },
   createdAt: {
     type: Sequelize.DATE(3),
