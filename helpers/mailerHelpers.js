@@ -58,6 +58,8 @@ const sendPasswordReset = (email, token) => {
 }
 
 const sendEmailCodes = (emails, pollId, ballotName, start, end, orgName) => {
+  start = helpers.formatDate(start);
+  end = helpers.formatDate(end);
   return new Promise((resolve, reject) => {
     readHTMLFile(path.join(__dirname, '../client/src/templates/voterCodeEmail.html'))
     .then(template => {
