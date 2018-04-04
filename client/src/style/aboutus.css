@@ -1,0 +1,56 @@
+.aboutContainer {
+  margin: 0 5% 5% 5%;
+}
+
+.topBar {
+  background-color: black;
+  height: 3px;
+  margin-top: 2%;
+}
+
+.aboutHeader{
+  padding: 1% 0 3% 0;
+  text-align: left;
+  font-size: 2.5em;
+  font-family: 'Hammersmith One';
+  color: #636e72;
+}
+
+.grid1 {
+  display: grid;
+  grid-template-columns: auto;
+  background-color: #2284d1;
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  background-color: #2284d1;
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+}
+
+.grid4 {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  background-color: #2284d1;
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+}
+
+.gridItem {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.sectionTitle {
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 24px;
+  margin-top: 2%;
+}
+
