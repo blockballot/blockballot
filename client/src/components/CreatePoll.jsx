@@ -129,7 +129,6 @@ class CreatePoll extends React.Component {
   handleSubmit(event) {
     const startTime = this.state.start;
     const endTime = this.state.end;
-    console.log('1xxxxxx');
     if (this.state.ballotName === '' || this.state.ballotOption.length < 2) {
       this.setState({
         open: true
@@ -198,7 +197,8 @@ class CreatePoll extends React.Component {
 
   handleSendEmail() {
     this.setState({
-      loading: true
+      loading: true,
+      emailSendError: false
     });
     axios.post('/emailcodes', {
       emails: JSON.stringify(this.state.emails),

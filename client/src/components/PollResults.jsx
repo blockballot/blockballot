@@ -12,6 +12,7 @@ class PollResults extends React.Component {
     super(props);
     this.state = {
       open: false,
+      openDelete: false,
       pollId: props.poll.pollId,
       options: props.poll.options,
       optionVotes: props.poll.optionVotes,
@@ -19,11 +20,15 @@ class PollResults extends React.Component {
       pollTimeEnd: props.poll.pollTimeEnd,
       pollTimeStart: props.poll.pollTimeStart,
       pollName: props.poll.pollName,
-      voteCount: props.poll.voteCount
+      voteCount: props.poll.voteCount,
+      confirmDelete: false
     };
     this.handleDialogOpen = this.handleDialogOpen.bind(this);
     this.handleDialogClose = this.handleDialogClose.bind(this);
     this.handleDialogSubmit = this.handleDialogSubmit.bind(this);
+    this.openDeleteDialog = this.openDeleteDialog.bind(this);
+    this.closeDeleteDialog = this.closeDeleteDialog.bind(this);
+    this.handleDeleteBallot = this.handleDeleteBallot.bind(this);
   }
 
   handleDialogOpen() {
@@ -56,6 +61,25 @@ class PollResults extends React.Component {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  openDeleteDialog() {
+    this.setState({
+      openDelete: true
+    })
+  }
+
+  closeDeleteDialog() {
+    this.setState({
+      openDelete: false
+    });
+  }
+
+  handleDeleteBallot() {
+    console.log('Delete Ballot')
+    this.setState({
+      confirmDelete: true
+    })
   }
 
 
@@ -111,6 +135,15 @@ class PollResults extends React.Component {
       );
     }
 
+    let confirmDelete = null;
+    if (this.state.confirmDelete === true) {
+      confirmDelete = (
+        <div>
+          Ballot Deleted!
+        </div>
+      )
+    }
+
     const actions = [
       <Button
         content="Cancel"
@@ -122,6 +155,18 @@ class PollResults extends React.Component {
         onClick={this.handleDialogSubmit}
       />
     ];
+
+    const deleteActions = [
+      <Button
+        content="Cancel"
+        onClick={this.closeDeleteDialog}
+      />,
+      <Button
+        primary
+        content="Delete"
+        onClick={this.handleDeleteBallot}
+      />
+    ]
 
     return (
       <div>
@@ -141,11 +186,15 @@ class PollResults extends React.Component {
         <div className="subHeader">
           Total Votes: {this.state.voteCount}
         </div><br />
-        <div style={{ textAlign: 'center' }}>
-          {pollCloseTime}
+        <div style={{ textAlign: 'center' }}> 
+          <span>
+            {pollCloseTime}
+          </span>
           <Button
+            style={{marginTop: 10}}
             primary
             content="Delete Ballot"
+            onClick={this.openDeleteDialog}
           />
         </div>
         <Dialog
@@ -156,6 +205,16 @@ class PollResults extends React.Component {
           onRequestClose={this.handleDialogClose}
         >
           If you want to proceed, Click the "End the ballot" button
+        </Dialog>
+        <Dialog
+          title="Are you sure?"
+          actions={deleteActions}
+          modal={false}
+          open={this.state.openDelete}
+          onRequestClose={this.closeDeleteDialog}
+        >
+          You will not be able to access this ballot if you delete it.
+          {confirmDelete}
         </Dialog>
       </div>
     );
