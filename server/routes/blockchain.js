@@ -11,17 +11,15 @@ const blockchainvote = (req, res) => {
 }
 
 const contract = (req, res) => {
-  res.status(500).send('There was an error when creating the blockchain vote');
-
-  // const options = req.body.options;
-  // blockchain.createContract(options)
-  //   .then((contract) => {
-  //     res.status(201).send(contract);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //     res.status(500).send('There was an error when creating the blockchain vote');
-  //   });
+  const options = req.body.options;
+  blockchain.createContract(options)
+    .then((contract) => {
+      res.status(201).send(contract);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send('There was an error when creating the blockchain vote');
+    });
 }
 
 module.exports = {
