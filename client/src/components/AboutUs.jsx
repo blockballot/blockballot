@@ -57,7 +57,7 @@ const AboutUs = () => (
       <div className="grid1">
         <div className="gridItem">
           <div className="votingProcess">
-            <img src="https://c1.staticflickr.com/1/787/40352854625_e846550a7c_c.jpg" alt="BlockBallot voting process" />
+            <img src="https://c1.staticflickr.com/1/817/26386155337_748ecf2056_c.jpg" alt="BlockBallot voting process" />
           </div>
         </div>
       </div>
