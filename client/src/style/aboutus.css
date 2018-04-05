@@ -16,41 +16,84 @@
   color: #636e72;
 }
 
+.sectionTitle {
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 24px;
+  margin-top: 4%;
+}
+
 .grid1 {
   display: grid;
   grid-template-columns: auto;
-  background-color: #2284d1;
-  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
   font-family: "Roboto", sans-serif;
+  font-size: 16px;
 }
 
-.grid3 {
+.infographic {
   display: grid;
-  grid-template-columns: auto auto auto;
-  background-color: #2284d1;
-  padding: 10px;
+  grid-template-columns: auto;
+  margin-left: 30px;
+  margin-right: 30px;
   font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: 10px 10px rgba(0, 0, 0, 0.8);
+}
+
+.infographicHeader {
+  display: grid;
+  grid-template-columns: auto;
+  font-weight: bold;
+  margin-bottom: 2%;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.blockchainIntro {
+  text-align: left;
+  margin-left: 2%;
+  font-size: 14px;
+}
+
+.smartContract {
+  text-align: left;
+  padding-top: 3%;
+  margin-left: 2%;
+  font-size: 14px;
 }
 
 .grid4 {
   display: grid;
   grid-template-columns: auto auto auto auto;
-  background-color: #2284d1;
   padding: 10px;
   font-family: "Roboto", sans-serif;
 }
 
 .gridItem {
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px 20px 0 20px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.votingProcessIntro {
+  font-size: 16px;
+}
+
+.votingProcess {
+  margin-bottom: 20px;
+}
+
+.photoItem {
   padding: 20px;
   font-size: 16px;
   text-align: center;
 }
 
-.sectionTitle {
-  font-family: "Roboto Condensed", sans-serif;
-  font-size: 24px;
-  margin-top: 2%;
+.devImage {
+  box-shadow: 10px 10px rgba(0, 0, 0, 0.8);
 }
-
