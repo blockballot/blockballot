@@ -97,3 +97,10 @@
 .devImage {
   box-shadow: 10px 10px rgba(0, 0, 0, 0.8);
 }
+
+.nameHr {
+  background-color: #636e72;
+  height: 2px;
+  width: 70%;
+  margin-top: 30px;
+}
