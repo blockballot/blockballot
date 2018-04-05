@@ -19,3 +19,12 @@
   text-align: center;
   color: #CCCCCC;
 }
+
+.hovercontent {
+  background-color: #FFFFFF !important;
+}
+
+.hovercontent:hover {
+  background-color: #F0F8FF !important;
+  cursor: pointer; 
+}

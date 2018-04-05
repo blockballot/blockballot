@@ -161,7 +161,7 @@ class PollResults extends React.Component {
             primary
             onClick={this.handleDialogOpen}
           >
-          End Voting Period for Ballot
+          End Voting
           </Button>
         );
       }
@@ -189,7 +189,7 @@ class PollResults extends React.Component {
       />,
       <Button
         primary
-        content="End the ballot"
+        content="End Voting"
         onClick={this.handleDialogSubmit}
       />
     ];
@@ -224,7 +224,9 @@ class PollResults extends React.Component {
         <div className="subHeader">
           Total Votes: {this.state.voteCount}
         </div><br />
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center',
+                      marginBottom: 30}}
+        >
           { this.props.loggedIn && (
             <div>
               <span>
@@ -241,13 +243,13 @@ class PollResults extends React.Component {
           }
         </div>
         <Dialog
-          title="You are about to close the Ballot"
+          title="You are about to close this ballot"
           actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleDialogClose}
         >
-          If you want to proceed, Click the "End the ballot" button
+          Participants will not be able to vote once the ballot is closed.
         </Dialog>
         <Dialog
           title="Are you sure?"

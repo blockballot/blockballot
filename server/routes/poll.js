@@ -36,7 +36,6 @@ const getpolls = (req, res) => {
 
   dbHelpers.retrievePolls(req.session.orgId)
     .then((polls) => {
-      console.log('POLLS', polls)
       const promiseArr = [];
       for (let i = 0; i < polls.length; i++) {
         promiseArr.push(dbHelpers.bundlePollVotes(polls[i]));

@@ -380,11 +380,12 @@ class CreatePoll extends React.Component {
     if (this.state.pollError === true) {
       pollError = (
         <CardMedia
-          overlayContainerStyle={{
-            width: 545,
-            height: 395,
-            padding: 0,
-            marginLeft: -30
+          overlayStyle={{
+            height: 225
+          }}
+          overlayContentStyle={{
+            height: 100,
+            color: 'white' 
           }}
           overlay={
             <CardTitle
@@ -392,6 +393,7 @@ class CreatePoll extends React.Component {
               subtitle="There was an error creating your ballot. Please try again later."
             />
           }
+
         />
       );
     }
