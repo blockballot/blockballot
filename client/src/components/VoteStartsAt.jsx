@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card } from 'material-ui';
 import { Menu } from 'semantic-ui-react';
 import '../style/voter.css';
-import formatDate from '../utils/helpers.js';
+import { formatDate } from '../../../helpers/helpers';
 
 class VoteStartsAt extends React.Component {
   constructor(props) {
