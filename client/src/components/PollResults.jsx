@@ -161,7 +161,7 @@ class PollResults extends React.Component {
             primary
             onClick={this.handleDialogOpen}
           >
-          End Voting Period for Ballot
+          End Voting
           </Button>
         );
       }
@@ -189,7 +189,7 @@ class PollResults extends React.Component {
       />,
       <Button
         primary
-        content="End the ballot"
+        content="End Voting"
         onClick={this.handleDialogSubmit}
       />
     ];
@@ -249,7 +249,7 @@ class PollResults extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleDialogClose}
         >
-          Voting will end once the ballot is closed.
+          Participants will not be able to vote once the ballot is closed.
         </Dialog>
         <Dialog
           title="Are you sure?"
