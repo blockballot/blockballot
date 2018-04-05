@@ -2,7 +2,8 @@ import React from 'react';
 import {Button, Header, Icon} from 'semantic-ui-react';
 import PollResults from './PollResults.jsx';
 import {Link, Redirect, Route} from 'react-router-dom';
-import { formatDate } from '../../../helpers/helpers';
+import {formatDate} from '../../../helpers/helpers';
+import '../style/dashboard.css';
 
 
 const Poll = (props) => {
@@ -10,8 +11,8 @@ const Poll = (props) => {
   if (props.poll.pollTimeStart === null && props.poll.pollTimeEnd === null) {
     time = (
       <div>
-        <b>Manual</b>
-        <br/>
+        <b>Start:</b> Manual <br/>
+        <b>End:</b> Manual
       </div>
     )
   } else {
@@ -25,9 +26,11 @@ const Poll = (props) => {
     )
   }
   return (
-      <div className="card"
-      onClick={() => props.handlePollClick(props.poll)}>
-        <div className="content">
+      <div 
+        className="card"
+        onClick={() => props.handlePollClick(props.poll)}
+      >
+        <div class="content hovercontent">
           <div className="header">
             {props.poll.pollName}
           </div>
@@ -37,9 +40,13 @@ const Poll = (props) => {
             <span className="left floated">
          
             </span>
-            <span className="right floated">
+            <span 
+              className="right floated"
+              style={{color: '#2284d1'}}
+            >
               {props.poll.voteCount}
-              <i className="check square outline icon"></i> 
+              <i className="check square outline icon">
+              </i> 
             </span>
           </div>
 

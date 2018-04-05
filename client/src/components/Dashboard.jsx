@@ -11,7 +11,8 @@ class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      polls: []
+      polls: [],
+      loading: true
     };
     this.retrieveOrgPolls = this.retrieveOrgPolls.bind(this);
   }
@@ -35,6 +36,9 @@ class Dashboard extends React.Component {
     axios.get('/polls')
       .then((polls) => {
         this.updatePoll(polls);
+        this.setState({
+          loading: false
+        })
       })
       .catch((err) => {
         console.log(err);
@@ -48,7 +52,14 @@ class Dashboard extends React.Component {
     if (cookie.load('loggedIn') !== 'true') {
       return (<Redirect to="/" />);
     }
-    if (polls.length === 0) {
+    if (this.state.loading === true) {
+      pollComponent = (
+        <div class="ui active inverted dimmer">
+          <div class="ui large text loader">Loading</div>
+        </div>
+      )
+    } 
+    if (polls.length === 0 && this.state.loading === false) {
       pollComponent = (
         <div className="ballotImg">
           <img src="https://c1.staticflickr.com/1/805/39390736730_b01c35326c_n.jpg" alt="No Ballots Currently" />
@@ -57,8 +68,8 @@ class Dashboard extends React.Component {
       );
     } else {
       pollComponent = (
-        <div style={{ marginLeft: 50, marginRight: 50, marginTop: 50 }}>
-          <div className="ui four link cards">
+        <div style={{ marginLeft: 50, marginRight: 50, marginTop: 50, marginBottom: 30 }}>
+          <div className="ui four cards">
             {polls.map(poll => (
               <Poll
                 poll={poll}

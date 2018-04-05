@@ -224,7 +224,9 @@ class PollResults extends React.Component {
         <div className="subHeader">
           Total Votes: {this.state.voteCount}
         </div><br />
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center',
+                      marginBottom: 30}}
+        >
           { this.props.loggedIn && (
             <div>
               <span>
@@ -241,13 +243,13 @@ class PollResults extends React.Component {
           }
         </div>
         <Dialog
-          title="You are about to close the Ballot"
+          title="You are about to close this ballot"
           actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleDialogClose}
         >
-          If you want to proceed, Click the "End the ballot" button
+          Voting will end once the ballot is closed.
         </Dialog>
         <Dialog
           title="Are you sure?"
