@@ -36,7 +36,7 @@ const sendPasswordReset = (email, token) => {
     .then(template => {
       let compiler = handlebars.compile(template);
       let replacements = {
-        resetLink: 'http://localhost:3000' + '/reset/' + token
+        resetLink: 'http://blockballot.us' + '/reset/' + token
       };
       let templateToSend = compiler(replacements);
       let mailPasswordOptions = {
