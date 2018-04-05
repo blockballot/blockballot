@@ -83,18 +83,22 @@ const AboutUs = () => (
       <div className="photoItem">
         <img className="devImage" src="https://c1.staticflickr.com/1/868/26374218007_9522e2a385_q.jpg" alt="Evaline Bai" />
         <h3>Evaline Bai</h3>
+        <hr className="nameHr" />
       </div>
       <div className="photoItem">
         <img className="devImage" src="https://c1.staticflickr.com/1/818/40532828924_35828e70bc_q.jpg" alt="Norbie Magno" />
         <h3>Norbie Magno</h3>
+        <hr className="nameHr" />
       </div>
       <div className="photoItem">
         <img className="devImage" src="https://c1.staticflickr.com/1/805/26374216127_63e3396128_q.jpg" alt="Paula Obler" />
         <h3>Paula Obler</h3>
+        <hr className="nameHr" />
       </div>
       <div className="photoItem">
         <img className="devImage" src="https://c1.staticflickr.com/1/875/27373238228_8ea3393d17_q.jpg" alt="Michael Shin" />
         <h3>Michael Shin</h3>
+        <hr className="nameHr" />
       </div>
     </div>
   </div>
