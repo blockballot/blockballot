@@ -4,12 +4,6 @@ A decentralized voting platform built on the Ethereum Testnet
 ## Mission
 > BlockBallot provides a secure, electronic way to establish a chain of custody - a chronological paper trail - that traces the data that each voter contributes to an election. And because BlockBallot is built on the Ethereum network, election data is publicly accessible and verifiable by a network of peers. (Please note that BlockBallot is in early production and currently operates on the public Rinkeby Testnet. The app will be refactored to operate on the official network in the future).
 
-## Team
-- [Evaline Bai](https://github.com/evalineBai)
-- [Norbie Magno](https://github.com/Magnoes)
-- [Michael Shin](https://github.com/connectblocks)
-- [Paula Obler](https://github.com/paula-o)
-
 ## Dependencies
 ```
     "axios": "^0.18.0",
