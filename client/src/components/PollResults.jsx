@@ -5,6 +5,12 @@ import { Button } from 'semantic-ui-react';
 import { Dialog } from 'material-ui';
 import axios from 'axios';
 
+/*
+PollResults Component:
+Used to show poll status/result
+Used to end and delete the poll
+*/
+
 class PollResults extends React.Component {
   constructor(props) {
     super(props);

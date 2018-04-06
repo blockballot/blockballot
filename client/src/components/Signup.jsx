@@ -4,6 +4,13 @@ import { Card, CardText, CardTitle, CardMedia, TextField, Dialog, FlatButton } f
 import { Button } from 'semantic-ui-react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+/*
+  Signup Component:
+  Accepts organization name and email
+  Verifies that organization email is not already taken (database query).
+  Displays error if email does not pass verification.
+*/
+
 class Signup extends React.Component {
   constructor(props) {
     super(props);

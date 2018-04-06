@@ -3,6 +3,11 @@ import { Redirect, Link } from 'react-router-dom';
 import {Card, CardText, CardHeader, TextField, RaisedButton, FlatButton} from 'material-ui';
 import axios from 'axios';
 
+/*
+LoginReset Component: 
+
+*/
+
 class LoginReset extends React.Component {
   constructor(props) {
     super(props);

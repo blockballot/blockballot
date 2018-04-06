@@ -22,6 +22,14 @@ import {
 } from 'material-ui';
 import '../style/voter.css';
 
+/*
+CreatePoll Component:
+Used to create new poll. 
+Takes user inputs, and deploy them on blockchain and save them on MySQL. 
+User can upload voter information (email) on this page to send unique keys to voters via e-mail. 
+*/
+
+
 class CreatePoll extends React.Component {
   constructor() {
     super();
@@ -61,7 +69,6 @@ class CreatePoll extends React.Component {
     this.openVoterDialog = this.openVoterDialog.bind(this);
     this.closeVoterDialog = this.closeVoterDialog.bind(this);
   }
-
 
   componentWillMount() {
     if (localStorage.getItem('pollInfo')) {

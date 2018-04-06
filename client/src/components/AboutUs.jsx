@@ -2,6 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../style/aboutus.css';
 
+/*
+AboutUs Component:
+Contains team and block chain info 
+*/
+
 const AboutUs = () => (
   <div className="aboutContainer">
     <hr className="topBar" />

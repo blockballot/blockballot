@@ -4,6 +4,11 @@ import { Card, CardText, CardHeader, Dialog, Divider, TextField, RaisedButton } 
 import axios from 'axios';
 import cookie from 'react-cookie';
 
+/*
+Settings Component:
+
+*/
+ 
 class Settings extends React.Component {
   constructor(props) {
     super(props);

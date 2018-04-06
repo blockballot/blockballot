@@ -5,6 +5,12 @@ import { Menu } from 'semantic-ui-react';
 import '../style/voter.css';
 import { formatDate } from '../../../helpers/helpers';
 
+/*
+  VoteStartsAt Component:
+  Used by Voter component 
+  Displays poll start time if the poll has not started 
+*/
+
 class VoteStartsAt extends React.Component {
   constructor(props) {
     super(props);

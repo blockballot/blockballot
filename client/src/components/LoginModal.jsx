@@ -8,6 +8,15 @@ import { BarLoader } from 'react-spinners';
 import $ from 'jquery';
 import '../style/forms.css';
 
+/*
+LoginModal Component: 
+Link on nav and signup pages used for user login
+Clicking sign up Links to sign up page
+Redirects to organization Dashboard on successful post to server
+Displays errors if log in is not successful
+Reset password by clicking forgot your password button
+*/
+
 class LoginModal extends React.Component {
   constructor(props) {
     super(props);
