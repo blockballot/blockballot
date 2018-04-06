@@ -3,6 +3,16 @@ import { Link } from 'react-router-dom';
 import { Menu, Button } from 'semantic-ui-react';
 import LoginModal from './LoginModal';
 
+/*
+Nav Component:
+Rendered on every organzation pages 
+Clicking logo links to landing page
+Clicking sign up links to sign up page
+Clicking log in links to log in page
+Clicking create ballot links to createpoll page
+Clicking dashboard links to dashboard page
+*/
+
 class Nav extends React.Component {
   constructor(props) {
     super(props);

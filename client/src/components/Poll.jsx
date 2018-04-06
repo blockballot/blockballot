@@ -5,6 +5,11 @@ import {Link, Redirect, Route} from 'react-router-dom';
 import {formatDate} from '../../../helpers/helpers';
 import '../style/dashboard.css';
 
+/*
+Poll Component:
+Used by Dashboard
+Displays each poll details on the card
+*/
 
 const Poll = (props) => {
   let time = null;

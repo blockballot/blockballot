@@ -7,6 +7,13 @@ import Poll from './Poll';
 import '../style/dashboard.css';
 import { formatDate } from '../../../helpers/helpers';
 
+/*
+Dashboard Component:
+Used after user successfully log in or sign up. It displays all the ballots created by the user.
+User can click on create poll button to navigate to createpoll page 
+User can click on each poll card to view the individual poll details
+*/
+
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);

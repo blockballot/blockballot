@@ -11,6 +11,12 @@ import {
   Segment
 } from 'semantic-ui-react';
 
+/*
+Landing Component:
+User greeting page.  Used when the user first loads the website
+Footer section contains links to other pages that do not require user log in. 
+*/
+
 class Landing extends React.Component {
 
   componentDidMount() {

@@ -15,6 +15,13 @@ import AboutUs from './AboutUs';
 import Settings from './Settings';
 import Nav from './Nav';
 
+/*
+App Component:
+Routes to all other components
+Assign Nav to components 
+Contains authentication / poll event handler 
+*/
+
 class App extends React.Component {
   constructor(props) {
     super(props);

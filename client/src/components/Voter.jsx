@@ -9,6 +9,13 @@ import VoteStartsAt from './VoteStartsAt';
 import '../style/voter.css';
 import PollResults from './PollResults';
 
+/*
+  Voter Component:
+  Accepts voter's unique id
+  Verifies that the voter's unique id is valid (database query).
+  Displays error if user input does not pass verification.
+*/
+
 class Voter extends React.Component {
   constructor(props) {
     super(props);

@@ -6,6 +6,13 @@ import { Menu } from 'semantic-ui-react';
 import { formatDate } from '../../../helpers/helpers';
 import '../style/voter.css';
 
+/*
+  Voter Component:
+  Used by Voter component 
+  Displays the hash from blochchain as a confirmation
+  Links to the etherscan
+*/
+
 class VoterResults extends React.Component {
   constructor(props) {
     super(props);
