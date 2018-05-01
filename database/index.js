@@ -1,7 +1,10 @@
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize("blockballot", "root", "", {
   // in mysql create databases blockballot
-  dialect: "mysql"
+  dialect: 'mysql',
+  dialectOptions: {
+    insecureAuth: true
+  }
 });
 
 sequelize

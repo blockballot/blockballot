@@ -5,7 +5,7 @@ const fs = require('fs');
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 
 const createContract = (options) => {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     try {
       const solidityContract = fs.readFileSync(__dirname + '/../contracts/Voting.sol').toString();
       const compiledContract = solc.compile(solidityContract);
